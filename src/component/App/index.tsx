@@ -1,5 +1,5 @@
 import style from './index.module.css'
-import { useScene } from '../../feature/scene_viewer/hook/useScene'
+import { useScene } from '@/feature/scene_viewer/hook/use_scene'
 
 export const App: () => JSX.Element = () => {
 

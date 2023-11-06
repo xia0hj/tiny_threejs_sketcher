@@ -6,13 +6,10 @@ export function useScene(){
   const sceneContainer = useRef<HTMLDivElement>(null)
 
   useEffect(()=>{
-    const sceneViewer = new SceneViewer()
-    console.log(sceneContainer.current);
-    
+    const sceneViewer = new SceneViewer()    
     if(sceneContainer.current){
       sceneViewer.init(sceneContainer.current)
     }
-    
     return () => {
       sceneViewer.dispose()
     }
