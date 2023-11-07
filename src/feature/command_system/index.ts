@@ -17,3 +17,7 @@ export function runCommand(key: string, ...commandArgs: any[]) {
     command.run(commandArgs)
   }
 }
+
+(window as any).debugContext = {
+  runCommand
+}
