@@ -6,6 +6,7 @@ import {
   BoxGeometry,
   MeshBasicMaterial,
   Mesh,
+  Object3D,
 } from 'three'
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 
@@ -16,6 +17,10 @@ export class SceneViewer {
   control: OrbitControls
 
   isRendering: boolean
+
+  addObject3D(object3d: Object3D){
+    this.scene.add(object3d)
+  }
 
   init(sceneContainer: HTMLDivElement) {
     this.scene = new Scene()
