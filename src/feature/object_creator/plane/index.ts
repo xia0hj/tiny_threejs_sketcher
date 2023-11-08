@@ -1,5 +1,5 @@
 import { Command } from "@/feature/command_system";
-import { getSceneViewer } from "@/feature/global_context";
+import { GlobalContext } from "@/feature/global_context";
 import { Object3D } from "three";
 
 export type createPlaneParameter = {
@@ -13,7 +13,7 @@ export const createPlaneCommand: Command = {
 
     const plane = new Object3D() // #todo
 
-    const sceneViewer = getSceneViewer()
+    const sceneViewer = GlobalContext.getSceneViewer()
     sceneViewer?.addObject3D(plane)
   }
 }
