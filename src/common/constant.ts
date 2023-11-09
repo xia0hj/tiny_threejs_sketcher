@@ -1,1 +1,3 @@
 export const SCENE_VIEWER_BACKGROUND_COLOR = 0xC4C4C4
+
+export const PLANE_COLOR = 0xffff00

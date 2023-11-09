@@ -1,5 +1,5 @@
-import { SceneViewer } from "../scene_viewer";
-import { GlobalContextZustandImpl } from "./zustand_impl";
+import { SceneViewer } from "@/feature/scene_viewer";
+import { GlobalContextZustandImpl } from "@/feature/global_context/zustand_impl";
 
 export type GlobalContextInterface = {
   getSceneViewer: () => SceneViewer | null,

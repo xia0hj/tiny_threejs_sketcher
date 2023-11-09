@@ -7,6 +7,7 @@ import {
   MeshBasicMaterial,
   Mesh,
   Object3D,
+  AxesHelper,
 } from 'three'
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 
@@ -40,10 +41,8 @@ export class SceneViewer {
     this.control = new OrbitControls(this.camera, this.renderer.domElement)
     this.control.update()
 
-    const geometry = new BoxGeometry(1, 1, 1)
-    const material = new MeshBasicMaterial({ color: 0x00ff00 })
-    const cube = new Mesh(geometry, material)
-    this.scene.add(cube)
+    this.scene.add(new AxesHelper(5))
+
     this.camera.position.z = 5
 
     this.startRender()

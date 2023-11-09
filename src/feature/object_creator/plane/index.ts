@@ -1,6 +1,7 @@
+import { PLANE_COLOR } from "@/common/constant";
 import { Command } from "@/feature/command_system";
 import { GlobalContext } from "@/feature/global_context";
-import { Object3D } from "three";
+import { DoubleSide, Mesh, MeshBasicMaterial, Object3D, PlaneGeometry } from "three";
 
 export type createPlaneParameter = {
   parallelTo: 'XY'|'XZ'|'YZ',
@@ -11,7 +12,14 @@ export const createPlaneCommand: Command = {
   key: CREATE_PLANE_COMMAND,
   run({parallelTo, offset}:createPlaneParameter){
 
-    const plane = new Object3D() // #todo
+    
+    const plane = new Mesh(
+      new PlaneGeometry(3,3),
+      new MeshBasicMaterial({
+        color: PLANE_COLOR,
+        side: DoubleSide
+      })
+    )
 
     const sceneViewer = GlobalContext.getSceneViewer()
     sceneViewer?.addObject3D(plane)

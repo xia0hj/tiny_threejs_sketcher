@@ -18,6 +18,9 @@ export function runCommand(key: string, ...commandArgs: any[]) {
   }
 }
 
+
+console.log('init command system');
+
 (window as any).debugContext = {
   runCommand
 }
