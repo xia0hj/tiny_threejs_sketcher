@@ -10,16 +10,13 @@ export function registerCommand(command: Command) {
   commandMap.set(command.key, command)
 }
 
-export function runCommand(key: string, ...commandArgs: any[]) {
+export function runCommand(key: string, commandParameter: any) {
   const command = commandMap.get(key)
   if (command != null) {
     commandRunHistory.push(command)
-    command.run(commandArgs)
+    command.run(commandParameter)
   }
 }
-
-
-console.log('init command system');
 
 (window as any).debugContext = {
   runCommand
