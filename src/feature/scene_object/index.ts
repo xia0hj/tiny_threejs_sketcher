@@ -5,5 +5,6 @@ export type GraphicObject = {
   object: Object3D
   onMouseEnter?: () => void
   onMouseLeave?: () => void
-  onSelected?: () => void
+  onSelect?: () => void
+  onDeselect?: () => void
 }

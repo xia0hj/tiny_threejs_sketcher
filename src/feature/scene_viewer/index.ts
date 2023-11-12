@@ -1,15 +1,13 @@
-import { SCENE_VIEWER_BACKGROUND_COLOR } from '@/common/constant';
+import { SCENE_VIEWER_BACKGROUND_COLOR } from '@/common/constant'
 import {
   PerspectiveCamera,
   WebGLRenderer,
   Scene,
-  BoxGeometry,
-  MeshBasicMaterial,
   Mesh,
   Object3D,
   AxesHelper,
 } from 'three'
-import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+import { OrbitControls } from 'three/addons/controls/OrbitControls.js'
 
 export class SceneViewer {
   scene: Scene
@@ -19,7 +17,7 @@ export class SceneViewer {
 
   isRendering: boolean
 
-  addObject3D(object3d: Object3D){
+  addObject3D(object3d: Object3D) {
     this.scene.add(object3d)
   }
 
@@ -78,8 +76,6 @@ export class SceneViewer {
     this.isRendering = true
     animate()
   }
-
-
 
   private onWindowResize = () => {
     this.renderer.setSize(window.innerWidth, window.innerHeight)

@@ -4,7 +4,7 @@ import { GlobalContext } from "@/feature/global_context";
 import { SceneViewer } from "@/feature/scene_viewer";
 import { useEffect, useRef } from "react";
 
-export function useCommandSystem(){
+export function useRegisterAllCommand(){
 
 
   useEffect(()=>{

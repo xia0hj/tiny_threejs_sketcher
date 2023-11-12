@@ -31,9 +31,11 @@ export class Plane implements GraphicObject {
   object: Mesh
   id: string
 
+
+
   constructor(createPlaneParameter: CreatePlaneParameter) {
     const mesh = new Mesh(
-      buildPlaneGeomtry(createPlaneParameter),
+      buildPlaneGeomtry(createPlaneParameter, SCENE_PLANE_LENGTH),
       new MeshBasicMaterial({
         color: SCENE_PLANE_COLOR,
         side: DoubleSide,
@@ -42,10 +44,18 @@ export class Plane implements GraphicObject {
     this.object = mesh
     this.id = mesh.uuid
   }
+
+  private _isSelected: boolean = false
+  get isSelected(){
+    return this._isSelected
+  }
+  set isSelected(val){
+    this._isSelected = val
+  }
 }
 
-export function buildPlaneGeomtry({ parallelTo, offset }: CreatePlaneParameter): BufferGeometry {
-  const distance = SCENE_PLANE_LENGTH / 2
+export function buildPlaneGeomtry({ parallelTo, offset }: CreatePlaneParameter, planeLength: number): BufferGeometry {
+  const distance = planeLength / 2
   if (parallelTo === 'XY') {
     const minPosition = new Vector3(-distance, -distance, offset)
     const maxPosition = new Vector3(distance, distance, offset)
