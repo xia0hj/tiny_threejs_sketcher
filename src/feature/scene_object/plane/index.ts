@@ -1,4 +1,4 @@
-import { SCENE_PLANE_COLOR, SCENE_PLANE_LENGTH } from '@/common/constant'
+import { SCENE_PLANE_COLOR, SCENE_PLANE_LENGTH, SCENE_PLANE_OPACITY } from '@/common/constant'
 import { Command } from '@/feature/command_system'
 import { GlobalContext } from '@/feature/global_context'
 import { GraphicObject } from '@/feature/scene_object'
@@ -39,6 +39,8 @@ export class Plane implements GraphicObject {
       new MeshBasicMaterial({
         color: SCENE_PLANE_COLOR,
         side: DoubleSide,
+        transparent: true,
+        opacity: SCENE_PLANE_OPACITY
       }),
     )
     this.object = mesh

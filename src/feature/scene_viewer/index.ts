@@ -1,4 +1,4 @@
-import { SCENE_VIEWER_BACKGROUND_COLOR } from '@/common/constant'
+import { AXES_HELPER_LENGTH, SCENE_VIEWER_BACKGROUND_COLOR } from '@/common/constant'
 import {
   PerspectiveCamera,
   WebGLRenderer,
@@ -39,7 +39,7 @@ export class SceneViewer {
     this.control = new OrbitControls(this.camera, this.renderer.domElement)
     this.control.update()
 
-    this.scene.add(new AxesHelper(5))
+    this.scene.add(new AxesHelper(AXES_HELPER_LENGTH))
 
     this.camera.position.z = 5
 

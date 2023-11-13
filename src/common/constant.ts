@@ -1,4 +1,7 @@
-export const SCENE_VIEWER_BACKGROUND_COLOR = 0xC4C4C4
+export const SCENE_VIEWER_BACKGROUND_COLOR = 0xAAAAAA
 
-export const SCENE_PLANE_COLOR = 0xffff00
+export const SCENE_PLANE_COLOR = 0x000000
 export const SCENE_PLANE_LENGTH = 3
+export const SCENE_PLANE_OPACITY = 0.6
+
+export const AXES_HELPER_LENGTH = 5
