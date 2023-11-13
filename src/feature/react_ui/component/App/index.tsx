@@ -1,5 +1,5 @@
 import style from './index.module.css'
-import { useScene } from '@/feature/react_ui/component/App/useInitScene'
+import { useScene } from '@/feature/react_ui/component/App/useScene'
 
 export const App: () => JSX.Element = () => {
 

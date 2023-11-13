@@ -1,6 +1,15 @@
-export class SceneController {
+import { SceneTool } from "@/common/type";
 
-  constructor() {
+
+
+export class SceneController implements SceneTool {
+
+  init() {
     
+  }
+
+
+  dispose(){
+
   }
 }

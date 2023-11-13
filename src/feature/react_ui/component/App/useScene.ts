@@ -1,4 +1,3 @@
-
 import { registerCommand } from "@/feature/command_system";
 import { COMMAND_LIST } from "@/feature/command_system/command_list";
 import { GlobalContext } from "@/feature/global_context";

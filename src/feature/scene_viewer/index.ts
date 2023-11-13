@@ -1,4 +1,5 @@
 import { AXES_HELPER_LENGTH, SCENE_VIEWER_BACKGROUND_COLOR } from '@/common/constant'
+import { SceneTool } from '@/common/type'
 import {
   PerspectiveCamera,
   WebGLRenderer,
@@ -9,7 +10,7 @@ import {
 } from 'three'
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js'
 
-export class SceneViewer {
+export class SceneViewer implements SceneTool {
   scene: Scene
   camera: PerspectiveCamera
   renderer: WebGLRenderer
