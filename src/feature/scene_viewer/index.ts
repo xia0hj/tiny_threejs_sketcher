@@ -7,6 +7,7 @@ import {
   Mesh,
   Object3D,
   AxesHelper,
+  Group,
 } from 'three'
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js'
 
@@ -15,11 +16,12 @@ export class SceneViewer implements SceneTool {
   camera: PerspectiveCamera
   renderer: WebGLRenderer
   control: OrbitControls
+  graphicObjectGroup: Group
 
   isRendering: boolean
 
-  addObject3D(object3d: Object3D) {
-    this.scene.add(object3d)
+  addGraphicObject(object3d: Object3D){
+    this.graphicObjectGroup.add(object3d)
   }
 
   init(sceneContainer: HTMLDivElement) {
@@ -41,6 +43,9 @@ export class SceneViewer implements SceneTool {
     this.control.update()
 
     this.scene.add(new AxesHelper(AXES_HELPER_LENGTH))
+
+    this.graphicObjectGroup = new Group()
+    this.scene.add(this.graphicObjectGroup)
 
     this.camera.position.z = 5
 

@@ -1,15 +1,15 @@
-import { SCENE_PLANE_COLOR, SCENE_PLANE_LENGTH, SCENE_PLANE_OPACITY } from '@/common/constant'
+import {
+  SCENE_PLANE_COLOR,
+  SCENE_PLANE_LENGTH,
+  SCENE_PLANE_OPACITY,
+} from '@/common/constant'
 import { Command } from '@/feature/command_system'
 import { GlobalContext } from '@/feature/global_context'
 import { GraphicObject } from '@/feature/scene_object'
-import { off } from 'process'
 import {
   BufferGeometry,
   DoubleSide,
-  Mesh,
   MeshBasicMaterial,
-  Object3D,
-  PlaneGeometry,
   Vector3,
 } from 'three'
 
@@ -17,46 +17,35 @@ export type CreatePlaneParameter = {
   parallelTo: 'XY' | 'XZ' | 'YZ'
   offset: number
 }
+
 export const CREATE_PLANE_COMMAND = 'create_plane'
 export const createPlaneCommand: Command = {
   key: CREATE_PLANE_COMMAND,
   run(createPlaneParameter: CreatePlaneParameter) {
     const plane = new Plane(createPlaneParameter)
     const sceneViewer = GlobalContext.getSceneViewer()
-    sceneViewer?.addObject3D(plane.object)
+    sceneViewer?.addGraphicObject(plane)
   },
 }
 
-export class Plane implements GraphicObject {
-  object: Mesh
-  id: string
-
-
-
+export class Plane extends GraphicObject {
   constructor(createPlaneParameter: CreatePlaneParameter) {
-    const mesh = new Mesh(
+    super(
       buildPlaneGeomtry(createPlaneParameter, SCENE_PLANE_LENGTH),
       new MeshBasicMaterial({
         color: SCENE_PLANE_COLOR,
         side: DoubleSide,
         transparent: true,
-        opacity: SCENE_PLANE_OPACITY
+        opacity: SCENE_PLANE_OPACITY,
       }),
     )
-    this.object = mesh
-    this.id = mesh.uuid
-  }
-
-  private _isSelected: boolean = false
-  get isSelected(){
-    return this._isSelected
-  }
-  set isSelected(val){
-    this._isSelected = val
   }
 }
 
-export function buildPlaneGeomtry({ parallelTo, offset }: CreatePlaneParameter, planeLength: number): BufferGeometry {
+export function buildPlaneGeomtry(
+  { parallelTo, offset }: CreatePlaneParameter,
+  planeLength: number,
+): BufferGeometry {
   const distance = planeLength / 2
   if (parallelTo === 'XY') {
     const minPosition = new Vector3(-distance, -distance, offset)

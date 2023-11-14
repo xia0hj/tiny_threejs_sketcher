@@ -1,8 +1,10 @@
-import { Object3D } from "three"
+import { Mesh } from "three"
 
-export type GraphicObject = {
-  id: string
-  object: Object3D
+export class GraphicObject extends Mesh {
+  declare userData: {
+    type: 'plane'
+  }
+
   onMouseEnter?: () => void
   onMouseLeave?: () => void
   onSelect?: () => void
