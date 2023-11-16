@@ -5,7 +5,7 @@ import {
 } from '@/common/constant'
 import { Command } from '@/feature/command_system'
 import { GlobalContext } from '@/feature/global_context'
-import { GraphicObject } from '@/feature/scene_object'
+import { SceneObject } from '@/feature/scene_object'
 import {
   BufferGeometry,
   DoubleSide,
@@ -23,12 +23,11 @@ export const createPlaneCommand: Command = {
   key: CREATE_PLANE_COMMAND,
   run(createPlaneParameter: CreatePlaneParameter) {
     const plane = new Plane(createPlaneParameter)
-    const sceneViewer = GlobalContext.getSceneViewer()
-    sceneViewer?.addGraphicObject(plane)
+    GlobalContext.sceneViewer?.addGraphicObject(plane)
   },
 }
 
-export class Plane extends GraphicObject {
+export class Plane extends SceneObject {
   constructor(createPlaneParameter: CreatePlaneParameter) {
     super(
       buildPlaneGeomtry(createPlaneParameter, SCENE_PLANE_LENGTH),

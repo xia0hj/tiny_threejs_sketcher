@@ -1,4 +1,4 @@
-import { registerCommand } from "@/feature/command_system";
+import { CommandSystem } from "@/feature/command_system";
 import { COMMAND_LIST } from "@/feature/command_system/command_list";
 import { GlobalContext } from "@/feature/global_context";
 import { SceneViewer } from "@/feature/scene_viewer";
@@ -8,10 +8,12 @@ export function useScene() {
   const sceneContainer = useRef<HTMLDivElement>(null)
   useEffect(()=>{
     const sceneViewer = new SceneViewer()
-    GlobalContext.setSceneViewer(sceneViewer)
+    const commandSystem = new CommandSystem()
+    GlobalContext.sceneViewer = sceneViewer
+    GlobalContext.commandSystem = commandSystem
     if(sceneContainer.current){
       sceneViewer.init(sceneContainer.current)
-      COMMAND_LIST.forEach(command => registerCommand(command))
+      commandSystem.init()
     }
     return () => {
       sceneViewer.dispose()

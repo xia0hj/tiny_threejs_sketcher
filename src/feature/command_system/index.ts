@@ -1,23 +1,37 @@
+import { SceneTool } from '@/common/type'
+import { COMMAND_LIST } from '@/feature/command_system/command_list'
+
 export type Command = {
   key: string
   run: (...param: any[]) => void
 }
 
-const commandMap = new Map<string, Command>()
-const commandRunHistory: Command[] = []
 
-export function registerCommand(command: Command) {
-  commandMap.set(command.key, command)
-}
+export class CommandSystem implements SceneTool {
+  commandMap: Map<string, Command>
+  commandRunHistory: Command[]
 
-export function runCommand(key: string, commandParameter: any) {
-  const command = commandMap.get(key)
-  if (command != null) {
-    commandRunHistory.push(command)
-    command.run(commandParameter)
+  constructor() {
+    this.commandMap = new Map()
+    this.commandRunHistory = []
   }
-}
 
-(window as any).debugContext = {
-  runCommand
+  init() {
+    COMMAND_LIST.forEach(command => {
+      this.commandMap.set(command.key, command)
+    })
+  }
+
+  public runCommand(key: string, commandParameter: any) {
+    const command = this.commandMap.get(key)
+    if (command != null) {
+      this.commandRunHistory.push(command)
+      command.run(commandParameter)
+    }
+  }
+
+  dispose() {
+    this.commandMap.clear()
+    this.commandRunHistory = []
+  }
 }

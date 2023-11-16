@@ -1,9 +1,11 @@
+import { CommandSystem } from "@/feature/command_system";
 import { SceneViewer } from "@/feature/scene_viewer";
-import { GlobalContextZustandImpl } from "@/feature/global_context/zustand_impl";
 
 export type GlobalContextInterface = {
-  getSceneViewer: () => SceneViewer | null,
-  setSceneViewer: (sceneViewer: SceneViewer) => void
+  sceneViewer?: SceneViewer,
+  commandSystem?: CommandSystem
 }
 
-export const GlobalContext: GlobalContextInterface = new GlobalContextZustandImpl()
+export const GlobalContext: GlobalContextInterface = {}
+
+window.T3M_GLOBAL_CONTEXT = GlobalContext
