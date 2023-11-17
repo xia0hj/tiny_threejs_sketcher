@@ -1,11 +1,11 @@
 import { Mesh } from "three"
 
 export abstract class SceneObject extends Mesh {
-  declare userData: {
+  abstract userData: {
     type: 'plane'
   }
-  onMouseEnter?: () => void
-  onMouseLeave?: () => void
-  onSelect?: () => void
-  onDeselect?: () => void
+  abstract onMouseEnter(): void
+  abstract onMouseLeave(): void
+  abstract onSelect(): void
+  abstract onDeselect(): void
 }

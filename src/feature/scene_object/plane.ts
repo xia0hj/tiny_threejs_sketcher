@@ -7,8 +7,11 @@ import { Command } from '@/feature/command_system'
 import { GlobalContext } from '@/feature/global_context'
 import { SceneObject } from '@/feature/scene_object'
 import {
+  BoxGeometry,
   BufferGeometry,
+  Color,
   DoubleSide,
+  Mesh,
   MeshBasicMaterial,
   Vector3,
 } from 'three'
@@ -23,11 +26,15 @@ export const createPlaneCommand: Command = {
   key: CREATE_PLANE_COMMAND,
   run(createPlaneParameter: CreatePlaneParameter) {
     const plane = new Plane(createPlaneParameter)
-    GlobalContext.sceneViewer?.addGraphicObject(plane)
+    GlobalContext.sceneViewer?.addSceneObject(plane)
   },
 }
 
 export class Plane extends SceneObject {
+  userData: { type: 'plane' }
+  onMouseLeave?: (() => void) | undefined
+  onSelect?: (() => void) | undefined
+  onDeselect?: (() => void) | undefined
   constructor(createPlaneParameter: CreatePlaneParameter) {
     super(
       buildPlaneGeomtry(createPlaneParameter, SCENE_PLANE_LENGTH),
@@ -38,6 +45,10 @@ export class Plane extends SceneObject {
         opacity: SCENE_PLANE_OPACITY,
       }),
     )
+  }
+
+  onMouseEnter(){
+    
   }
 }
 

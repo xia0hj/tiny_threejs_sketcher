@@ -16,12 +16,12 @@ export class SceneViewer implements SceneTool {
   camera: PerspectiveCamera
   renderer: WebGLRenderer
   control: OrbitControls
-  graphicObjectGroup: Group
+  sceneObjectGroup: Group
 
   isRendering: boolean
 
-  addGraphicObject(object3d: Object3D){
-    this.graphicObjectGroup.add(object3d)
+  addSceneObject(object3d: Object3D){
+    this.sceneObjectGroup.add(object3d)
   }
 
   init(sceneContainer: HTMLDivElement) {
@@ -44,8 +44,8 @@ export class SceneViewer implements SceneTool {
 
     this.scene.add(new AxesHelper(AXES_HELPER_LENGTH))
 
-    this.graphicObjectGroup = new Group()
-    this.scene.add(this.graphicObjectGroup)
+    this.sceneObjectGroup = new Group()
+    this.scene.add(this.sceneObjectGroup)
 
     this.camera.position.z = 5
 

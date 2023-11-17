@@ -1,6 +1,6 @@
 import { CommandSystem } from "@/feature/command_system";
-import { COMMAND_LIST } from "@/feature/command_system/command_list";
 import { GlobalContext } from "@/feature/global_context";
+import { SceneController } from "@/feature/scene_controller";
 import { SceneViewer } from "@/feature/scene_viewer";
 import { useEffect, useRef } from "react";
 
@@ -9,11 +9,13 @@ export function useScene() {
   useEffect(()=>{
     const sceneViewer = new SceneViewer()
     const commandSystem = new CommandSystem()
+    const scneController = new SceneController()
     GlobalContext.sceneViewer = sceneViewer
     GlobalContext.commandSystem = commandSystem
     if(sceneContainer.current){
       sceneViewer.init(sceneContainer.current)
       commandSystem.init()
+      scneController.init()
     }
     return () => {
       sceneViewer.dispose()
