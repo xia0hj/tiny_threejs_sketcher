@@ -1,4 +1,5 @@
 import {
+  SCENE_OBJECT_HOVER_COLOR,
   SCENE_PLANE_COLOR,
   SCENE_PLANE_LENGTH,
   SCENE_PLANE_OPACITY,
@@ -13,6 +14,7 @@ import {
   DoubleSide,
   Mesh,
   MeshBasicMaterial,
+  MeshStandardMaterial,
   Vector3,
 } from 'three'
 
@@ -31,14 +33,13 @@ export const createPlaneCommand: Command = {
 }
 
 export class Plane extends SceneObject {
+
   userData: { type: 'plane' }
-  onMouseLeave?: (() => void) | undefined
-  onSelect?: (() => void) | undefined
-  onDeselect?: (() => void) | undefined
   constructor(createPlaneParameter: CreatePlaneParameter) {
     super(
       buildPlaneGeomtry(createPlaneParameter, SCENE_PLANE_LENGTH),
-      new MeshBasicMaterial({
+      new MeshStandardMaterial({
+        vertexColors: false,
         color: SCENE_PLANE_COLOR,
         side: DoubleSide,
         transparent: true,
@@ -48,7 +49,20 @@ export class Plane extends SceneObject {
   }
 
   onMouseEnter(){
+    console.log('onMouseEnter');
     
+    this.material.color.set(SCENE_OBJECT_HOVER_COLOR)
+  }
+  onMouseLeave(): void {
+    console.log('onMouseLeave');
+    
+    this.material.color.set(SCENE_PLANE_COLOR)
+  }
+  onSelect(): void {
+    throw new Error('Method not implemented.')
+  }
+  onDeselect(): void {
+    throw new Error('Method not implemented.')
   }
 }
 

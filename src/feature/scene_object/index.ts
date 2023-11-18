@@ -1,9 +1,11 @@
-import { Mesh } from "three"
+import { BufferGeometry, Mesh, MeshStandardMaterial } from "three"
 
-export abstract class SceneObject extends Mesh {
-  abstract userData: {
-    type: 'plane'
-  }
+export type SceneObjectUserData = {
+  type: 'plane'
+}
+
+export abstract class SceneObject extends Mesh<BufferGeometry, MeshStandardMaterial> {
+  abstract userData: SceneObjectUserData
   abstract onMouseEnter(): void
   abstract onMouseLeave(): void
   abstract onSelect(): void
