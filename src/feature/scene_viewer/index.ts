@@ -1,5 +1,6 @@
 import { AXES_HELPER_LENGTH, SCENE_VIEWER_BACKGROUND_COLOR } from '@/common/constant'
 import { SceneTool } from '@/common/type'
+import { GlobalContext } from '@/feature/global_context'
 import {
   PerspectiveCamera,
   WebGLRenderer,
@@ -78,6 +79,7 @@ export class SceneViewer implements SceneTool {
       requestAnimationFrame(animate)
       this.control.update()
       this.renderer.render(this.scene, this.camera)
+      GlobalContext.sceneController?.highlightHoverObject()
     }
     this.isRendering = true
     animate()

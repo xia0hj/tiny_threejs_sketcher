@@ -12,6 +12,7 @@ export function useScene() {
     const scneController = new SceneController()
     GlobalContext.sceneViewer = sceneViewer
     GlobalContext.commandSystem = commandSystem
+    GlobalContext.sceneController = scneController
     if(sceneContainer.current){
       sceneViewer.init(sceneContainer.current)
       commandSystem.init()
