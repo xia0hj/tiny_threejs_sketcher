@@ -1,4 +1,7 @@
-import { AXES_HELPER_LENGTH, SCENE_VIEWER_BACKGROUND_COLOR } from '@/common/constant'
+import {
+  AXES_HELPER_LENGTH,
+  SCENE_VIEWER_BACKGROUND_COLOR,
+} from '@/common/constant'
 import { SceneTool } from '@/common/type'
 import { GlobalContext } from '@/feature/global_context'
 import {
@@ -9,6 +12,8 @@ import {
   Object3D,
   AxesHelper,
   Group,
+  AmbientLight,
+  Light,
 } from 'three'
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js'
 
@@ -18,14 +23,16 @@ export class SceneViewer implements SceneTool {
   renderer: WebGLRenderer
   control: OrbitControls
   sceneObjectGroup: Group
+  light: Light
 
-  isRendering: boolean
+  isActive: boolean = false
+  isRendering: boolean = false
 
-  addSceneObject(object3d: Object3D){
+  public addSceneObject(object3d: Object3D) {
     this.sceneObjectGroup.add(object3d)
   }
 
-  init(sceneContainer: HTMLDivElement) {
+  public init(sceneContainer: HTMLDivElement) {
     this.scene = new Scene()
     this.camera = new PerspectiveCamera(
       75,
@@ -50,10 +57,15 @@ export class SceneViewer implements SceneTool {
 
     this.camera.position.z = 5
 
+    this.light = new AmbientLight( 0x404040 )
+    this.scene.add(this.light)
+
     this.startRender()
+
+    this.isActive = true
   }
 
-  dispose() {
+  public dispose() {
     this.isRendering = false
     window.removeEventListener('resize', this.onWindowResize)
     this.renderer.domElement.remove()
@@ -69,6 +81,8 @@ export class SceneViewer implements SceneTool {
     this.scene.clear()
     this.renderer.dispose()
     this.renderer.forceContextLoss()
+
+    this.isActive = false
   }
 
   private startRender() {
@@ -81,6 +95,7 @@ export class SceneViewer implements SceneTool {
       this.renderer.render(this.scene, this.camera)
       GlobalContext.sceneController?.highlightHoverObject()
     }
+
     this.isRendering = true
     animate()
   }

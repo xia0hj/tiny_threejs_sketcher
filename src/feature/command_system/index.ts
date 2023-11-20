@@ -10,16 +10,15 @@ export type Command = {
 export class CommandSystem implements SceneTool {
   commandMap: Map<string, Command>
   commandRunHistory: Command[]
-
-  constructor() {
-    this.commandMap = new Map()
-    this.commandRunHistory = []
-  }
+  isActive: boolean = false
 
   init() {
+    this.commandMap = new Map()
+    this.commandRunHistory = []
     COMMAND_LIST.forEach(command => {
       this.commandMap.set(command.key, command)
     })
+    this.isActive = true
   }
 
   public runCommand(key: string, commandParameter: any) {
@@ -33,5 +32,6 @@ export class CommandSystem implements SceneTool {
   dispose() {
     this.commandMap.clear()
     this.commandRunHistory = []
+    this.isActive = false
   }
 }

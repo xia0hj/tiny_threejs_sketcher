@@ -57,18 +57,10 @@ export class SceneController implements SceneTool {
         ) === -1,
     )
 
-    if (removedObjectList.length > 0 || newHoverObjectList.length > 0) {
-      console.log('onPointerMove', {
-        removedObjectList,
-        newHoverObjectList,
-      })
-    }
-
     removedObjectList.forEach((removedObject) =>
       removedObject.object.onMouseLeave(),
     )
     newHoverObjectList.forEach((newHoverObject) =>
-      // newHoverObject.object.material.color.set(0xff0000),
       newHoverObject.object.onMouseEnter()
     )
 

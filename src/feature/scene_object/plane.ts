@@ -31,7 +31,6 @@ export const createPlaneCommand: Command = {
     GlobalContext.sceneViewer?.addSceneObject(plane)
   },
 }
-
 export class Plane extends SceneObject {
 
   userData: { type: 'plane' }
@@ -49,13 +48,9 @@ export class Plane extends SceneObject {
   }
 
   onMouseEnter(){
-    console.log('onMouseEnter');
-    
     this.material.color.set(SCENE_OBJECT_HOVER_COLOR)
   }
   onMouseLeave(): void {
-    console.log('onMouseLeave');
-    
     this.material.color.set(SCENE_PLANE_COLOR)
   }
   onSelect(): void {
