@@ -8,6 +8,6 @@ export type SceneTool = {
 
 declare global {
   interface Window {
-    T3M_GLOBAL_CONTEXT: GlobalContextInterface;
+    S3C_GLOBAL_STORE: any;
   }
 }

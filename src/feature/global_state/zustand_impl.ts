@@ -28,3 +28,5 @@ export const useGlobalState: GlobalStateHook = (key) => [
   useStore(store, (state) => state[key]),
   (newValue) => setGlobalState(key, newValue),
 ];
+
+window.S3C_GLOBAL_STORE = store
