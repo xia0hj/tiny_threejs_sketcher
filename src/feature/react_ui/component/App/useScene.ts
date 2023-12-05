@@ -5,23 +5,23 @@ import { SceneViewer } from "@/feature/scene_viewer";
 import { useEffect, useRef } from "react";
 
 export function useScene() {
-  const sceneContainer = useRef<HTMLDivElement>(null)
-  useEffect(()=>{
-    const sceneViewer = new SceneViewer()
-    const commandSystem = new CommandSystem()
-    const scneController = new SceneController()
-    GlobalContext.sceneViewer = sceneViewer
-    GlobalContext.commandSystem = commandSystem
-    GlobalContext.sceneController = scneController
-    if(sceneContainer.current){
-      sceneViewer.init(sceneContainer.current)
-      commandSystem.init()
-      scneController.init()
+  const sceneContainer = useRef<HTMLDivElement>(null);
+  useEffect(() => {
+    const sceneViewer = new SceneViewer();
+    const commandSystem = new CommandSystem();
+    const scneController = new SceneController();
+    GlobalContext.sceneViewer = sceneViewer;
+    GlobalContext.commandSystem = commandSystem;
+    GlobalContext.sceneController = scneController;
+    if (sceneContainer.current) {
+      sceneViewer.init(sceneContainer.current);
+      commandSystem.init();
+      scneController.init();
     }
     return () => {
-      sceneViewer.dispose()
-    }
-  }, [sceneContainer])
+      sceneViewer.dispose();
+    };
+  }, [sceneContainer]);
 
-  return sceneContainer
+  return sceneContainer;
 }

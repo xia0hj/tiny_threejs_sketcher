@@ -1,45 +1,45 @@
-import { SceneTool } from '@/common/type'
-import { GlobalContext } from '@/feature/global_context'
-import { SceneObject } from '@/feature/scene_object'
-import { Camera, Intersection, Raycaster, Vector2 } from 'three'
+import { SceneTool } from "@/common/type";
+import { GlobalContext } from "@/feature/global_context";
+import { SceneObject } from "@/feature/scene_object";
+import { Camera, Intersection, Raycaster, Vector2 } from "three";
 
 export class SceneController implements SceneTool {
-  raycaster: Raycaster
-  onPointerMove: (event: MouseEvent) => void
+  raycaster: Raycaster;
+  onPointerMove: (event: MouseEvent) => void;
 
-  pointerPosition: Vector2
+  pointerPosition: Vector2;
 
-  isActive = false
+  isActive = false;
 
-  lastIntersectObjectList: Intersection<SceneObject>[] = []
+  lastIntersectObjectList: Intersection<SceneObject>[] = [];
 
   init() {
-    this.pointerPosition = new Vector2()
-    this.raycaster = new Raycaster()
+    this.pointerPosition = new Vector2();
+    this.raycaster = new Raycaster();
     this.onPointerMove = (event) => {
       this.pointerPosition.set(
         (event.offsetX / window.innerWidth) * 2 - 1,
         -(event.offsetY / window.innerHeight) * 2 + 1,
-      )
-    }
-    window.addEventListener('pointermove', this.onPointerMove)
-    this.isActive = true
+      );
+    };
+    window.addEventListener("pointermove", this.onPointerMove);
+    this.isActive = true;
   }
 
   highlightHoverObject() {
     if (!this.isActive) {
-      return
+      return;
     }
     this.raycaster?.setFromCamera(
       this.pointerPosition,
       GlobalContext.sceneViewer?.camera as Camera,
-    )
-    const allSceneObject = GlobalContext.sceneViewer?.sceneObjectGroup.children
+    );
+    const allSceneObject = GlobalContext.sceneViewer?.sceneObjectGroup.children;
     if (!Array.isArray(allSceneObject)) {
-      return
+      return;
     }
     const intersectObjectList =
-      this.raycaster.intersectObjects<SceneObject>(allSceneObject)
+      this.raycaster.intersectObjects<SceneObject>(allSceneObject);
 
     const removedObjectList = this.lastIntersectObjectList.filter(
       (lastIntersectObject) =>
@@ -47,7 +47,7 @@ export class SceneController implements SceneTool {
           (intersectObject) =>
             intersectObject.object === lastIntersectObject.object,
         ) === -1,
-    )
+    );
 
     const newHoverObjectList = intersectObjectList.filter(
       (intersectObject) =>
@@ -55,20 +55,20 @@ export class SceneController implements SceneTool {
           (lastIntersectObject) =>
             lastIntersectObject.object === intersectObject.object,
         ) === -1,
-    )
+    );
 
     removedObjectList.forEach((removedObject) =>
       removedObject.object.onMouseLeave(),
-    )
+    );
     newHoverObjectList.forEach((newHoverObject) =>
-      newHoverObject.object.onMouseEnter()
-    )
+      newHoverObject.object.onMouseEnter(),
+    );
 
-    this.lastIntersectObjectList = intersectObjectList
+    this.lastIntersectObjectList = intersectObjectList;
   }
 
   dispose() {
-    window.removeEventListener('pointermove', this.onPointerMove)
-    this.isActive = false
+    window.removeEventListener("pointermove", this.onPointerMove);
+    this.isActive = false;
   }
 }
