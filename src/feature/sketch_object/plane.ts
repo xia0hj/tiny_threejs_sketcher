@@ -5,15 +5,11 @@ import {
   SCENE_PLANE_OPACITY,
 } from "@/common/constant";
 import { Command } from "@/feature/command_system";
-import { GlobalContext } from "@/feature/global_context";
-import { SceneObject } from "@/feature/scene_object";
+import { getGlobalState } from "@/feature/global_state/zustand_impl";
+import { SceneObject } from "@/feature/sketch_object";
 import {
-  BoxGeometry,
   BufferGeometry,
-  Color,
   DoubleSide,
-  Mesh,
-  MeshBasicMaterial,
   MeshStandardMaterial,
   Vector3,
 } from "three";
@@ -28,7 +24,7 @@ export const createPlaneCommand: Command = {
   key: CREATE_PLANE_COMMAND,
   run(createPlaneParameter: CreatePlaneParameter) {
     const plane = new Plane(createPlaneParameter);
-    GlobalContext.sceneViewer?.addSceneObject(plane);
+    getGlobalState("sceneViewer")?.addSceneObject(plane);
   },
 };
 export class Plane extends SceneObject {

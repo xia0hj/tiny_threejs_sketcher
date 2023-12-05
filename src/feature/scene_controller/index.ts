@@ -1,6 +1,6 @@
 import { SceneTool } from "@/common/type";
-import { GlobalContext } from "@/feature/global_context";
-import { SceneObject } from "@/feature/scene_object";
+import { getGlobalState } from "@/feature/global_state/zustand_impl";
+import { SceneObject } from "@/feature/sketch_object";
 import { Camera, Intersection, Raycaster, Vector2 } from "three";
 
 export class SceneController implements SceneTool {
@@ -30,11 +30,12 @@ export class SceneController implements SceneTool {
     if (!this.isActive) {
       return;
     }
+    const sceneViewer = getGlobalState("sceneViewer")
     this.raycaster?.setFromCamera(
       this.pointerPosition,
-      GlobalContext.sceneViewer?.camera as Camera,
+      sceneViewer?.camera as Camera,
     );
-    const allSceneObject = GlobalContext.sceneViewer?.sceneObjectGroup.children;
+    const allSceneObject = sceneViewer?.sceneObjectGroup.children;
     if (!Array.isArray(allSceneObject)) {
       return;
     }
