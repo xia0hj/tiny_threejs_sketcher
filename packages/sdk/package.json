@@ -2,16 +2,16 @@
   "name": "sdk",
   "version": "1.0.0",
   "description": "",
-  "main": "dist/main.js",
-  "types": "dist/main.d.ts",
+  "main": "dist/sdk.mjs",
+  "types": "dist/sdk.d.ts",
   "type": "module",
   "scripts": {
-    "build": "tsup"
+    "build": "node esbuild.mjs"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "dependencies": {
-    "tsup": "^8.0.1"
+  "devDependencies": {
+    "esbuild": "^0.19.11"
   }
 }
