@@ -1,9 +1,9 @@
-import React from "react";
-import ReactDOM from "react-dom/client";
-import { add } from "sdk";
+import React from 'react'
+import ReactDOM from 'react-dom/client'
+import 'normalize.css'
 
-ReactDOM.createRoot(document.getElementById("root")!).render(
-    <React.StrictMode>
-        <div>{add(1,2)}</div>
-    </React.StrictMode>,
-);
+ReactDOM.createRoot(document.getElementById('root')!).render(
+  <React.StrictMode>
+    
+  </React.StrictMode>,
+)
