@@ -1,17 +1,13 @@
 {
-  "name": "sdk",
-  "version": "1.0.0",
-  "description": "",
-  "main": "dist/sdk.mjs",
-  "types": "dist/sdk.d.ts",
-  "type": "module",
-  "scripts": {
-    "build": "node esbuild.mjs"
-  },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "devDependencies": {
-    "esbuild": "^0.19.11"
-  }
+    "name": "sdk",
+    "version": "1.0.0",
+    "main": "dist/index.js",
+    "types": "dist/index.d.ts",
+    "type": "module",
+    "scripts": {
+        "build": "node esbuild.js && tsc"
+    },
+    "devDependencies": {
+        "esbuild": "^0.19.11"
+    }
 }
