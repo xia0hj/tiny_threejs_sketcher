@@ -18,6 +18,7 @@ const eslintConfig = {
             },
         },
     ],
+    ignorePatterns: ["dist"],
     parser: "@typescript-eslint/parser",
     parserOptions: {
         ecmaVersion: "latest",
