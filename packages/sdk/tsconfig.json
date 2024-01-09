@@ -6,12 +6,6 @@
         "moduleResolution": "Bundler",
         "declaration": true,
         "emitDeclarationOnly": true,
-        "outDir": "dist",
-        "strict": true,
-        "strictNullChecks": true,
-        "esModuleInterop": true,
-        "skipDefaultLibCheck": true,
-        "skipLibCheck": true,
         "strictPropertyInitialization": false,
         "paths": {
             "@src/*": ["./src/*"]

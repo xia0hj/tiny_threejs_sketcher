@@ -75,7 +75,12 @@ export class SceneRenderer {
         this.animate();
     }
 
-    private animate() {
+    public dispose(){
+        window.cancelAnimationFrame(this.requestAnimationFrameId)
+        this.canvasElement.removeEventListener('resize', this.onCanvasResize)
+    }
+
+    private animate = () => {
         this.requestAnimationFrameId = window.requestAnimationFrame(
             this.animate,
         );

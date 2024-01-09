@@ -1,3 +1,3 @@
-import { SceneRenderer } from "@src/SceneRenderer";
+export { SceneRenderer } from "@src/SceneRenderer";
 
-export {SceneRenderer}
+
