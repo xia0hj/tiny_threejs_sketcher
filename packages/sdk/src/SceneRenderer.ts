@@ -75,10 +75,12 @@ export class SceneRenderer {
         this.animate();
     }
 
-    public dispose(){
-        window.cancelAnimationFrame(this.requestAnimationFrameId)
-        this.canvasElement.removeEventListener('resize', this.onCanvasResize)
+    public dispose() {
+        window.cancelAnimationFrame(this.requestAnimationFrameId);
+        this.canvasElement.removeEventListener("resize", this.onCanvasResize);
     }
+
+    public change() {}
 
     private animate = () => {
         this.requestAnimationFrameId = window.requestAnimationFrame(
@@ -86,7 +88,7 @@ export class SceneRenderer {
         );
         this.orbitControls.update();
         this.renderer.render(this.scene, this.currentCamera);
-    }
+    };
 
     private onCanvasResize = () => {
         window.cancelAnimationFrame(this.requestAnimationFrameId);

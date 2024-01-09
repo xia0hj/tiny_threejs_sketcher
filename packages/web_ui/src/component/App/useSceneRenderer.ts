@@ -6,9 +6,9 @@ export function useSceneRenderer() {
     useEffect(() => {
         if (canvasElementRef.current != null) {
             const sceneRenderer = new SceneRenderer(canvasElementRef.current);
-            sceneRenderer.start()
-            return () => sceneRenderer.dispose()
+            sceneRenderer.start();
+            return () => sceneRenderer.dispose();
         }
     });
-    return canvasElementRef
+    return canvasElementRef;
 }
