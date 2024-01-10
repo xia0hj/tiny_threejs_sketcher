@@ -5,7 +5,7 @@
     "module": "./dist/index.js",
     "types": "./dist/index.d.ts",
     "scripts": {
-        "dev":"node esbuild.js --dev",
+        "dev": "node esbuild.js --dev",
         "build": "node esbuild.js --build"
     },
     "devDependencies": {

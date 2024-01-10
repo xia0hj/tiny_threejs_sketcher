@@ -12,7 +12,7 @@ const eslintConfig = {
             env: {
                 node: true,
             },
-            files: [".eslintrc.{js,cjs}","esbuild.js"],
+            files: [".eslintrc.{js,cjs}", "esbuild.js"],
             parserOptions: {
                 sourceType: "script",
             },

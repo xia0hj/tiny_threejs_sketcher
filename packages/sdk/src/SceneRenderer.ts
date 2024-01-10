@@ -1,5 +1,10 @@
 import { AXES_HELPER_LINE_LENGTH, SCENE_BACKGROUND_COLOR } from "@src/constant";
 import {
+    ReactiveStore,
+    getReactiveStore,
+    registerReactiveStore,
+} from "@src/reactive_state";
+import {
     AmbientLight,
     AxesHelper,
     Group,
@@ -29,8 +34,13 @@ export class SceneRenderer {
 
     private requestAnimationFrameId: number = 0;
 
-    constructor(canvasElement: HTMLCanvasElement) {
+    constructor(
+        canvasElement: HTMLCanvasElement,
+        reactiveStore?: ReactiveStore,
+    ) {
         this.canvasElement = canvasElement;
+        this.scene = new Scene();
+        registerReactiveStore(this.scene.uuid, reactiveStore);
     }
 
     public start() {
@@ -38,7 +48,6 @@ export class SceneRenderer {
         const canvasHeight = this.canvasElement.clientHeight;
 
         // scene
-        this.scene = new Scene();
         this.sketchObjectGroup = new Group();
         this.scene.add(this.sketchObjectGroup);
         this.scene.add(new AxesHelper(AXES_HELPER_LINE_LENGTH));
@@ -62,13 +71,16 @@ export class SceneRenderer {
         );
         this.currentCamera = this.perspectiveCamera;
         this.currentCamera.position.z = 5;
+        getReactiveStore(this.scene.uuid).setReactiveState(
+            "currentCameraType",
+            "PerspectiveCamera",
+        );
 
         // control
         this.orbitControls = new OrbitControls(
             this.currentCamera,
             this.canvasElement,
         );
-        // this.orbitControls.update()
 
         // others
         this.canvasElement.addEventListener("resize", this.onCanvasResize);
@@ -79,8 +91,6 @@ export class SceneRenderer {
         window.cancelAnimationFrame(this.requestAnimationFrameId);
         this.canvasElement.removeEventListener("resize", this.onCanvasResize);
     }
-
-    public changeA() {}
 
     private animate = () => {
         this.requestAnimationFrameId = window.requestAnimationFrame(

@@ -17,10 +17,12 @@ if (mode === "--dev") {
             {
                 name: "dev",
                 setup(build) {
-                    build.onStart(()=>{
-                        console.clear()
-                        console.log(`${new Date().toLocaleString()} building ...`);
-                    })
+                    build.onStart(() => {
+                        console.clear();
+                        console.log(
+                            `${new Date().toLocaleString()} building ...`,
+                        );
+                    });
                     build.onEnd(generateDts);
                 },
             },
@@ -36,7 +38,7 @@ if (mode === "--dev") {
         bundle: true,
         outfile: "dist/index.js",
     });
-    generateDts()
+    generateDts();
 }
 
 function generateDts() {
