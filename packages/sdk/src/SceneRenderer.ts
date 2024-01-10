@@ -15,7 +15,7 @@ export class SceneRenderer {
     canvasElement: HTMLCanvasElement;
 
     scene: Scene;
-    sceneObjectGroup: Group;
+    sketchObjectGroup: Group;
 
     renderer: WebGLRenderer;
 
@@ -39,8 +39,8 @@ export class SceneRenderer {
 
         // scene
         this.scene = new Scene();
-        this.sceneObjectGroup = new Group();
-        this.scene.add(this.sceneObjectGroup);
+        this.sketchObjectGroup = new Group();
+        this.scene.add(this.sketchObjectGroup);
         this.scene.add(new AxesHelper(AXES_HELPER_LINE_LENGTH));
 
         // light
@@ -80,7 +80,7 @@ export class SceneRenderer {
         this.canvasElement.removeEventListener("resize", this.onCanvasResize);
     }
 
-    public change() {}
+    public changeA() {}
 
     private animate = () => {
         this.requestAnimationFrameId = window.requestAnimationFrame(
