@@ -1,9 +1,12 @@
 import { AXES_HELPER_LINE_LENGTH, SCENE_BACKGROUND_COLOR } from "@src/constant";
 import {
+    deleteInstanceContext,
+    getInstanceContext,
+} from "@src/instance_context";
+import {
     ReactiveStore,
-    getReactiveStore,
-    registerReactiveStore,
-} from "@src/reactive_state";
+    getDefaultReactiveStore,
+} from "@src/instance_context/reactive_state";
 import {
     AmbientLight,
     AxesHelper,
@@ -40,7 +43,10 @@ export class SceneRenderer {
     ) {
         this.canvasElement = canvasElement;
         this.scene = new Scene();
-        registerReactiveStore(this.scene.uuid, reactiveStore);
+
+        const context = getInstanceContext(this.scene.uuid);
+        context.reactiveStore = reactiveStore ?? getDefaultReactiveStore();
+        context.sceneRenderer = this;
     }
 
     public start() {
@@ -71,10 +77,6 @@ export class SceneRenderer {
         );
         this.currentCamera = this.perspectiveCamera;
         this.currentCamera.position.z = 5;
-        getReactiveStore(this.scene.uuid).setReactiveState(
-            "currentCameraType",
-            "PerspectiveCamera",
-        );
 
         // control
         this.orbitControls = new OrbitControls(
@@ -83,24 +85,27 @@ export class SceneRenderer {
         );
 
         // others
-        this.canvasElement.addEventListener("resize", this.onCanvasResize);
+        this.canvasElement.addEventListener("resize", () => {
+            this.onCanvasResize();
+        });
         this.animate();
     }
 
     public dispose() {
         window.cancelAnimationFrame(this.requestAnimationFrameId);
         this.canvasElement.removeEventListener("resize", this.onCanvasResize);
+        deleteInstanceContext(this.scene.uuid);
     }
 
-    private animate = () => {
-        this.requestAnimationFrameId = window.requestAnimationFrame(
-            this.animate,
-        );
+    private animate() {
+        this.requestAnimationFrameId = window.requestAnimationFrame(() => {
+            this.animate();
+        });
         this.orbitControls.update();
         this.renderer.render(this.scene, this.currentCamera);
-    };
+    }
 
-    private onCanvasResize = () => {
+    private onCanvasResize() {
         window.cancelAnimationFrame(this.requestAnimationFrameId);
-    };
+    }
 }
