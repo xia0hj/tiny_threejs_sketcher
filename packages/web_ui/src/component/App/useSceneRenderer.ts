@@ -1,6 +1,6 @@
 import { rendererStore } from "@src/store";
 import { useEffect, useRef } from "react";
-import { SceneRenderer } from "sdk";
+import { SceneRenderer, getInstanceContext } from "sdk";
 
 export function useSceneRenderer() {
     const canvasElementRef = useRef<HTMLCanvasElement>(null);
@@ -11,6 +11,7 @@ export function useSceneRenderer() {
                 rendererStore,
             );
             sceneRenderer.start();
+            (window as any).cs = getInstanceContext(sceneRenderer.scene.uuid).commandSystem;
             return () => sceneRenderer.dispose();
         }
     }, [canvasElementRef]);

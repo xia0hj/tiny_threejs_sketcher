@@ -1,9 +1,11 @@
+import { CommandSystem } from "@src/command_system";
 import { ReactiveStore } from "@src/instance_context/reactive_state";
 import { SceneRenderer } from "@src/scene_renderer";
 
 export type InstanceContext = {
     reactiveStore?: ReactiveStore;
     sceneRenderer?: SceneRenderer;
+    commandSystem?: CommandSystem;
 };
 
 const instanceContextMap = new Map<string, InstanceContext>();

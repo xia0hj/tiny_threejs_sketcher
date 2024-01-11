@@ -13,6 +13,7 @@ if (mode === "--dev") {
         bundle: true,
         outfile: "dist/index.js",
         sourcemap: true,
+        define: { "import.meta.vitest": "undefined" },
         plugins: [
             {
                 name: "dev",
@@ -37,6 +38,7 @@ if (mode === "--dev") {
         format: "esm",
         bundle: true,
         outfile: "dist/index.js",
+        define: { "import.meta.vitest": "undefined" },
     });
     generateDts();
 }

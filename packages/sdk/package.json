@@ -6,7 +6,8 @@
     "types": "./dist/index.d.ts",
     "scripts": {
         "dev": "node esbuild.js --dev",
-        "build": "node esbuild.js --build"
+        "build": "node esbuild.js --build",
+        "test": "vitest run"
     },
     "devDependencies": {
         "@types/node": "^20.10.8",

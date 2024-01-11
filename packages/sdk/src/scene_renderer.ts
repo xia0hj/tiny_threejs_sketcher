@@ -1,3 +1,4 @@
+import { CommandSystem } from "@src/command_system";
 import { AXES_HELPER_LINE_LENGTH, SCENE_BACKGROUND_COLOR } from "@src/constant";
 import {
     deleteInstanceContext,
@@ -47,6 +48,7 @@ export class SceneRenderer {
         const context = getInstanceContext(this.scene.uuid);
         context.reactiveStore = reactiveStore ?? getDefaultReactiveStore();
         context.sceneRenderer = this;
+        context.commandSystem = new CommandSystem(this.scene.uuid);
     }
 
     public start() {
