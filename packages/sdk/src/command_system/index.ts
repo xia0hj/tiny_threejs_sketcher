@@ -1,31 +1,14 @@
-import { COMMAND_LIST } from "@src/command_system/command_list";
-import { InstanceContext, getInstanceContext } from "@src/instance_context";
+import {
+    CommandList,
+    CommandKeyList,
+} from "@src/command_system/command_list";
+import { getInstanceContext } from "@src/instance_context";
+import {
+    type CommandParameter,
+} from "@src/command_system/command_list";
+import { Command, ModificationHistory } from "@src/command_system/type";
 
-type CommandParameter = {
-    [key: string]: string | number | boolean | string[] | number[];
-};
-type NormalCommand = {
-    key: string;
-    modification: false;
-    run: (
-        context: InstanceContext,
-        commandParameter?: CommandParameter,
-    ) => void;
-};
-type ModificationCommand = {
-    key: string;
-    modification: true;
-    run: (
-        context: InstanceContext,
-        commandParameter?: CommandParameter,
-    ) => ModificationHistory;
-};
-type ModificationHistory = {
-    key: string;
-    parameter?: CommandParameter;
-    rollback: () => void;
-};
-export type Command = NormalCommand | ModificationCommand;
+
 
 export class CommandSystem {
     sceneUuid: string;
@@ -41,23 +24,35 @@ export class CommandSystem {
         this.modificationHistoryIndex = -1;
         this.commandMap = new Map<string, Command>();
 
-        COMMAND_LIST.forEach((command) =>
+        CommandList.forEach((command) =>
             this.commandMap.set(command.key, command),
         );
     }
 
-    runCommand(key: string, commandParameter?: CommandParameter) {
+    runCommand<KEY extends keyof CommandParameter>(
+        key: KEY,
+        parameter: CommandParameter[KEY],
+    ): void;
+    runCommand<
+        KEY extends Exclude<
+            (typeof CommandKeyList)[keyof typeof CommandKeyList],
+            keyof CommandParameter
+        >,
+    >(key: KEY, parameter?: undefined): void;
+    runCommand<
+        KEY extends (typeof CommandKeyList)[keyof typeof CommandKeyList],
+    >(key: KEY, parameter: any): void {
         const command = this.commandMap.get(key);
         if (command == null) {
             return;
         }
         const context = getInstanceContext(this.sceneUuid);
         if (command.modification) {
-            const modificationHistory = command.run(context, commandParameter);
+            const modificationHistory = command.run(context, parameter);
             this.modificationHistoryList.push(modificationHistory);
             this.modificationHistoryIndex++;
         } else {
-            command.run(context, commandParameter);
+            command.run(context, parameter);
         }
     }
 

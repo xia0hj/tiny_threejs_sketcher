@@ -1,22 +1,16 @@
-import { Command } from "@src/command_system";
-import { BoxGeometry, Mesh, MeshStandardMaterial } from "three";
+import { Command } from "@src/command_system/type";
+import {
+    COMMAND_KEY_CREATE_PLANE,
+    CommandCreatePlane,
+    CreatePlaneParameter,
+} from "@src/sketch_object/plane";
 
-export const COMMAND_LIST: Command[] = [
-    {
-        key: "test_command",
-        modification: true,
-        run(context, commandParameter) {
-            const { length } = commandParameter as { length: number };
-            const cube = new Mesh(
-                new BoxGeometry(length, length, length),
-                new MeshStandardMaterial(),
-            );
-            context.sceneRenderer?.sketchObjectGroup.add(cube);
-            return {
-                key: this.key,
-                parameter: { length },
-                rollback: () => cube.removeFromParent(),
-            };
-        },
-    },
-];
+export const CommandKeyList = {
+    createPlane: COMMAND_KEY_CREATE_PLANE,
+} as const;
+
+export type CommandParameter = {
+    [CommandKeyList.createPlane]: CreatePlaneParameter;
+};
+
+export const CommandList: Command[] = [CommandCreatePlane] as const;
