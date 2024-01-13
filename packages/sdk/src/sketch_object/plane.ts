@@ -12,9 +12,7 @@ export const CommandCreatePlane: Command = {
         return {
             key: COMMAND_KEY_CREATE_PLANE,
             parameter: commandParameter,
-            rollback() {
-                
-            },
-        }
+            rollback() {},
+        };
     },
-}
+} as const;

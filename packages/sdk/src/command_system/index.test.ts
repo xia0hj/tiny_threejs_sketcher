@@ -8,4 +8,6 @@ test("example", () => {
         offset: 0,
         parallelTo: "XY",
     });
+    commandSystem.runCommand(CommandKeyList.setPerspectiveCamera)
+    commandSystem.runCommand(CommandKeyList.setOrthographicCamera)
 });

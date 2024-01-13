@@ -1,5 +1,7 @@
+import { CAMERA_TYPE } from "@src/constant";
+
 export type ReactiveState = {
-    currentCameraType: "PerspectiveCamera" | "OrthographicCamera";
+    currentCameraType: typeof CAMERA_TYPE[keyof typeof CAMERA_TYPE];
 };
 export type ReactiveStore = {
     getReactiveState: <K extends keyof ReactiveState>(
@@ -13,7 +15,7 @@ export type ReactiveStore = {
 
 export function getInitialReactiveState(): ReactiveState {
     return {
-        currentCameraType: "PerspectiveCamera",
+        currentCameraType: CAMERA_TYPE.perspectiveCamera
     };
 }
 

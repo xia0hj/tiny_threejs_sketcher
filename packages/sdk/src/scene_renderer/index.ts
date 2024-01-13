@@ -1,5 +1,9 @@
 import { CommandSystem } from "@src/command_system";
-import { AXES_HELPER_LINE_LENGTH, SCENE_BACKGROUND_COLOR } from "@src/constant";
+import {
+    AXES_HELPER_LINE_LENGTH,
+    CAMERA_TYPE,
+    SCENE_BACKGROUND_COLOR,
+} from "@src/constant";
 import {
     deleteInstanceContext,
     getInstanceContext,
@@ -8,14 +12,17 @@ import {
     ReactiveStore,
     getDefaultReactiveStore,
 } from "@src/instance_context/reactive_state";
+import { ValueOf } from "@src/util";
 import {
     AmbientLight,
     AxesHelper,
+    Box3,
     Group,
     Light,
     OrthographicCamera,
     PerspectiveCamera,
     Scene,
+    Sphere,
     WebGLRenderer,
 } from "three";
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
@@ -72,13 +79,21 @@ export class SceneRenderer {
 
         // camera
         this.perspectiveCamera = new PerspectiveCamera(
-            75,
+            45,
             canvasWidth / canvasHeight,
             0.1,
             1000,
         );
+        this.orthographicCamera = new OrthographicCamera(
+            canvasWidth / -2,
+            canvasWidth / 2,
+            canvasHeight / 2,
+            canvasHeight / -2,
+            0,
+            1000,
+        );
         this.currentCamera = this.perspectiveCamera;
-        this.currentCamera.position.z = 5;
+        
 
         // control
         this.orbitControls = new OrbitControls(
@@ -90,7 +105,86 @@ export class SceneRenderer {
         this.canvasElement.addEventListener("resize", () => {
             this.onCanvasResize();
         });
+        this.fitCameraToScene();
         this.animate();
+    }
+
+    public setCameraType(targetType: ValueOf<typeof CAMERA_TYPE>) {
+        const store = getInstanceContext(this.scene.uuid).reactiveStore;
+        const curType = store?.getReactiveState("currentCameraType");
+
+        if (curType === targetType) {
+            return;
+        }
+
+        if (targetType === CAMERA_TYPE.perspectiveCamera) {
+            this.currentCamera = this.perspectiveCamera;
+            store?.setReactiveState(
+                "currentCameraType",
+                CAMERA_TYPE.perspectiveCamera,
+            );
+        } else if (targetType === CAMERA_TYPE.orthographicCamera) {
+            this.currentCamera = this.orthographicCamera;
+            store?.setReactiveState(
+                "currentCameraType",
+                CAMERA_TYPE.orthographicCamera,
+            );
+        }
+        this.fitCameraToScene();
+    }
+
+    public fitCameraToScene() {
+        if (this.sketchObjectGroup.children.length === 0) {
+            this.currentCamera.position.set(5,5, 5);
+            this.orbitControls.target.set(0, 0, 0);
+            return;
+        }
+
+        const boundingSphere = new Box3()
+            .setFromObject(this.sketchObjectGroup)
+            .getBoundingSphere(new Sphere());
+
+        const currentCameraType = getInstanceContext(
+            this.scene.uuid,
+        ).reactiveStore?.getReactiveState("currentCameraType");
+        if (currentCameraType === CAMERA_TYPE.perspectiveCamera) {
+            const fov = (this.perspectiveCamera.fov * Math.PI) / 180;
+            const distance = boundingSphere.radius / Math.sin(fov / 2);
+            this.perspectiveCamera.position.set(
+                boundingSphere.center.x + distance,
+                boundingSphere.center.y + distance,
+                boundingSphere.center.z + distance,
+            );
+            this.perspectiveCamera.zoom = 0.9;
+            this.orbitControls.target = boundingSphere.center;
+        } else if (currentCameraType === CAMERA_TYPE.orthographicCamera) {
+            const cameraWidth =
+                this.orthographicCamera.right - this.orthographicCamera.left;
+            const cameraHeight =
+                this.orthographicCamera.top - this.orthographicCamera.bottom;
+            if (cameraWidth >= cameraHeight) {
+                this.orthographicCamera.top = boundingSphere.radius;
+                this.orthographicCamera.bottom = -boundingSphere.radius;
+                this.orthographicCamera.left =
+                    -boundingSphere.radius * (cameraWidth / cameraHeight);
+                this.orthographicCamera.right =
+                    boundingSphere.radius * (cameraWidth / cameraHeight);
+            } else {
+                this.orthographicCamera.left = -boundingSphere.radius;
+                this.orthographicCamera.right = boundingSphere.radius;
+                this.orthographicCamera.top =
+                    boundingSphere.radius * (cameraHeight / cameraWidth);
+                this.orthographicCamera.bottom =
+                    -boundingSphere.radius * (cameraHeight / cameraWidth);
+            }
+            this.orthographicCamera.position.set(
+                boundingSphere.center.x + boundingSphere.radius,
+                boundingSphere.center.y + boundingSphere.radius,
+                boundingSphere.center.z + boundingSphere.radius,
+            );
+            this.orthographicCamera.zoom = 0.9;
+            this.orbitControls.target = boundingSphere.center;
+        }
     }
 
     public dispose() {
