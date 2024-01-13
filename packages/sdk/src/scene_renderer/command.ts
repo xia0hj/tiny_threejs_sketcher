@@ -1,5 +1,5 @@
 import { Command } from "@src/command_system/type";
-import { CAMERA_TYPE } from "@src/constant";
+import { CAMERA_TYPE } from "@src/constant/enum";
 
 export const COMMAND_KEY_SET_PERSPECTIVE_CAMERA = "set_perspective_camera";
 export const CommandSetPerspectiveCamera: Command = {

@@ -1,4 +1,4 @@
-import { CAMERA_TYPE } from "@src/constant";
+import { CAMERA_TYPE } from "@src/constant/enum";
 
 export type ReactiveState = {
   currentCameraType: (typeof CAMERA_TYPE)[keyof typeof CAMERA_TYPE];

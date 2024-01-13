@@ -1,9 +1,9 @@
 import { CommandSystem } from "@src/command_system";
 import {
   AXES_HELPER_LINE_LENGTH,
-  CAMERA_TYPE,
   SCENE_BACKGROUND_COLOR,
-} from "@src/constant";
+} from "@src/constant/config";
+import { CAMERA_TYPE } from "@src/constant/enum";
 import {
   deleteInstanceContext,
   getInstanceContext,
@@ -12,6 +12,7 @@ import {
   ReactiveStore,
   getDefaultReactiveStore,
 } from "@src/instance_context/reactive_state";
+import { SketchObject } from "@src/sketch_object/type";
 import { ValueOf } from "@src/util";
 import {
   AmbientLight,
@@ -181,6 +182,11 @@ export class SceneRenderer {
       this.orthographicCamera.zoom = 0.9;
       this.orbitControls.target = boundingSphere.center;
     }
+  }
+
+  public addSketchObjectToScene(sketchObject: SketchObject) {
+    this.sketchObjectGroup.add(sketchObject);
+    this.fitCameraToScene();
   }
 
   public dispose() {
