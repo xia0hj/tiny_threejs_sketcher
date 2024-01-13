@@ -1,21 +1,21 @@
 {
-    "name": "sdk",
-    "version": "1.0.0",
-    "type": "module",
-    "module": "./dist/index.js",
-    "types": "./dist/index.d.ts",
-    "scripts": {
-        "dev": "node esbuild.js --dev",
-        "build": "node esbuild.js --build",
-        "test": "vitest run"
-    },
-    "devDependencies": {
-        "@types/node": "^20.10.8",
-        "@types/three": "^0.160.0",
-        "dts-bundle-generator": "^9.2.1",
-        "esbuild": "^0.19.11"
-    },
-    "dependencies": {
-        "three": "^0.160.0"
-    }
+  "name": "sdk",
+  "version": "1.0.0",
+  "type": "module",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "scripts": {
+    "dev": "node esbuild.js --dev",
+    "build": "node esbuild.js --build",
+    "test": "vitest run"
+  },
+  "devDependencies": {
+    "@types/node": "^20.10.8",
+    "@types/three": "^0.160.0",
+    "dts-bundle-generator": "^9.2.1",
+    "esbuild": "^0.19.11"
+  },
+  "dependencies": {
+    "three": "^0.160.0"
+  }
 }

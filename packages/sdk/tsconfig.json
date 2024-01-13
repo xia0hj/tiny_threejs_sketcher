@@ -1,17 +1,17 @@
 {
-    "compilerOptions": {
-        "target": "ESNext",
-        "lib": ["DOM", "ESNext"],
-        "module": "ESNext",
-        "moduleResolution": "Bundler",
-        "declaration": true,
-        "emitDeclarationOnly": true,
-        "strictPropertyInitialization": false,
-        "strict": true,
-        "strictNullChecks": true,
-        "paths": {
-            "@src/*": ["./src/*"]
-        }
-    },
-    "exclude": ["dist"]
+  "compilerOptions": {
+    "target": "ESNext",
+    "lib": ["DOM", "ESNext"],
+    "module": "ESNext",
+    "moduleResolution": "Bundler",
+    "declaration": true,
+    "emitDeclarationOnly": true,
+    "strictPropertyInitialization": false,
+    "strict": true,
+    "strictNullChecks": true,
+    "paths": {
+      "@src/*": ["./src/*"]
+    }
+  },
+  "exclude": ["dist"]
 }

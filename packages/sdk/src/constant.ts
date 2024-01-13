@@ -8,7 +8,6 @@ export const SCENE_PLANE_LENGTH = 3;
 export const SCENE_PLANE_OPACITY = 0.6;
 
 export const CAMERA_TYPE = {
-    perspectiveCamera: 'perspective_camera',
-    orthographicCamera: 'orthographic_camera'
-} as const
-
+  perspectiveCamera: "perspective_camera",
+  orthographicCamera: "orthographic_camera",
+} as const;
