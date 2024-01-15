@@ -1,4 +1,4 @@
-import { Command } from "@src/command_system/type";
+import { Command } from "@src/command_system";
 import {
   SCENE_PLANE_COLOR,
   SCENE_PLANE_LENGTH,
@@ -18,7 +18,7 @@ export type CreatePlaneParameter = {
   parallelTo: "XY" | "XZ" | "YZ";
   offset: number;
 };
-export const CommandCreatePlane: Command = {
+export const CommandCreatePlane: Command<typeof COMMAND_KEY_CREATE_PLANE, CreatePlaneParameter> = {
   key: COMMAND_KEY_CREATE_PLANE,
   modification: true,
   run(context, commandParameter) {

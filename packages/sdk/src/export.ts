@@ -8,3 +8,4 @@ export {
   type ReactiveStore,
   getInitialReactiveState,
 } from "@src/instance_context/reactive_state";
+export { CommandKeyList } from "@src/command_system/command_list";
