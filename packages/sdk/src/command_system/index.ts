@@ -1,29 +1,6 @@
 import { CommandList } from "@src/command_system/command_list";
 import { InstanceContext, getInstanceContext } from "@src/instance_context";
-import { ValueOf } from "@src/util";
 
-export type Command<K, P = undefined> =
-  | {
-      key: K;
-      modification: false;
-      run: P extends undefined
-        ? (context: InstanceContext) => void
-        : (context: InstanceContext, commandParameter: P) => void;
-    }
-  | {
-      key: K;
-      modification: true;
-      run: P extends undefined
-        ? (context: InstanceContext) => ModificationHistory<K, P>
-        : (
-            context: InstanceContext,
-            parameter: P,
-          ) => ModificationHistory<K, P>;
-    };
-
-type ModificationHistory<K = string, P = undefined> = P extends undefined
-  ? { key: K; rollback: () => void }
-  : { key: K; parameter: P; rollback: () => void };
 
 export class CommandSystem {
   sceneUuid: string;
@@ -78,3 +55,30 @@ export class CommandSystem {
     this.modificationHistoryIndex = rollbackIndex - 1;
   }
 }
+
+/**
+ * @param {K} K key of command
+ * @param {P} P type of command parameter
+ */
+export type Command<K, P = undefined> =
+  | {
+      key: K;
+      modification: false;
+      run: P extends undefined
+        ? (context: InstanceContext) => void
+        : (context: InstanceContext, parameter: P) => void;
+    }
+  | {
+      key: K;
+      modification: true;
+      run: P extends undefined
+        ? (context: InstanceContext) => ModificationHistory<K, P>
+        : (
+            context: InstanceContext,
+            parameter: P,
+          ) => ModificationHistory<K, P>;
+    };
+
+type ModificationHistory<K = string, P = undefined> = P extends undefined
+  ? { key: K; rollback: () => void }
+  : { key: K; parameter: P; rollback: () => void };

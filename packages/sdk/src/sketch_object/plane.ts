@@ -8,25 +8,24 @@ import { SketchObject, SketchObjectUserData } from "@src/sketch_object/type";
 import {
   BufferGeometry,
   DoubleSide,
-  Mesh,
   MeshStandardMaterial,
   Vector3,
 } from "three";
 
-export const COMMAND_KEY_CREATE_PLANE = "create_plane";
+
 export type CreatePlaneParameter = {
   parallelTo: "XY" | "XZ" | "YZ";
   offset: number;
 };
-export const CommandCreatePlane: Command<typeof COMMAND_KEY_CREATE_PLANE, CreatePlaneParameter> = {
-  key: COMMAND_KEY_CREATE_PLANE,
+export const CommandCreatePlane: Command<'create_plane', CreatePlaneParameter> = {
+  key: 'create_plane',
   modification: true,
-  run(context, commandParameter) {
-    const plane = new Plane(commandParameter);
+  run(context, parameter) {
+    const plane = new Plane(parameter);
     context.sceneRenderer?.addSketchObjectToScene(plane);
     return {
-      key: COMMAND_KEY_CREATE_PLANE,
-      parameter: commandParameter,
+      key: this.key,
+      parameter: {...parameter},
       rollback() {
         plane.removeFromParent();
         plane.dispose();
