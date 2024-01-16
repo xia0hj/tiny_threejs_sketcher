@@ -5,13 +5,11 @@ import {
 } from "@src/constant/config";
 import { CAMERA_TYPE } from "@src/constant/enum";
 import {
+  InstanceContext,
+  createInstanceContext,
   deleteInstanceContext,
-  getInstanceContext,
 } from "@src/instance_context";
-import {
-  ReactiveStore,
-  getDefaultReactiveStore,
-} from "@src/instance_context/reactive_state";
+import { ReactiveStore } from "@src/instance_context/reactive_state";
 import { SketchObject } from "@src/sketch_object/type";
 import { ValueOf } from "@src/util";
 import {
@@ -29,6 +27,7 @@ import {
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
 
 export class SceneRenderer {
+  context: InstanceContext;
   canvasElement: HTMLCanvasElement;
 
   scene: Scene;
@@ -46,14 +45,18 @@ export class SceneRenderer {
 
   private requestAnimationFrameId: number = 0;
 
-  constructor(canvasElement: HTMLCanvasElement, reactiveStore?: ReactiveStore) {
+  constructor(
+    canvasElement: HTMLCanvasElement,
+    externalReactiveStore?: ReactiveStore,
+  ) {
     this.canvasElement = canvasElement;
     this.scene = new Scene();
 
-    const context = getInstanceContext(this.scene.uuid);
-    context.reactiveStore = reactiveStore ?? getDefaultReactiveStore();
-    context.sceneRenderer = this;
-    context.commandSystem = new CommandSystem(this.scene.uuid);
+    this.context = createInstanceContext({
+      sceneUuid: this.scene.uuid,
+      sceneRenderer: this,
+      externalReactiveStore,
+    });
   }
 
   public start() {
@@ -107,22 +110,23 @@ export class SceneRenderer {
   }
 
   public setCameraType(targetType: ValueOf<typeof CAMERA_TYPE>) {
-    const store = getInstanceContext(this.scene.uuid).reactiveStore;
-    const curType = store?.getReactiveState("currentCameraType");
+    const store = this.context.reactiveStore;
 
-    if (curType === targetType) {
+    if (store.getReactiveState("currentCameraType") === targetType) {
       return;
     }
 
     if (targetType === CAMERA_TYPE.perspectiveCamera) {
       this.currentCamera = this.perspectiveCamera;
-      store?.setReactiveState(
+      this.orbitControls.object = this.perspectiveCamera;
+      store.setReactiveState(
         "currentCameraType",
         CAMERA_TYPE.perspectiveCamera,
       );
     } else if (targetType === CAMERA_TYPE.orthographicCamera) {
       this.currentCamera = this.orthographicCamera;
-      store?.setReactiveState(
+      this.orbitControls.object = this.orthographicCamera;
+      store.setReactiveState(
         "currentCameraType",
         CAMERA_TYPE.orthographicCamera,
       );
@@ -141,9 +145,9 @@ export class SceneRenderer {
       .setFromObject(this.sketchObjectGroup)
       .getBoundingSphere(new Sphere());
 
-    const currentCameraType = getInstanceContext(
-      this.scene.uuid,
-    ).reactiveStore?.getReactiveState("currentCameraType");
+    const currentCameraType =
+      this.context.reactiveStore.getReactiveState("currentCameraType");
+
     if (currentCameraType === CAMERA_TYPE.perspectiveCamera) {
       const fov = (this.perspectiveCamera.fov * Math.PI) / 180;
       const distance = boundingSphere.radius / Math.sin(fov / 2);

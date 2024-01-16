@@ -4,7 +4,7 @@ import {
   SCENE_PLANE_LENGTH,
   SCENE_PLANE_OPACITY,
 } from "@src/constant/config";
-import { SketchObject, SketchObjectUserData } from "@src/sketch_object/type";
+import { SketchObject, SketchObjectUserData } from "@src/sketch_object/type.d";
 import {
   BufferGeometry,
   DoubleSide,
@@ -12,27 +12,27 @@ import {
   Vector3,
 } from "three";
 
-
 export type CreatePlaneParameter = {
   parallelTo: "XY" | "XZ" | "YZ";
   offset: number;
 };
-export const CommandCreatePlane: Command<'create_plane', CreatePlaneParameter> = {
-  key: 'create_plane',
-  modification: true,
-  run(context, parameter) {
-    const plane = new Plane(parameter);
-    context.sceneRenderer?.addSketchObjectToScene(plane);
-    return {
-      key: this.key,
-      parameter: {...parameter},
-      rollback() {
-        plane.removeFromParent();
-        plane.dispose();
-      },
-    };
-  },
-} as const;
+export const CommandCreatePlane: Command<"create_plane", CreatePlaneParameter> =
+  {
+    key: "create_plane",
+    modification: true,
+    run(context, parameter) {
+      const plane = new Plane(parameter);
+      context.sceneRenderer?.addSketchObjectToScene(plane);
+      return {
+        key: this.key,
+        parameter: { ...parameter },
+        rollback() {
+          plane.removeFromParent();
+          plane.dispose();
+        },
+      };
+    },
+  } as const;
 
 export class Plane extends SketchObject {
   userData: SketchObjectUserData;

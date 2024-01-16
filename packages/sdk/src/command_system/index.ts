@@ -1,17 +1,16 @@
 import { CommandList } from "@src/command_system/command_list";
-import { InstanceContext, getInstanceContext } from "@src/instance_context";
-
+import { InstanceContext } from "@src/instance_context";
 
 export class CommandSystem {
-  sceneUuid: string;
+  context: InstanceContext;
 
   modificationHistoryList: ModificationHistory[];
   modificationHistoryIndex: number;
 
   commandMap: Map<string, Command<any, any>>;
 
-  constructor(sceneUuid: string) {
-    this.sceneUuid = sceneUuid;
+  constructor(context: InstanceContext) {
+    this.context = context;
     this.modificationHistoryList = [];
     this.modificationHistoryIndex = -1;
     this.commandMap = new Map();
@@ -24,22 +23,20 @@ export class CommandSystem {
   runCommand<
     K extends keyof typeof CommandList,
     P extends Parameters<(typeof CommandList)[K]["run"]>[1],
-  >(
-    commandInput: P extends undefined
-      ? { key: K }
-      : { key: K; parameter: P },
-  ) {
+  >(commandInput: P extends undefined ? { key: K } : { key: K; parameter: P }) {
     const command = this.commandMap.get(commandInput.key);
     if (command == null) {
       return;
     }
-    const context = getInstanceContext(this.sceneUuid);
     if (command.modification) {
-      const modificationHistory = command.run(context, (commandInput as any).parameter);
+      const modificationHistory = command.run(
+        this.context,
+        (commandInput as any).parameter,
+      );
       this.modificationHistoryList.push(modificationHistory);
       this.modificationHistoryIndex++;
     } else {
-      command.run(context, (commandInput as any).parameter);
+      command.run(this.context, (commandInput as any).parameter);
     }
   }
 
@@ -73,10 +70,7 @@ export type Command<K, P = undefined> =
       modification: true;
       run: P extends undefined
         ? (context: InstanceContext) => ModificationHistory<K, P>
-        : (
-            context: InstanceContext,
-            parameter: P,
-          ) => ModificationHistory<K, P>;
+        : (context: InstanceContext, parameter: P) => ModificationHistory<K, P>;
     };
 
 type ModificationHistory<K = string, P = undefined> = P extends undefined
