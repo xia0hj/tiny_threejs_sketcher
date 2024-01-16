@@ -1,4 +1,3 @@
-import { CommandSystem } from "@src/command_system";
 import {
   AXES_HELPER_LINE_LENGTH,
   SCENE_BACKGROUND_COLOR,
@@ -22,6 +21,7 @@ import {
   PerspectiveCamera,
   Scene,
   Sphere,
+  Vector3,
   WebGLRenderer,
 } from "three";
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
@@ -31,7 +31,6 @@ export class SceneRenderer {
   canvasElement: HTMLCanvasElement;
 
   scene: Scene;
-  sketchObjectGroup: Group;
 
   renderer: WebGLRenderer;
 
@@ -63,9 +62,7 @@ export class SceneRenderer {
     const canvasWidth = this.canvasElement.clientWidth;
     const canvasHeight = this.canvasElement.clientHeight;
 
-    // scene
-    this.sketchObjectGroup = new Group();
-    this.scene.add(this.sketchObjectGroup);
+    // AxesHelper
     this.scene.add(new AxesHelper(AXES_HELPER_LINE_LENGTH));
 
     // light
@@ -135,15 +132,9 @@ export class SceneRenderer {
   }
 
   public fitCameraToScene() {
-    if (this.sketchObjectGroup.children.length === 0) {
-      this.currentCamera.position.set(5, 5, 5);
-      this.orbitControls.target.set(0, 0, 0);
-      return;
-    }
-
-    const boundingSphere = new Box3()
-      .setFromObject(this.sketchObjectGroup)
-      .getBoundingSphere(new Sphere());
+    const boundingSphere =
+      this.context.sketchObjectManager.getBoundingSphere() ??
+      new Sphere(new Vector3(0, 0, 0), AXES_HELPER_LINE_LENGTH);
 
     const currentCameraType =
       this.context.reactiveStore.getReactiveState("currentCameraType");
@@ -186,11 +177,6 @@ export class SceneRenderer {
       this.orthographicCamera.zoom = 0.9;
       this.orbitControls.target = boundingSphere.center;
     }
-  }
-
-  public addSketchObjectToScene(sketchObject: SketchObject) {
-    this.sketchObjectGroup.add(sketchObject);
-    this.fitCameraToScene();
   }
 
   public dispose() {

@@ -22,7 +22,7 @@ export const CommandCreatePlane: Command<"create_plane", CreatePlaneParameter> =
     modification: true,
     run(context, parameter) {
       const plane = new Plane(parameter);
-      context.sceneRenderer?.addSketchObjectToScene(plane);
+      context.sketchObjectManager.addSketchObject(plane);
       return {
         key: this.key,
         parameter: { ...parameter },
