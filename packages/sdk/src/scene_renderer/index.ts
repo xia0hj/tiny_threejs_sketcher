@@ -3,11 +3,7 @@ import {
   SCENE_BACKGROUND_COLOR,
 } from "@src/constant/config";
 import { CAMERA_TYPE } from "@src/constant/enum";
-import {
-  InstanceContext,
-  createInstanceContext,
-  deleteInstanceContext,
-} from "@src/instance_context";
+import { InstanceContext } from "@src/instance_context";
 import { ReactiveStore } from "@src/instance_context/reactive_state";
 import { SketchObject } from "@src/sketch_object/interface";
 import { ValueOf } from "@src/util";
@@ -43,6 +39,7 @@ export class SceneRenderer {
   orthographicCamera: OrthographicCamera;
 
   private requestAnimationFrameId: number = 0;
+  private eventAbortController: AbortController = new AbortController();
 
   constructor(
     canvasElement: HTMLCanvasElement,
@@ -51,7 +48,7 @@ export class SceneRenderer {
     this.canvasElement = canvasElement;
     this.scene = new Scene();
 
-    this.context = createInstanceContext({
+    this.context = new InstanceContext({
       sceneUuid: this.scene.uuid,
       sceneRenderer: this,
       externalReactiveStore,
@@ -97,9 +94,13 @@ export class SceneRenderer {
     );
 
     // others
-    this.canvasElement.addEventListener("resize", () => {
-      this.onCanvasResize();
-    });
+    this.canvasElement.addEventListener(
+      "resize",
+      () => {
+        this.onCanvasResize();
+      },
+      { signal: this.eventAbortController.signal },
+    );
     this.fitCameraToScene();
     this.animate();
   }
@@ -179,8 +180,8 @@ export class SceneRenderer {
 
   public dispose() {
     window.cancelAnimationFrame(this.requestAnimationFrameId);
-    this.canvasElement.removeEventListener("resize", this.onCanvasResize);
-    deleteInstanceContext(this.scene.uuid);
+    this.eventAbortController.abort();
+    this.context.dispose();
   }
 
   private animate() {

@@ -6,34 +6,37 @@ import {
 import { SceneRenderer } from "@src/scene_renderer";
 import { SketchObjectManager } from "@src/sketch_object_manager";
 
-export type InstanceContext = {
-  reactiveStore: ReactiveStore;
-  sceneRenderer: SceneRenderer;
-  commandSystem: CommandSystem;
-  sketchObjectManager: SketchObjectManager;
-};
+export class InstanceContext {
+  public sceneUuid: string;
+  public reactiveStore: ReactiveStore;
+  public sceneRenderer: SceneRenderer;
+  public commandSystem: CommandSystem;
+  public sketchObjectManager: SketchObjectManager;
 
-export function createInstanceContext({
-  sceneUuid,
-  sceneRenderer,
-  externalReactiveStore,
-}: {
-  sceneUuid: string;
-  sceneRenderer: SceneRenderer;
-  externalReactiveStore?: ReactiveStore;
-}): InstanceContext {
-  const context: any = {};
-  context.sceneRenderer = sceneRenderer;
-  context.reactiveStore = externalReactiveStore ?? getDefaultReactiveStore();
-  context.commandSystem = new CommandSystem(context);
-  context.sketchObjectManager = new SketchObjectManager(
-    context,
-    sceneRenderer.scene,
-  );
+  constructor({
+    sceneUuid,
+    sceneRenderer,
+    externalReactiveStore,
+  }: {
+    sceneUuid: string;
+    sceneRenderer: SceneRenderer;
+    externalReactiveStore?: ReactiveStore;
+  }) {
+    this.sceneUuid = sceneUuid;
+    this.sceneRenderer = sceneRenderer;
+    this.reactiveStore = externalReactiveStore ?? getDefaultReactiveStore();
+    this.commandSystem = new CommandSystem(this);
+    this.sketchObjectManager = new SketchObjectManager(
+      this,
+      sceneRenderer.scene,
+    );
 
-  instanceContextMap.set(sceneUuid, context);
+    instanceContextMap.set(sceneUuid, this);
+  }
 
-  return context as InstanceContext;
+  public dispose() {
+    instanceContextMap.delete(this.sceneUuid)
+  }
 }
 
 const instanceContextMap = new Map<string, InstanceContext>();
@@ -51,6 +54,3 @@ export function getInstanceContext(sceneUuid?: string) {
   return instanceContextMap.get(sceneUuid);
 }
 
-export function deleteInstanceContext(sceneUuid: string) {
-  instanceContextMap.delete(sceneUuid);
-}

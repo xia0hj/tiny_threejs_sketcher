@@ -3,7 +3,7 @@ import { CommandKeyList } from "@src/command_system/command_list";
 import { test } from "vitest";
 
 test.skip("type", () => {
-  const commandSystem = new CommandSystem("a");
+  const commandSystem = new CommandSystem({} as any);
   commandSystem.runCommand({
     key: CommandKeyList.create_plane,
     parameter: {
