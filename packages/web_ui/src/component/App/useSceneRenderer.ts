@@ -10,10 +10,9 @@ export function useSceneRenderer() {
         canvasElementRef.current,
         rendererStore,
       );
-      sceneRenderer.start();
       (window as any).cs = getInstanceContext(
         sceneRenderer.scene.uuid,
-      ).commandSystem;
+      )?.commandSystem;
       return () => sceneRenderer.dispose();
     }
   }, [canvasElementRef]);

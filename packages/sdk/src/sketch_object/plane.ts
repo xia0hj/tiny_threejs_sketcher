@@ -4,7 +4,11 @@ import {
   SCENE_PLANE_LENGTH,
   SCENE_PLANE_OPACITY,
 } from "@src/constant/config";
-import { SketchObject, SketchObjectUserData } from "@src/sketch_object/type.d";
+import { SKETCH_OBJECT_TYPE } from "@src/constant/enum";
+import {
+  SketchObject,
+  SketchObjectUserData,
+} from "@src/sketch_object/interface";
 import {
   BufferGeometry,
   DoubleSide,
@@ -35,7 +39,7 @@ export const CommandCreatePlane: Command<"create_plane", CreatePlaneParameter> =
   } as const;
 
 export class Plane extends SketchObject {
-  userData: SketchObjectUserData;
+  userData: SketchObjectUserData = { type: SKETCH_OBJECT_TYPE.plane };
   constructor(createPlaneParameter: CreatePlaneParameter) {
     super(
       buildPlaneGeomtry(createPlaneParameter, SCENE_PLANE_LENGTH),

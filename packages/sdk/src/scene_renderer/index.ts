@@ -9,7 +9,7 @@ import {
   deleteInstanceContext,
 } from "@src/instance_context";
 import { ReactiveStore } from "@src/instance_context/reactive_state";
-import { SketchObject } from "@src/sketch_object/type";
+import { SketchObject } from "@src/sketch_object/interface";
 import { ValueOf } from "@src/util";
 import {
   AmbientLight,
@@ -56,9 +56,7 @@ export class SceneRenderer {
       sceneRenderer: this,
       externalReactiveStore,
     });
-  }
 
-  public start() {
     const canvasWidth = this.canvasElement.clientWidth;
     const canvasHeight = this.canvasElement.clientHeight;
 

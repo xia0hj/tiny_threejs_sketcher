@@ -4,14 +4,23 @@
     "lib": ["DOM", "ESNext"],
     "module": "ESNext",
     "moduleResolution": "Bundler",
-    "declaration": true,
-    "emitDeclarationOnly": true,
-    "strictPropertyInitialization": false,
     "strict": true,
-    "strictNullChecks": true,
+    "declaration": true,
+    "declarationMap": true,
+    "emitDeclarationOnly": true,
+    "incremental": true,
+    "tsBuildInfoFile": "./dist/tsconfig.tsbuildinfo",
+    "outDir": "dist",
+    "rootDir": "src",
     "paths": {
       "@src/*": ["./src/*"]
-    }
+    },
+    "plugins": [
+      { "transform": "typescript-transform-paths", "afterDeclarations": true }
+    ]
   },
-  "exclude": ["dist"]
+  "watchOptions": {
+    "excludeFiles": ["*.test.ts"]
+  },
+  "exclude": ["dist", "vitest.config.ts"]
 }

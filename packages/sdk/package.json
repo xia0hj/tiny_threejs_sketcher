@@ -7,13 +7,21 @@
   "scripts": {
     "dev": "node esbuild.js --dev",
     "build": "node esbuild.js --build",
-    "test": "vitest run"
+    "test": "vitest run",
+    "dev_esbuild": "esbuild src/index.ts --format=esm --bundle --packages=external --outfile=dist/index.js --sourcemap --watch",
+    "dev_dts": "tspc --watch ",
+    "prod_build":"npm run prod_before && npm run prod_esbuild && npm run prod_dts",
+    "prod_before":"node -e \"require('fs').rmSync('dist',{recursive:true,force:true})\"",
+    "prod_esbuild":"esbuild src/index.ts --format=esm --bundle --packages=external --outfile=dist/index.js --tree-shaking=true --analyze",
+    "prod_dts":"dts-bundle-generator src/index.ts --out-file=dist/index.d.ts"
   },
   "devDependencies": {
     "@types/node": "^20.10.8",
     "@types/three": "^0.160.0",
     "dts-bundle-generator": "^9.2.1",
-    "esbuild": "^0.19.11"
+    "esbuild": "^0.19.11",
+    "ts-patch": "^3.1.2",
+    "typescript-transform-paths": "^3.4.6"
   },
   "dependencies": {
     "three": "^0.160.0"

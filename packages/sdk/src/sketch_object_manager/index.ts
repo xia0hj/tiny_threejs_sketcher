@@ -1,5 +1,5 @@
 import { InstanceContext } from "@src/instance_context";
-import { SketchObject } from "@src/sketch_object/type";
+import { SketchObject } from "@src/sketch_object/interface";
 import { Box3, Group, Scene, Sphere } from "three";
 
 export class SketchObjectManager {
