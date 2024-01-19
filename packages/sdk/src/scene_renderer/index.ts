@@ -49,7 +49,6 @@ export class SceneRenderer {
     this.scene = new Scene();
 
     this.context = new InstanceContext({
-      sceneUuid: this.scene.uuid,
       sceneRenderer: this,
       externalReactiveStore,
     });
