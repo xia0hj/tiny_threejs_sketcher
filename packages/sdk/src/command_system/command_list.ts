@@ -3,7 +3,7 @@ import {
   CommandSetPerspectiveCamera,
   CommandUndo,
 } from "@src/scene_renderer/command";
-import { CommandCreatePlane } from "@src/sketch_object/plane";
+import { CommandCreatePlane } from "@src/sketch_object/sketch_plane";
 import { ValueOf } from "@src/util";
 
 export const CommandList = {

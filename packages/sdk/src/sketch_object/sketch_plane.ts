@@ -25,7 +25,7 @@ export const CommandCreatePlane: Command<"create_plane", CreatePlaneParameter> =
     key: "create_plane",
     modification: true,
     run(context, parameter) {
-      const plane = new Plane(parameter);
+      const plane = new SketchPlane(parameter);
       context.sketchObjectManager.addSketchObject(plane);
       return {
         key: this.key,
@@ -38,7 +38,7 @@ export const CommandCreatePlane: Command<"create_plane", CreatePlaneParameter> =
     },
   } as const;
 
-export class Plane extends SketchObject {
+export class SketchPlane extends SketchObject {
   userData: SketchObjectUserData = { type: SKETCH_OBJECT_TYPE.plane };
   constructor(createPlaneParameter: CreatePlaneParameter) {
     super(
@@ -63,6 +63,9 @@ export class Plane extends SketchObject {
   }
   onDeselect(): void {
     throw new Error("Method not implemented.");
+  }
+  updateCustomConfig(customConfig: { visible: boolean; }): void {
+    this.visible = customConfig.visible
   }
   dispose(): void {
     this.geometry.dispose();
