@@ -1,17 +1,16 @@
+import { CommandSystem } from "@src/command_system";
 import {
   AXES_HELPER_LINE_LENGTH,
   SCENE_BACKGROUND_COLOR,
 } from "@src/constant/config";
 import { CAMERA_TYPE } from "@src/constant/enum";
-import { InstanceContext } from "@src/instance_context";
-import { ReactiveStore } from "@src/instance_context/reactive_state";
+import { ReactiveStore, getDefaultReactiveStore } from "@src/reactive_store";
 import { SketchObject } from "@src/sketch_object/interface";
+import { SketchObjectManager } from "@src/sketch_object/sketch_object_manager";
 import { ValueOf } from "@src/util";
 import {
   AmbientLight,
   AxesHelper,
-  Box3,
-  Group,
   Light,
   OrthographicCamera,
   PerspectiveCamera,
@@ -22,24 +21,27 @@ import {
 } from "three";
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
 
-export class SceneRenderer {
-  context: InstanceContext;
-  canvasElement: HTMLCanvasElement;
+export class RootRenderer {
+  public canvasElement: HTMLCanvasElement;
 
-  scene: Scene;
+  public scene: Scene;
 
-  renderer: WebGLRenderer;
+  private renderer: WebGLRenderer;
 
-  light: Light;
+  public light: Light;
 
-  orbitControls: OrbitControls;
+  public orbitControls: OrbitControls;
 
-  currentCamera: PerspectiveCamera | OrthographicCamera;
-  perspectiveCamera: PerspectiveCamera;
-  orthographicCamera: OrthographicCamera;
+  public camera: PerspectiveCamera | OrthographicCamera;
+  private perspectiveCamera: PerspectiveCamera;
+  private orthographicCamera: OrthographicCamera;
 
   private requestAnimationFrameId: number = 0;
   private eventAbortController: AbortController = new AbortController();
+
+  public reactiveStore: ReactiveStore;
+  public commandSystem: CommandSystem;
+  public sketchObjectManager: SketchObjectManager;
 
   constructor(
     canvasElement: HTMLCanvasElement,
@@ -48,10 +50,9 @@ export class SceneRenderer {
     this.canvasElement = canvasElement;
     this.scene = new Scene();
 
-    this.context = new InstanceContext({
-      sceneRenderer: this,
-      externalReactiveStore,
-    });
+    this.reactiveStore = externalReactiveStore ?? getDefaultReactiveStore();
+    this.commandSystem = new CommandSystem(this);
+    this.sketchObjectManager = new SketchObjectManager(this);
 
     const canvasWidth = this.canvasElement.clientWidth;
     const canvasHeight = this.canvasElement.clientHeight;
@@ -84,11 +85,11 @@ export class SceneRenderer {
       0,
       1000,
     );
-    this.currentCamera = this.perspectiveCamera;
+    this.camera = this.perspectiveCamera;
 
     // control
     this.orbitControls = new OrbitControls(
-      this.currentCamera,
+      this.camera,
       this.canvasElement,
     );
 
@@ -105,21 +106,21 @@ export class SceneRenderer {
   }
 
   public setCameraType(targetType: ValueOf<typeof CAMERA_TYPE>) {
-    const store = this.context.reactiveStore;
+    const store = this.reactiveStore;
 
     if (store.getReactiveState("currentCameraType") === targetType) {
       return;
     }
 
     if (targetType === CAMERA_TYPE.perspectiveCamera) {
-      this.currentCamera = this.perspectiveCamera;
+      this.camera = this.perspectiveCamera;
       this.orbitControls.object = this.perspectiveCamera;
       store.setReactiveState(
         "currentCameraType",
         CAMERA_TYPE.perspectiveCamera,
       );
     } else if (targetType === CAMERA_TYPE.orthographicCamera) {
-      this.currentCamera = this.orthographicCamera;
+      this.camera = this.orthographicCamera;
       this.orbitControls.object = this.orthographicCamera;
       store.setReactiveState(
         "currentCameraType",
@@ -131,11 +132,11 @@ export class SceneRenderer {
 
   public fitCameraToScene() {
     const boundingSphere =
-      this.context.sketchObjectManager.getBoundingSphere() ??
+      this.sketchObjectManager.getBoundingSphere() ??
       new Sphere(new Vector3(0, 0, 0), AXES_HELPER_LINE_LENGTH);
 
     const currentCameraType =
-      this.context.reactiveStore.getReactiveState("currentCameraType");
+      this.reactiveStore.getReactiveState("currentCameraType");
 
     if (currentCameraType === CAMERA_TYPE.perspectiveCamera) {
       const fov = (this.perspectiveCamera.fov * Math.PI) / 180;
@@ -180,7 +181,6 @@ export class SceneRenderer {
   public dispose() {
     window.cancelAnimationFrame(this.requestAnimationFrameId);
     this.eventAbortController.abort();
-    this.context.dispose();
   }
 
   private animate() {
@@ -188,7 +188,7 @@ export class SceneRenderer {
       this.animate();
     });
     this.orbitControls.update();
-    this.renderer.render(this.scene, this.currentCamera);
+    this.renderer.render(this.scene, this.camera);
   }
 
   private onCanvasResize() {

@@ -1,21 +1,21 @@
-import { InstanceContext } from "@src/instance_context";
 import { SketchObject } from "@src/sketch_object/interface";
+import { RootRenderer } from "@src/root_renderer";
 import { Box3, Group, Raycaster, Scene, Sphere, Vector2 } from "three";
 
 export class SketchObjectManager {
   sketchObjectGroup: Group;
-  context: InstanceContext;
+  rootRenderer: RootRenderer;
   raycaster: Raycaster;
   eventController: AbortController;
   selectedObjectList: SketchObject[] = [];
 
-  constructor(context: InstanceContext, scene: Scene) {
-    this.context = context;
+  constructor(rootRenderer: RootRenderer) {
+    this.rootRenderer = rootRenderer;
     this.raycaster = new Raycaster();
     this.sketchObjectGroup = new Group();
-    scene.add(this.sketchObjectGroup);
+    rootRenderer.scene.add(this.sketchObjectGroup);
     this.eventController = new AbortController();
-    context.sceneRenderer.canvasElement.addEventListener(
+    rootRenderer.canvasElement.addEventListener(
       "pointerup",
       (event) => {
         this.onSelectObject(event);
@@ -26,7 +26,7 @@ export class SketchObjectManager {
 
   public addSketchObject(object: SketchObject) {
     this.sketchObjectGroup.add(object);
-    this.context.sceneRenderer.fitCameraToScene();
+    this.rootRenderer.fitCameraToScene();
   }
 
   public getBoundingSphere() {
@@ -47,14 +47,14 @@ export class SketchObjectManager {
     if (this.sketchObjectGroup.children.length === 0 || event.button !== 0) {
       return;
     }
-    const canvasElement = this.context.sceneRenderer.canvasElement;
+    const canvasElement = this.rootRenderer.canvasElement;
     const position = new Vector2(
       (event.offsetX / canvasElement.clientWidth) * 2 - 1,
       -(event.offsetY / canvasElement.clientHeight) * 2 + 1,
     );
     this.raycaster.setFromCamera(
       position,
-      this.context.sceneRenderer.currentCamera,
+      this.rootRenderer.camera,
     );
     const [firstIntersection] = this.raycaster.intersectObjects<SketchObject>(
       this.sketchObjectGroup.children,

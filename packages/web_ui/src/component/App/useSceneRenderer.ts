@@ -1,25 +1,25 @@
 import { rendererStore } from "@src/store";
 import { useEffect, useRef } from "react";
-import { CommandKeyList, SceneRenderer } from "sdk";
+import { CommandKeyList, RootRenderer } from "sdk";
 
 export function useSceneRenderer() {
   const canvasElementRef = useRef<HTMLCanvasElement>(null);
   useEffect(() => {
     if (canvasElementRef.current != null) {
-      const sceneRenderer = new SceneRenderer(
+      const rootRenderer = new RootRenderer(
         canvasElementRef.current,
         rendererStore,
       );
-      (window as any).sr = sceneRenderer;
+      (window as any).rr = rootRenderer;
       (window as any).tc = () =>
-        sceneRenderer.context.commandSystem.runCommand({
+        rootRenderer.commandSystem.runCommand({
           key: CommandKeyList.create_plane,
           parameter: {
             offset: 3,
             parallelTo: "XY",
           },
         });
-      return () => sceneRenderer.dispose();
+      return () => rootRenderer.dispose();
     }
   }, [canvasElementRef]);
   return canvasElementRef;

@@ -1,16 +1,16 @@
 import { CommandList } from "@src/command_system/command_list";
-import { InstanceContext } from "@src/instance_context";
+import { RootRenderer } from "@src/root_renderer";
 
 export class CommandSystem {
-  context: InstanceContext;
+  rootRenderer: RootRenderer;
 
   modificationHistoryList: ModificationHistory[];
   modificationHistoryIndex: number;
 
   commandMap: Map<string, Command<any, any>>;
 
-  constructor(context: InstanceContext) {
-    this.context = context;
+  constructor(rootRenderer: RootRenderer) {
+    this.rootRenderer = rootRenderer;
     this.modificationHistoryList = [];
     this.modificationHistoryIndex = -1;
     this.commandMap = new Map();
@@ -30,13 +30,13 @@ export class CommandSystem {
     }
     if (command.modification) {
       const modificationHistory = command.run(
-        this.context,
+        this.rootRenderer,
         (commandInput as any).parameter,
       );
       this.modificationHistoryList.push(modificationHistory);
       this.modificationHistoryIndex++;
     } else {
-      command.run(this.context, (commandInput as any).parameter);
+      command.run(this.rootRenderer, (commandInput as any).parameter);
     }
   }
 
@@ -62,15 +62,15 @@ export type Command<K, P = undefined> =
       key: K;
       modification: false;
       run: P extends undefined
-        ? (context: InstanceContext) => void
-        : (context: InstanceContext, parameter: P) => void;
+        ? (rootRenderer: RootRenderer) => void
+        : (rootRenderer: RootRenderer, parameter: P) => void;
     }
   | {
       key: K;
       modification: true;
       run: P extends undefined
-        ? (context: InstanceContext) => ModificationHistory<K, P>
-        : (context: InstanceContext, parameter: P) => ModificationHistory<K, P>;
+        ? (rootRenderer: RootRenderer) => ModificationHistory<K, P>
+        : (rootRenderer: RootRenderer, parameter: P) => ModificationHistory<K, P>;
     };
 
 type ModificationHistory<K = string, P = undefined> = P extends undefined
