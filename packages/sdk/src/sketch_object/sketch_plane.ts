@@ -8,7 +8,7 @@ import { SKETCH_OBJECT_TYPE } from "@src/constant/enum";
 import {
   SketchObject,
   SketchObjectUserData,
-} from "@src/sketch_object/interface";
+} from "@src/sketch_object/type";
 import {
   BufferGeometry,
   DoubleSide,

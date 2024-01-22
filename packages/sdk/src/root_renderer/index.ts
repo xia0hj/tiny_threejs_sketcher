@@ -5,7 +5,7 @@ import {
 } from "@src/constant/config";
 import { CAMERA_TYPE } from "@src/constant/enum";
 import { ReactiveStore, getDefaultReactiveStore } from "@src/reactive_store";
-import { SketchObject } from "@src/sketch_object/interface";
+import { SketchObject } from "@src/sketch_object/type";
 import { SketchObjectManager } from "@src/sketch_object/sketch_object_manager";
 import { ValueOf } from "@src/util";
 import {
@@ -20,6 +20,7 @@ import {
   WebGLRenderer,
 } from "three";
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
+import { PointerEventHandler } from "@src/pointer_event_handler";
 
 export class RootRenderer {
   public canvasElement: HTMLCanvasElement;
@@ -42,6 +43,7 @@ export class RootRenderer {
   public reactiveStore: ReactiveStore;
   public commandSystem: CommandSystem;
   public sketchObjectManager: SketchObjectManager;
+  public pointerEventHandler: PointerEventHandler;
 
   constructor(
     canvasElement: HTMLCanvasElement,
@@ -50,9 +52,10 @@ export class RootRenderer {
     this.canvasElement = canvasElement;
     this.scene = new Scene();
 
-    this.reactiveStore = externalReactiveStore ?? getDefaultReactiveStore();
     this.commandSystem = new CommandSystem(this);
+    this.reactiveStore = externalReactiveStore ?? getDefaultReactiveStore();
     this.sketchObjectManager = new SketchObjectManager(this);
+    this.pointerEventHandler = new PointerEventHandler(this);
 
     const canvasWidth = this.canvasElement.clientWidth;
     const canvasHeight = this.canvasElement.clientHeight;
@@ -88,10 +91,7 @@ export class RootRenderer {
     this.camera = this.perspectiveCamera;
 
     // control
-    this.orbitControls = new OrbitControls(
-      this.camera,
-      this.canvasElement,
-    );
+    this.orbitControls = new OrbitControls(this.camera, this.canvasElement);
 
     // others
     this.canvasElement.addEventListener(

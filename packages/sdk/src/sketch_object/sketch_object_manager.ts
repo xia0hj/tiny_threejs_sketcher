@@ -1,4 +1,4 @@
-import { SketchObject } from "@src/sketch_object/interface";
+import { SketchObject } from "@src/sketch_object/type";
 import { RootRenderer } from "@src/root_renderer";
 import { Box3, Group, Raycaster, Scene, Sphere, Vector2 } from "three";
 
@@ -6,7 +6,6 @@ export class SketchObjectManager {
   sketchObjectGroup: Group;
   rootRenderer: RootRenderer;
   raycaster: Raycaster;
-  eventController: AbortController;
   selectedObjectList: SketchObject[] = [];
 
   constructor(rootRenderer: RootRenderer) {
@@ -14,14 +13,6 @@ export class SketchObjectManager {
     this.raycaster = new Raycaster();
     this.sketchObjectGroup = new Group();
     rootRenderer.scene.add(this.sketchObjectGroup);
-    this.eventController = new AbortController();
-    rootRenderer.canvasElement.addEventListener(
-      "pointerup",
-      (event) => {
-        this.onSelectObject(event);
-      },
-      { signal: this.eventController.signal },
-    );
   }
 
   public addSketchObject(object: SketchObject) {
@@ -39,12 +30,8 @@ export class SketchObjectManager {
       .getBoundingSphere(new Sphere());
   }
 
-  public dispose() {
-    this.eventController.abort();
-  }
-
-  private onSelectObject(event: MouseEvent) {
-    if (this.sketchObjectGroup.children.length === 0 || event.button !== 0) {
+  public selectObject(event: MouseEvent) {
+    if (this.sketchObjectGroup.children.length === 0) {
       return;
     }
     const canvasElement = this.rootRenderer.canvasElement;
