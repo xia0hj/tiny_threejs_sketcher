@@ -1,5 +1,5 @@
 import { Command } from "@src/command_system";
-import { CAMERA_TYPE } from "@src/constant/enum";
+import { CAMERA_TYPE, SKETCH_OBJECT_TYPE } from "@src/constant/enum";
 
 export const CommandSetPerspectiveCamera: Command<"set_perspective_camera"> = {
   key: "set_perspective_camera",
@@ -25,3 +25,22 @@ export const CommandUndo: Command<"undo", { step: number }> = {
     rootRenderer.commandSystem.undo(step);
   },
 };
+
+export const CommandFitCameraToScene: Command<"fitCameraToScene"> = {
+  key: "fitCameraToScene",
+  modification: false,
+  run(rootRenderer) {
+    rootRenderer.fitCameraToScene();
+  },
+};
+
+export const CommandEditSketchPlane: Command<'editSketchPlane'> = {
+  key:'editSketchPlane',
+  modification: false,
+  run(rootRenderer) {
+    const selectedObjectList = rootRenderer.sketchObjectManager.selectedObjectList
+    if(selectedObjectList.length !== 1 || selectedObjectList[0].type !== SKETCH_OBJECT_TYPE.plane){
+      console.error('选择的不是草图平面')
+    }
+  },
+}

@@ -39,7 +39,7 @@ export const CommandCreatePlane: Command<"create_plane", CreatePlaneParameter> =
   } as const;
 
 export class SketchPlane extends SketchObject {
-  userData: SketchObjectUserData = { type: SKETCH_OBJECT_TYPE.plane };
+  userData: SketchObjectUserData
   constructor(createPlaneParameter: CreatePlaneParameter) {
     super(
       buildPlaneGeomtry(createPlaneParameter, SCENE_PLANE_LENGTH),
@@ -51,6 +51,15 @@ export class SketchPlane extends SketchObject {
         opacity: SCENE_PLANE_OPACITY,
       }),
     );
+    this.userData = {
+      type: SKETCH_OBJECT_TYPE.plane,
+      normal: createPlaneParameter.parallelTo === 'XY'
+        ? {x:0,y:0,z:1}
+        : createPlaneParameter.parallelTo === 'XZ'
+          ? {x:0,y:1,z:0}
+          : {x:1,y:0,z:0},
+      constant: createPlaneParameter.offset
+    }
   }
   onMouseEnter(): void {
     throw new Error("Method not implemented.");

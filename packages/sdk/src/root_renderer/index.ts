@@ -20,7 +20,6 @@ import {
   WebGLRenderer,
 } from "three";
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
-import { PointerEventHandler } from "@src/pointer_event_handler";
 
 export class RootRenderer {
   public canvasElement: HTMLCanvasElement;
@@ -43,7 +42,6 @@ export class RootRenderer {
   public reactiveStore: ReactiveStore;
   public commandSystem: CommandSystem;
   public sketchObjectManager: SketchObjectManager;
-  public pointerEventHandler: PointerEventHandler;
 
   constructor(
     canvasElement: HTMLCanvasElement,
@@ -55,7 +53,6 @@ export class RootRenderer {
     this.commandSystem = new CommandSystem(this);
     this.reactiveStore = externalReactiveStore ?? getDefaultReactiveStore();
     this.sketchObjectManager = new SketchObjectManager(this);
-    this.pointerEventHandler = new PointerEventHandler(this);
 
     const canvasWidth = this.canvasElement.clientWidth;
     const canvasHeight = this.canvasElement.clientHeight;

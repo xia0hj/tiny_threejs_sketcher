@@ -5,4 +5,5 @@ export const CAMERA_TYPE = {
 
 export const SKETCH_OBJECT_TYPE = {
   plane: "plane",
+  line: 'line'
 } as const;

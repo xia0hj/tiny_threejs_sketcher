@@ -16,7 +16,12 @@ export abstract class SketchObject extends Mesh<
 }
 
 export type SketchObjectUserData = {
-  type: ValueOf<typeof SKETCH_OBJECT_TYPE>;
+  type: typeof SKETCH_OBJECT_TYPE.plane;
+  normal:{x:number,y:number,z:number};
+  constant: number
+} | {
+  type: typeof SKETCH_OBJECT_TYPE.line;
+
 };
 
 type SketchObjectCustomConfig = {
