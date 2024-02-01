@@ -34,13 +34,3 @@ export const CommandFitCameraToScene: Command<"fitCameraToScene"> = {
   },
 };
 
-export const CommandEditSketchPlane: Command<'editSketchPlane'> = {
-  key:'editSketchPlane',
-  modification: false,
-  run(rootRenderer) {
-    const selectedObjectList = rootRenderer.sketchObjectManager.selectedObjectList
-    if(selectedObjectList.length !== 1 || selectedObjectList[0].type !== SKETCH_OBJECT_TYPE.plane){
-      console.error('选择的不是草图平面')
-    }
-  },
-}

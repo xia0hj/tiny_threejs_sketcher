@@ -5,10 +5,9 @@ import {
   SCENE_PLANE_OPACITY,
 } from "@src/constant/config";
 import { SKETCH_OBJECT_TYPE } from "@src/constant/enum";
-import {
-  SketchObject,
-  SketchObjectUserData,
-} from "@src/sketch_object/type";
+import { CommandKeyList } from "@src/index";
+import { LineDrawer } from "@src/input_event_handler/line_drawer";
+import { SketchObject, SketchObjectUserData } from "@src/sketch_object/type";
 import {
   BufferGeometry,
   DoubleSide,
@@ -26,7 +25,18 @@ export const CommandCreatePlane: Command<"create_plane", CreatePlaneParameter> =
     modification: true,
     run(context, parameter) {
       const plane = new SketchPlane(parameter);
-      context.sketchObjectManager.addSketchObject(plane);
+      context.sketchObjectGroup.add(plane);
+      context.commandSystem.runCommand({
+        key: CommandKeyList.edit_plane,
+        parameter: {
+          constant: -parameter.offset,
+          normal: {
+            x: 1,
+            y: 0,
+            z: 0,
+          },
+        },
+      });
       return {
         key: this.key,
         parameter: { ...parameter },
@@ -38,8 +48,23 @@ export const CommandCreatePlane: Command<"create_plane", CreatePlaneParameter> =
     },
   } as const;
 
+export const CommandEditPlane: Command<
+  "edit_plane",
+  { normal: { x: number; y: number; z: number }; constant: number }
+> = {
+  key: "edit_plane",
+  modification: false,
+  run(rootRenderer, { normal, constant }) {
+    rootRenderer.inputEventHandler = new LineDrawer(
+      normal,
+      constant,
+      rootRenderer.sketchObjectGroup,
+    );
+  },
+};
+
 export class SketchPlane extends SketchObject {
-  userData: SketchObjectUserData
+  userData: SketchObjectUserData;
   constructor(createPlaneParameter: CreatePlaneParameter) {
     super(
       buildPlaneGeomtry(createPlaneParameter, SCENE_PLANE_LENGTH),
@@ -53,13 +78,14 @@ export class SketchPlane extends SketchObject {
     );
     this.userData = {
       type: SKETCH_OBJECT_TYPE.plane,
-      normal: createPlaneParameter.parallelTo === 'XY'
-        ? {x:0,y:0,z:1}
-        : createPlaneParameter.parallelTo === 'XZ'
-          ? {x:0,y:1,z:0}
-          : {x:1,y:0,z:0},
-      constant: createPlaneParameter.offset
-    }
+      normal:
+        createPlaneParameter.parallelTo === "XY"
+          ? { x: 0, y: 0, z: 1 }
+          : createPlaneParameter.parallelTo === "XZ"
+            ? { x: 0, y: 1, z: 0 }
+            : { x: 1, y: 0, z: 0 },
+      constant: createPlaneParameter.offset,
+    };
   }
   onMouseEnter(): void {
     throw new Error("Method not implemented.");
@@ -73,8 +99,8 @@ export class SketchPlane extends SketchObject {
   onDeselect(): void {
     throw new Error("Method not implemented.");
   }
-  updateCustomConfig(customConfig: { visible: boolean; }): void {
-    this.visible = customConfig.visible
+  updateCustomConfig(customConfig: { visible: boolean }): void {
+    this.visible = customConfig.visible;
   }
   dispose(): void {
     this.geometry.dispose();

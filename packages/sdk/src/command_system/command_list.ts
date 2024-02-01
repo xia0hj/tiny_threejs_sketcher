@@ -3,7 +3,10 @@ import {
   CommandSetPerspectiveCamera,
   CommandUndo,
 } from "@src/root_renderer/command";
-import { CommandCreatePlane } from "@src/sketch_object/sketch_plane";
+import {
+  CommandCreatePlane,
+  CommandEditPlane,
+} from "@src/sketch_object/sketch_plane";
 import { ValueOf } from "@src/util";
 
 export const CommandList = {
@@ -11,6 +14,7 @@ export const CommandList = {
   [CommandUndo.key]: CommandUndo,
   [CommandSetOrthographicCamera.key]: CommandSetOrthographicCamera,
   [CommandSetPerspectiveCamera.key]: CommandSetPerspectiveCamera,
+  [CommandEditPlane.key]: CommandEditPlane,
 } as const;
 
 export const CommandKeyList = Object.keys(CommandList).reduce(

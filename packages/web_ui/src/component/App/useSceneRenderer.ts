@@ -16,7 +16,7 @@ export function useSceneRenderer() {
           key: CommandKeyList.create_plane,
           parameter: {
             offset: 3,
-            parallelTo: "XY",
+            parallelTo: "YZ",
           },
         });
       return () => rootRenderer.dispose();

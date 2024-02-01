@@ -4,16 +4,20 @@ import {
   SCENE_BACKGROUND_COLOR,
 } from "@src/constant/config";
 import { CAMERA_TYPE } from "@src/constant/enum";
+import { DefaultInputEventHandler } from "@src/input_event_handler/default";
+import { InputEventHandler } from "@src/input_event_handler/interface";
 import { ReactiveStore, getDefaultReactiveStore } from "@src/reactive_store";
 import { SketchObject } from "@src/sketch_object/type";
-import { SketchObjectManager } from "@src/sketch_object/sketch_object_manager";
 import { ValueOf } from "@src/util";
 import {
   AmbientLight,
   AxesHelper,
+  Box3,
+  Group,
   Light,
   OrthographicCamera,
   PerspectiveCamera,
+  Raycaster,
   Scene,
   Sphere,
   Vector3,
@@ -25,6 +29,7 @@ export class RootRenderer {
   public canvasElement: HTMLCanvasElement;
 
   public scene: Scene;
+  public sketchObjectGroup = new Group();
 
   private renderer: WebGLRenderer;
 
@@ -41,7 +46,10 @@ export class RootRenderer {
 
   public reactiveStore: ReactiveStore;
   public commandSystem: CommandSystem;
-  public sketchObjectManager: SketchObjectManager;
+
+  raycaster = new Raycaster();
+
+  public inputEventHandler: InputEventHandler = new DefaultInputEventHandler();
 
   constructor(
     canvasElement: HTMLCanvasElement,
@@ -49,10 +57,10 @@ export class RootRenderer {
   ) {
     this.canvasElement = canvasElement;
     this.scene = new Scene();
+    this.scene.add(this.sketchObjectGroup);
 
     this.commandSystem = new CommandSystem(this);
     this.reactiveStore = externalReactiveStore ?? getDefaultReactiveStore();
-    this.sketchObjectManager = new SketchObjectManager(this);
 
     const canvasWidth = this.canvasElement.clientWidth;
     const canvasHeight = this.canvasElement.clientHeight;
@@ -91,15 +99,24 @@ export class RootRenderer {
     this.orbitControls = new OrbitControls(this.camera, this.canvasElement);
 
     // others
+    this.fitCameraToScene();
+    this.animate();
+
+    // listen input event
     this.canvasElement.addEventListener(
-      "resize",
-      () => {
-        this.onCanvasResize();
+      "pointerdown",
+      (event) => {
+        this.inputEventHandler.onPointerdown?.(event, this);
       },
       { signal: this.eventAbortController.signal },
     );
-    this.fitCameraToScene();
-    this.animate();
+    this.canvasElement.addEventListener(
+      "pointermove",
+      (event) => {
+        this.inputEventHandler.onPointermove?.(event, this);
+      },
+      { signal: this.eventAbortController.signal },
+    );
   }
 
   public setCameraType(targetType: ValueOf<typeof CAMERA_TYPE>) {
@@ -129,8 +146,11 @@ export class RootRenderer {
 
   public fitCameraToScene() {
     const boundingSphere =
-      this.sketchObjectManager.getBoundingSphere() ??
-      new Sphere(new Vector3(0, 0, 0), AXES_HELPER_LINE_LENGTH);
+      this.sketchObjectGroup.children.length === 0
+        ? new Sphere(new Vector3(0, 0, 0), AXES_HELPER_LINE_LENGTH)
+        : new Box3()
+            .setFromObject(this.sketchObjectGroup)
+            .getBoundingSphere(new Sphere());
 
     const currentCameraType =
       this.reactiveStore.getReactiveState("currentCameraType");
