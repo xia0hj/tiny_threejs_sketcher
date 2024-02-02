@@ -4,9 +4,9 @@ import {
   SCENE_BACKGROUND_COLOR,
 } from "@src/constant/config";
 import { CAMERA_TYPE } from "@src/constant/enum";
+import { GlobalStore } from "@src/global_store";
 import { DefaultInputEventHandler } from "@src/input_event_handler/default";
 import { InputEventHandler } from "@src/input_event_handler/interface";
-import { ReactiveStore, getDefaultReactiveStore } from "@src/reactive_store";
 import { SketchObject } from "@src/sketch_object/type";
 import { ValueOf } from "@src/util";
 import {
@@ -44,23 +44,19 @@ export class RootRenderer {
   private requestAnimationFrameId: number = 0;
   private eventAbortController: AbortController = new AbortController();
 
-  public reactiveStore: ReactiveStore;
+  public globalStore: GlobalStore = new GlobalStore();
   public commandSystem: CommandSystem;
 
   raycaster = new Raycaster();
 
   public inputEventHandler: InputEventHandler = new DefaultInputEventHandler();
 
-  constructor(
-    canvasElement: HTMLCanvasElement,
-    externalReactiveStore?: ReactiveStore,
-  ) {
+  constructor(canvasElement: HTMLCanvasElement) {
     this.canvasElement = canvasElement;
     this.scene = new Scene();
     this.scene.add(this.sketchObjectGroup);
 
     this.commandSystem = new CommandSystem(this);
-    this.reactiveStore = externalReactiveStore ?? getDefaultReactiveStore();
 
     const canvasWidth = this.canvasElement.clientWidth;
     const canvasHeight = this.canvasElement.clientHeight;
@@ -120,23 +116,21 @@ export class RootRenderer {
   }
 
   public setCameraType(targetType: ValueOf<typeof CAMERA_TYPE>) {
-    const store = this.reactiveStore;
-
-    if (store.getReactiveState("currentCameraType") === targetType) {
+    if (this.globalStore.getState("currentCameraType") === targetType) {
       return;
     }
 
     if (targetType === CAMERA_TYPE.perspectiveCamera) {
       this.camera = this.perspectiveCamera;
       this.orbitControls.object = this.perspectiveCamera;
-      store.setReactiveState(
+      this.globalStore.setState(
         "currentCameraType",
         CAMERA_TYPE.perspectiveCamera,
       );
     } else if (targetType === CAMERA_TYPE.orthographicCamera) {
       this.camera = this.orthographicCamera;
       this.orbitControls.object = this.orthographicCamera;
-      store.setReactiveState(
+      this.globalStore.setState(
         "currentCameraType",
         CAMERA_TYPE.orthographicCamera,
       );
@@ -152,8 +146,7 @@ export class RootRenderer {
             .setFromObject(this.sketchObjectGroup)
             .getBoundingSphere(new Sphere());
 
-    const currentCameraType =
-      this.reactiveStore.getReactiveState("currentCameraType");
+    const currentCameraType = this.globalStore.getState("currentCameraType");
 
     if (currentCameraType === CAMERA_TYPE.perspectiveCamera) {
       const fov = (this.perspectiveCamera.fov * Math.PI) / 180;
