@@ -1,4 +1,4 @@
-import { rendererStore } from "@src/store";
+
 import { useEffect, useRef } from "react";
 import { CommandKeyList, RootRenderer } from "sdk";
 
@@ -8,7 +8,6 @@ export function useSceneRenderer() {
     if (canvasElementRef.current != null) {
       const rootRenderer = new RootRenderer(
         canvasElementRef.current,
-        rendererStore,
       );
       (window as any).rr = rootRenderer;
       (window as any).tc = () =>

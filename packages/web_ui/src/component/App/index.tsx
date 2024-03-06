@@ -1,15 +1,13 @@
 import { useSceneRenderer } from "@src/component/App/useSceneRenderer";
-import { Button } from "@nextui-org/react";
+import style from "./index.module.less";
 
 export const App = () => {
   const canvasRef = useSceneRenderer();
 
   return (
-    <div className="w-full flex h-dvh">
-      <div className="w-1/4 h-dvh">
-        <Button>啊啊啊</Button>
-      </div>
-      <canvas className="w-3/4 h-dvh block" ref={canvasRef} />
+    <div className={style.app}>
+      <div aria-label="左侧工具栏" className={style.app_left}></div>
+      <canvas className={style.app_right} ref={canvasRef} />
     </div>
   );
 };
