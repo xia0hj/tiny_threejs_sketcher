@@ -26,17 +26,17 @@ export const CommandCreatePlane: Command<"create_plane", CreatePlaneParameter> =
     run(context, parameter) {
       const plane = new SketchPlane(parameter);
       context.sketchObjectGroup.add(plane);
-      context.commandSystem.runCommand({
-        key: CommandKeyList.edit_plane,
-        parameter: {
-          constant: -parameter.offset,
-          normal: {
-            x: 1,
-            y: 0,
-            z: 0,
-          },
-        },
-      });
+      // context.commandSystem.runCommand({
+      //   key: CommandKeyList.edit_plane,
+      //   parameter: {
+      //     constant: -parameter.offset,
+      //     normal: {
+      //       x: 1,
+      //       y: 0,
+      //       z: 0,
+      //     },
+      //   },
+      // });
       return {
         key: this.key,
         parameter: { ...parameter },

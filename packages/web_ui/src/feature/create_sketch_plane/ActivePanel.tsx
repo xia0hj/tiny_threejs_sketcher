@@ -6,6 +6,8 @@ import {
 import { ToolbarButton } from "@src/component/Toolbar";
 import { Card, Form, InputNumber, Select } from "antd";
 import style from "./index.module.less";
+import { useGlobalStore } from "@src/store";
+import { CommandKeyList } from "sdk";
 interface FieldType {
   parallelTo: "XY" | "XZ" | "YZ";
   offset: number;
@@ -13,8 +15,16 @@ interface FieldType {
 
 export const ActivePanel: ToolbarButton["activePanel"] = ({ done }) => {
   const [formInstance] = Form.useForm();
+  const rootRenderer = useGlobalStore((state) => state.rootRenderer);
   const onSubmit = (values: FieldType) => {
     console.log(values);
+    rootRenderer?.commandSystem.runCommand({
+      key: CommandKeyList.create_plane,
+      parameter: {
+        offset: values.offset,
+        parallelTo: values.parallelTo,
+      },
+    });
     done();
   };
 

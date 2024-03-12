@@ -2,12 +2,12 @@ import { RootRenderer } from "sdk";
 import { create } from "zustand";
 
 interface StoreState {
-  rootRenderer: RootRenderer | null;
+  rootRenderer?: RootRenderer;
   setRootRenderer: (rootRenderer: RootRenderer) => void;
 }
 
-export const useStore = create<StoreState>((set) => ({
-  rootRenderer: null,
+export const useGlobalStore = create<StoreState>((set) => ({
+  rootRenderer: undefined,
   setRootRenderer: (rootRenderer) => {
     set({
       rootRenderer,
