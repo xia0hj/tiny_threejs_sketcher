@@ -1,15 +1,15 @@
 import { CommandList } from "@src/command_system/command_list";
-import { RootRenderer } from "@src/root_renderer";
+import { ThreeCadEditor } from "@src/three_cad_editor";
 
 export class CommandSystem {
-  rootRenderer: RootRenderer;
+  rootRenderer: ThreeCadEditor;
 
   modificationHistoryList: ModificationHistory[];
   modificationHistoryIndex: number;
 
   commandMap: Map<string, Command<any, any>>;
 
-  constructor(rootRenderer: RootRenderer) {
+  constructor(rootRenderer: ThreeCadEditor) {
     this.rootRenderer = rootRenderer;
     this.modificationHistoryList = [];
     this.modificationHistoryIndex = -1;
@@ -62,15 +62,15 @@ export type Command<K, P = undefined> =
       key: K;
       modification: false;
       run: P extends undefined
-        ? (rootRenderer: RootRenderer) => void
-        : (rootRenderer: RootRenderer, parameter: P) => void;
+        ? (rootRenderer: ThreeCadEditor) => void
+        : (rootRenderer: ThreeCadEditor, parameter: P) => void;
     }
   | {
       key: K;
       modification: true;
       run: P extends undefined
-        ? (rootRenderer: RootRenderer) => ModificationHistory<K, P>
-        : (rootRenderer: RootRenderer, parameter: P) => ModificationHistory<K, P>;
+        ? (rootRenderer: ThreeCadEditor) => ModificationHistory<K, P>
+        : (rootRenderer: ThreeCadEditor, parameter: P) => ModificationHistory<K, P>;
     };
 
 type ModificationHistory<K = string, P = undefined> = P extends undefined

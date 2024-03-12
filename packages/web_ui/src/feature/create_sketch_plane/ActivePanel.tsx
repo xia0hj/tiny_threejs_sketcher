@@ -15,7 +15,7 @@ interface FieldType {
 
 export const ActivePanel: ToolbarButton["activePanel"] = ({ done }) => {
   const [formInstance] = Form.useForm();
-  const rootRenderer = useGlobalStore((state) => state.rootRenderer);
+  const rootRenderer = useGlobalStore((state) => state.threeCadEditor);
   const onSubmit = (values: FieldType) => {
     console.log(values);
     rootRenderer?.commandSystem.runCommand({

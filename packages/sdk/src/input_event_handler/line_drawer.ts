@@ -1,6 +1,6 @@
 import { DefaultInputEventHandler } from "@src/input_event_handler/default";
 import { InputEventHandler } from "@src/input_event_handler/interface";
-import { RootRenderer } from "@src/root_renderer";
+import { ThreeCadEditor } from "@src/three_cad_editor";
 import { BufferGeometry, Line, Object3D, Plane, Vector2, Vector3 } from "three";
 
 export class LineDrawer implements InputEventHandler {
@@ -21,7 +21,7 @@ export class LineDrawer implements InputEventHandler {
     parentObject.add(this.line);
   }
 
-  onPointerdown(event: MouseEvent, rootRenderer: RootRenderer) {
+  onPointerdown(event: MouseEvent, rootRenderer: ThreeCadEditor) {
     if (this.isDrawing) {
       // 停止绘制
       this.isDrawing = false;
@@ -41,7 +41,7 @@ export class LineDrawer implements InputEventHandler {
     }
   }
 
-  onPointermove(event: MouseEvent, rootRenderer: RootRenderer) {
+  onPointermove(event: MouseEvent, rootRenderer: ThreeCadEditor) {
     if (!this.isDrawing) {
       return;
     }

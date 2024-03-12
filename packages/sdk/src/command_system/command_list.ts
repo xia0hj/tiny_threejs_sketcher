@@ -2,7 +2,7 @@ import {
   CommandSetOrthographicCamera,
   CommandSetPerspectiveCamera,
   CommandUndo,
-} from "@src/root_renderer/command";
+} from "@src/three_cad_editor/command";
 import {
   CommandCreatePlane,
   CommandEditPlane,

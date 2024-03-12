@@ -1,16 +1,16 @@
-import { RootRenderer } from "sdk";
+import { ThreeCadEditor } from "sdk";
 import { create } from "zustand";
 
 interface StoreState {
-  rootRenderer?: RootRenderer;
-  setRootRenderer: (rootRenderer: RootRenderer) => void;
+  threeCadEditor?: ThreeCadEditor;
+  setThreeCadEditor: (threeCadEditor: ThreeCadEditor|undefined) => void;
 }
 
 export const useGlobalStore = create<StoreState>((set) => ({
-  rootRenderer: undefined,
-  setRootRenderer: (rootRenderer) => {
+  threeCadEditor: undefined,
+  setThreeCadEditor: (threeCadEditor) => {
     set({
-      rootRenderer,
+      threeCadEditor,
     });
   },
 }));
