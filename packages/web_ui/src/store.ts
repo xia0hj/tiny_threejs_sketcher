@@ -1,7 +1,7 @@
 import { ThreeCadEditor } from "sdk";
 import { create } from "zustand";
 
-interface StoreState {
+type StoreState = {
   threeCadEditor?: ThreeCadEditor;
   setThreeCadEditor: (threeCadEditor: ThreeCadEditor|undefined) => void;
 }

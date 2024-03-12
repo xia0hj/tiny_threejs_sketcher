@@ -7,6 +7,7 @@ import { CAMERA_TYPE } from "@src/constant/enum";
 import { GlobalStore } from "@src/global_store";
 import { DefaultInputEventHandler } from "@src/input_event_handler/default";
 import { InputEventHandler } from "@src/input_event_handler/interface";
+import { DefaultOperationMode, OperationMode } from "@src/operation_mode";
 import { SketchObject } from "@src/sketch_object/type";
 import { ValueOf } from "@src/util";
 import {
@@ -49,7 +50,7 @@ export class ThreeCadEditor {
 
   raycaster = new Raycaster();
 
-  public inputEventHandler: InputEventHandler = new DefaultInputEventHandler();
+  public operationMode: OperationMode = new DefaultOperationMode();
 
   constructor(canvasElement: HTMLCanvasElement) {
     this.canvasElement = canvasElement;
@@ -102,14 +103,14 @@ export class ThreeCadEditor {
     this.canvasElement.addEventListener(
       "pointerdown",
       (event) => {
-        this.inputEventHandler.onPointerdown?.(event, this);
+        this.operationMode.onPointerdown?.(event, this);
       },
       { signal: this.eventAbortController.signal },
     );
     this.canvasElement.addEventListener(
       "pointermove",
       (event) => {
-        this.inputEventHandler.onPointermove?.(event, this);
+        this.operationMode.onPointermove?.(event, this);
       },
       { signal: this.eventAbortController.signal },
     );
