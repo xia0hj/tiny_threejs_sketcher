@@ -1,6 +1,6 @@
 import { DefaultInputEventHandler } from "@src/input_event_handler/default";
 import { InputEventHandler } from "@src/input_event_handler/interface";
-import { ThreeCadEditor } from "@src/three_cad_editor";
+import { ThreeCadEditor } from "@src/three_cad_editor/three_cad_editor";
 import { BufferGeometry, Line, Object3D, Plane, Vector2, Vector3 } from "three";
 
 export class LineDrawer implements InputEventHandler {

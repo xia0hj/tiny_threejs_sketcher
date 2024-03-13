@@ -1,5 +1,5 @@
 import { CommandList } from "@src/command_system/command_list";
-import { ThreeCadEditor } from "@src/three_cad_editor";
+import { ThreeCadEditor } from "@src/three_cad_editor/three_cad_editor";
 
 export class CommandSystem {
   rootRenderer: ThreeCadEditor;

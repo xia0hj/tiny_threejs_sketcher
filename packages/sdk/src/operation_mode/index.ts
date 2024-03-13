@@ -1,4 +1,4 @@
-import { ThreeCadEditor } from "@src/three_cad_editor"
+import { ThreeCadEditor } from "@src/three_cad_editor/three_cad_editor"
 
 export type OperationMode = {
   onPointermove?: (event:MouseEvent, threeCadEditor:ThreeCadEditor)=>void;
