@@ -7,7 +7,7 @@ import { CAMERA_TYPE } from "@src/constant/enum";
 import { GlobalStore } from "@src/global_store";
 import { DefaultInputEventHandler } from "@src/input_event_handler/default";
 import { InputEventHandler } from "@src/input_event_handler/interface";
-import { DefaultOperationMode, OperationMode } from "@src/operation_mode";
+import { DefaultOperationMode, OperationMode } from "@src/features/base/operation_mode";
 import { SketchObject } from "@src/sketch_object/type";
 import { ValueOf } from "@src/util";
 import {

@@ -4,17 +4,23 @@ import { ValueOf } from "@src/util";
 
 export type GlobalState = {
   selectedObjectList: SketchObject[];
-  currentCameraType: ValueOf<typeof CAMERA_TYPE>
+  currentCameraType: ValueOf<typeof CAMERA_TYPE>;
+};
+
+export type GlobalStateWatcher = {
+  [K in keyof GlobalState]: (newVal: GlobalState[K]) => void;
 };
 
 export class GlobalStore {
   private state: GlobalState;
+  private watcher?: GlobalStateWatcher;
 
-  constructor() {
+  constructor(watcher?: GlobalStateWatcher) {
     this.state = {
       selectedObjectList: [],
-      currentCameraType: CAMERA_TYPE.perspectiveCamera
+      currentCameraType: CAMERA_TYPE.perspectiveCamera,
     };
+    this.watcher = watcher;
   }
 
   getState<K extends keyof GlobalState>(key: K): GlobalState[K] {
@@ -22,6 +28,7 @@ export class GlobalStore {
   }
 
   setState<K extends keyof GlobalState>(key: K, val: GlobalState[K]) {
-    this.state[key] = val
+    this.state[key] = val;
+    this.watcher?.[key](val);
   }
 }

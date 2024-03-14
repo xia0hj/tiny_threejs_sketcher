@@ -2,8 +2,11 @@ import {
   AXES_HELPER_LINE_LENGTH,
   SCENE_BACKGROUND_COLOR,
 } from "@src/constant/config";
-import { CommandSystem } from "@src/feature/base/command_system";
-import { GlobalStore } from "@src/feature/base/global_store";
+import { CommandSystem } from "@src/features/base/command_system";
+import {
+  GlobalStateWatcher,
+  GlobalStore,
+} from "@src/features/base/global_store";
 import {
   AmbientLight,
   AxesHelper,
@@ -18,6 +21,7 @@ import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
 
 export type ThreeCadEditorProps = {
   canvasElement: HTMLCanvasElement;
+  globalStateWatcher?: GlobalStateWatcher;
 };
 
 export class ThreeCadEditor {
@@ -82,6 +86,11 @@ export class ThreeCadEditor {
     this.orbitControls = new OrbitControls(this.camera, this.canvasElement);
 
     this.animate();
+  }
+
+  public dispose() {
+    window.cancelAnimationFrame(this.requestAnimationFrameId);
+    this.eventAbortController.abort();
   }
 
   private animate() {

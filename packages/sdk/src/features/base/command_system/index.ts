@@ -25,23 +25,24 @@ export class CommandSystem {
   }
 }
 
-export type Command =
+export type Command<K = string> = Readonly<
   | {
-      key: string;
+      key: K;
       modification: false;
       run: (threeCadEditor: ThreeCadEditor, parameter?: object) => void;
     }
   | {
-      key: string;
+      key: K;
       modification: true;
       run: (
         threeCadEditor: ThreeCadEditor,
         parameter?: object,
       ) => ModificationHistory;
-    };
+    }
+>;
 
-type ModificationHistory = {
+type ModificationHistory = Readonly<{
   key: string;
   parameter?: object;
   rollback: () => void;
-};
+}>;
