@@ -7,6 +7,7 @@ import {
   GlobalStateWatcher,
   GlobalStore,
 } from "@src/features/base/global_store";
+import { COMMAND_KEY } from "@src/index";
 import {
   AmbientLight,
   AxesHelper,
@@ -84,6 +85,8 @@ export class ThreeCadEditor {
 
     // control
     this.orbitControls = new OrbitControls(this.camera, this.canvasElement);
+
+    this.commandSystem.runCommand(COMMAND_KEY.fit_camera_to_scene);
 
     this.animate();
   }

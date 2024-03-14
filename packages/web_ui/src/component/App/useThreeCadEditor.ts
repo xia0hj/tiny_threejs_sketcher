@@ -1,13 +1,15 @@
 import { useGlobalStore } from "@src/store";
 import { useEffect, useRef } from "react";
-import { CommandKeyList, ThreeCadEditor } from "sdk";
+import { ThreeCadEditor } from "sdk";
 
 export function useThreeCadEditor() {
   const canvasElementRef = useRef<HTMLCanvasElement>(null);
   const setThreeCadEditor = useGlobalStore((state) => state.setThreeCadEditor);
   useEffect(() => {
     if (canvasElementRef.current != null) {
-      const threeCadEditor = new ThreeCadEditor(canvasElementRef.current);
+      const threeCadEditor = new ThreeCadEditor({
+        canvasElement: canvasElementRef.current,
+      });
       setThreeCadEditor(threeCadEditor);
       return () => {
         threeCadEditor.dispose();

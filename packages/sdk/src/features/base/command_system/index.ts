@@ -1,3 +1,4 @@
+import { commandList } from "@src/features/base/command_system/command_list";
 import { ThreeCadEditor } from "@src/three_cad_editor";
 
 export class CommandSystem {
@@ -8,6 +9,10 @@ export class CommandSystem {
 
   constructor(threeCadEditor: ThreeCadEditor) {
     this.threeCadEditor = threeCadEditor;
+
+    commandList.forEach((command) => {
+      this.commandMap.set(command.key, command);
+    });
   }
 
   runCommand(key: string, parameter?: object) {

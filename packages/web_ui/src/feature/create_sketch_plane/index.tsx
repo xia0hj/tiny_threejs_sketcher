@@ -2,7 +2,7 @@ import {
   BorderOuterOutlined,
 
 } from "@ant-design/icons";
-import { ToolbarButton } from "@src/component/Toolbar";
+import { ToolbarButton } from "@src/component/Toolbar_legacy";
 import { ActivePanel } from "@src/feature/create_sketch_plane/ActivePanel";
 
 export const btnCreateSketchPlane: ToolbarButton = {

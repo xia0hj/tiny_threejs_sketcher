@@ -1,3 +1,4 @@
+```ts
 import { CommandSystem } from "@src/command_system";
 import {
   AXES_HELPER_LINE_LENGTH,
@@ -206,3 +207,4 @@ export class ThreeCadEditor {
     window.cancelAnimationFrame(this.requestAnimationFrameId);
   }
 }
+```

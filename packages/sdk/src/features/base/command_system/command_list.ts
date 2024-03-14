@@ -1,6 +1,7 @@
-import { Command } from "@src/feature/base/command_system";
+import { type Command } from "@src/features/base/command_system";
+import { commandFitCameraToScene } from "@src/features/camera";
 
-export const commandList: Command[] = [] as const;
+export const commandList = Object.freeze([commandFitCameraToScene]);
 
 export const COMMAND_KEY = Object.freeze(
   commandList.reduce<{ [key: string]: any }>((obj, command) => {

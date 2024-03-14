@@ -33,7 +33,7 @@
       "label": "dev_web",
       "path": "packages/web_ui",
       "type": "npm",
-      "script": "vite",
+      "script": "dev",
       "presentation": {
         "group": "dev"
       },
