@@ -2,11 +2,12 @@ import {
   BorderOuterOutlined,
 
 } from "@ant-design/icons";
-import { ToolbarButton } from "@src/component/Toolbar_legacy";
-import { ActivePanel } from "@src/feature/create_sketch_plane/ActivePanel";
+import { ToolbarButton } from "@src/component/Toolbar";
+// import { ActivePanel } from "@src/feature/create_sketch_plane/ActivePanel";
+import { Button } from "antd";
 
 export const btnCreateSketchPlane: ToolbarButton = {
   label: "创建草图平面",
   icon: <BorderOuterOutlined />,
-  activePanel: ActivePanel,
+  activePanel: ({onExit}) => <Button onClick={()=>onExit()}>退出</Button>,
 } as const;

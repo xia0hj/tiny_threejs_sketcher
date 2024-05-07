@@ -3,7 +3,7 @@ import {
   CheckOutlined,
   CloseOutlined,
 } from "@ant-design/icons";
-import { ToolbarButton } from "@src/component/Toolbar_legacy";
+import { ToolbarButton } from "@src/component/Toolbar";
 import { Card, Form, InputNumber, Select } from "antd";
 import style from "./index.module.less";
 import { useGlobalStore } from "@src/store";

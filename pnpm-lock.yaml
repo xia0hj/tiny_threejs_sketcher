@@ -102,7 +102,7 @@ importers:
         version: 5.0.10(less@4.2.0)
       vite-tsconfig-paths:
         specifier: ^4.2.3
-        version: 4.2.3(typescript@5.3.3)(vite@5.0.10)
+        version: 4.2.3(vite@5.0.10)
 
 packages:
 
@@ -3240,7 +3240,7 @@ packages:
       strip-ansi: 6.0.1
     dev: true
 
-  /tsconfck@2.1.2(typescript@5.3.3):
+  /tsconfck@2.1.2:
     resolution: {integrity: sha512-ghqN1b0puy3MhhviwO2kGF8SeMDNhEbnKxjK7h6+fvY9JAxqvXi8y5NAHSQv687OVboS2uZIByzGd45/YxrRHg==}
     engines: {node: ^14.13.1 || ^16 || >=18}
     hasBin: true
@@ -3249,8 +3249,6 @@ packages:
     peerDependenciesMeta:
       typescript:
         optional: true
-    dependencies:
-      typescript: 5.3.3
     dev: true
 
   /tslib@2.6.2:
@@ -3332,7 +3330,7 @@ packages:
       - terser
     dev: true
 
-  /vite-tsconfig-paths@4.2.3(typescript@5.3.3)(vite@5.0.10):
+  /vite-tsconfig-paths@4.2.3(vite@5.0.10):
     resolution: {integrity: sha512-xVsA2xe6QSlzBujtWF8q2NYexh7PAUYfzJ4C8Axpe/7d2pcERYxuxGgph9F4f0iQO36g5tyGq6eBUYIssdUrVw==}
     peerDependencies:
       vite: '*'
@@ -3342,7 +3340,7 @@ packages:
     dependencies:
       debug: 4.3.4
       globrex: 0.1.2
-      tsconfck: 2.1.2(typescript@5.3.3)
+      tsconfck: 2.1.2
       vite: 5.0.10(less@4.2.0)
     transitivePeerDependencies:
       - supports-color

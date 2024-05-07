@@ -1,4 +1,5 @@
-@right_sidebar_width: 300px;
+@left_sidebar_width: 300px;
+@navbar_height: 40px;
 
 .app {
   display: flex;
@@ -6,21 +7,21 @@
   width: 100%;
   height: 100dvh;
 
-  .app_top {
-    height: 150px;
+  .app_navbar {
+    height: @navbar_height;
   }
 
   .app_main {
     flex-grow: 1;
     display: flex;
 
-    .app_canvas {
-      display: block;
-      width: calc(100% - @right_sidebar_width);
+    .left_sidebar {
+      width: @left_sidebar_width;
     }
 
-    .app_right {
-      width: @right_sidebar_width;
+    .app_canvas {
+      display: block;
+      width: calc(100% - @left_sidebar_width);
     }
   }
 

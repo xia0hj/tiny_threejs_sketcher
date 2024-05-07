@@ -1,5 +1,5 @@
 import { CAMERA_TYPE } from "@src/constant/enum";
-import { SketchObject } from "@src/sketch_object/type";
+import { SketchObject } from "@src/features/sketch_object/type";
 import { ValueOf } from "@src/util";
 
 export type GlobalState = {
@@ -8,7 +8,7 @@ export type GlobalState = {
 };
 
 export type GlobalStateWatcher = {
-  [K in keyof GlobalState]: (newVal: GlobalState[K]) => void;
+  [K in keyof GlobalState]?: (newVal: GlobalState[K]) => void;
 };
 
 export class GlobalStore {
@@ -29,6 +29,6 @@ export class GlobalStore {
 
   setState<K extends keyof GlobalState>(key: K, val: GlobalState[K]) {
     this.state[key] = val;
-    this.watcher?.[key](val);
+    this.watcher?.[key]?.(val);
   }
 }
