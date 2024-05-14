@@ -1,7 +1,11 @@
 import { type Command } from "@src/features/base/command_system";
 import { commandFitCameraToScene } from "@src/features/camera";
+import { commandCreatePlane } from "@src/features/sketch_object/sketch_plane";
 
-export const commandList = Object.freeze([commandFitCameraToScene]);
+export const commandList = Object.freeze([
+  commandFitCameraToScene,
+  commandCreatePlane
+]);
 
 export const COMMAND_KEY = Object.freeze(
   commandList.reduce<{ [key: string]: any }>((obj, command) => {

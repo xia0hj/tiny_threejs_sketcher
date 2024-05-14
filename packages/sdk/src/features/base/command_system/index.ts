@@ -34,14 +34,14 @@ export type Command<K = string> = Readonly<
   | {
       key: K;
       modification: false;
-      run: (threeCadEditor: ThreeCadEditor, parameter?: object) => void;
+      run: (threeCadEditor: ThreeCadEditor, parameter?: any) => void;
     }
   | {
       key: K;
       modification: true;
       run: (
         threeCadEditor: ThreeCadEditor,
-        parameter?: object,
+        parameter?: any,
       ) => ModificationHistory;
     }
 >;

@@ -7,25 +7,22 @@ import { ToolbarButton } from "@src/component/Toolbar";
 import { Card, Form, InputNumber, Select } from "antd";
 import style from "./index.module.less";
 import { useGlobalStore } from "@src/store";
-import { CommandKeyList } from "sdk";
+import { COMMAND_KEY } from "sdk";
 interface FieldType {
   parallelTo: "XY" | "XZ" | "YZ";
   offset: number;
 }
 
-export const ActivePanel: ToolbarButton["activePanel"] = ({ done }) => {
+export const ActivePanel: ToolbarButton["activePanel"] = ({ onExit }) => {
   const [formInstance] = Form.useForm();
   const rootRenderer = useGlobalStore((state) => state.threeCadEditor);
   const onSubmit = (values: FieldType) => {
     console.log(values);
-    rootRenderer?.commandSystem.runCommand({
-      key: CommandKeyList.create_plane,
-      parameter: {
-        offset: values.offset,
-        parallelTo: values.parallelTo,
-      },
+    rootRenderer?.commandSystem.runCommand(COMMAND_KEY.create_plane, {
+      offset: values.offset,
+      parallelTo: values.parallelTo,
     });
-    done();
+    onExit();
   };
 
   return (
@@ -34,7 +31,7 @@ export const ActivePanel: ToolbarButton["activePanel"] = ({ done }) => {
         title="创建草图平面"
         actions={[
           <CheckOutlined onClick={() => formInstance.submit()} />,
-          <CloseOutlined onClick={() => done()} />,
+          <CloseOutlined onClick={() => onExit()} />,
         ]}
       >
         <Form
