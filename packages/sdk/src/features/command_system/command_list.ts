@@ -1,4 +1,4 @@
-import { type Command } from "@src/features/base/command_system";
+import { type Command } from "@src/features/command_system";
 import { commandFitCameraToScene } from "@src/features/camera";
 import { commandCreatePlane } from "@src/features/sketch_object/sketch_plane";
 

@@ -2,11 +2,10 @@ import {
   AXES_HELPER_LINE_LENGTH,
   SCENE_BACKGROUND_COLOR,
 } from "@src/constant/config";
-import { CommandSystem } from "@src/features/base/command_system";
-import {
-  GlobalStateWatcher,
-  GlobalStore,
-} from "@src/features/base/global_store";
+import { CommandSystem } from "@src/features/command_system";
+import { GlobalStateWatcher, GlobalStore } from "@src/features/global_store";
+import { OperationModeSwitcher } from "@src/features/operation_mode_switcher";
+import { SketchObjectManager } from "@src/features/sketch_object_manager";
 import { COMMAND_KEY } from "@src/index";
 import {
   AmbientLight,
@@ -28,7 +27,6 @@ export type ThreeCadEditorProps = {
 export class ThreeCadEditor {
   canvasElement: HTMLCanvasElement;
   scene: Scene = new Scene();
-  sketchObjectGroup: Group = new Group();
   light: Light;
   renderer: WebGLRenderer;
   camera: PerspectiveCamera | OrthographicCamera;
@@ -38,17 +36,14 @@ export class ThreeCadEditor {
 
   commandSystem: CommandSystem;
   globalStore: GlobalStore;
+  sketchObjectManager: SketchObjectManager;
+  operationModeSwitcher: OperationModeSwitcher;
 
   private requestAnimationFrameId: number = 0;
   private eventAbortController: AbortController = new AbortController();
 
   constructor({ canvasElement }: ThreeCadEditorProps) {
     this.canvasElement = canvasElement;
-    this.scene.add(this.sketchObjectGroup);
-
-    // init base feature
-    this.globalStore = new GlobalStore();
-    this.commandSystem = new CommandSystem(this);
 
     const canvasWidth = this.canvasElement.clientWidth;
     const canvasHeight = this.canvasElement.clientHeight;
@@ -86,7 +81,12 @@ export class ThreeCadEditor {
     // control
     this.orbitControls = new OrbitControls(this.camera, this.canvasElement);
 
+    // init feature
+    this.globalStore = new GlobalStore();
+    this.sketchObjectManager = new SketchObjectManager(this);
+    this.commandSystem = new CommandSystem(this);
     this.commandSystem.runCommand(COMMAND_KEY.fit_camera_to_scene);
+    this.operationModeSwitcher = new OperationModeSwitcher(this);
 
     this.animate();
   }

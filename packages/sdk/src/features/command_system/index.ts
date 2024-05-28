@@ -1,4 +1,4 @@
-import { commandList } from "@src/features/base/command_system/command_list";
+import { commandList } from "@src/features/command_system/command_list";
 import { ThreeCadEditor } from "@src/three_cad_editor";
 
 export class CommandSystem {

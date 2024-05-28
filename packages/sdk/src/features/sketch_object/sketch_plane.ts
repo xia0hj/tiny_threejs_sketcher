@@ -1,4 +1,4 @@
-import { Command } from "@src/features/base/command_system";
+import { Command } from "@src/features/command_system";
 import {
   SCENE_PLANE_COLOR,
   SCENE_PLANE_LENGTH,
@@ -24,7 +24,7 @@ export const commandCreatePlane: Command<"create_plane"> =
     modification: true,
     run(context, parameter) {
       const plane = new SketchPlane(parameter);
-      context.sketchObjectGroup.add(plane);
+      context.sketchObjectManager.add(plane);
       // context.commandSystem.runCommand({
       //   key: CommandKeyList.edit_plane,
       //   parameter: {
@@ -93,7 +93,7 @@ export class SketchPlane extends SketchObject {
     throw new Error("Method not implemented.");
   }
   onSelect(): void {
-    throw new Error("Method not implemented.");
+    console.log('被选中', this);
   }
   onDeselect(): void {
     throw new Error("Method not implemented.");

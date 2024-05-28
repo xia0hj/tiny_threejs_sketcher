@@ -1,6 +1,6 @@
 import { AXES_HELPER_LINE_LENGTH } from "@src/constant/config";
 import { CAMERA_TYPE } from "@src/constant/enum";
-import { Command } from "@src/features/base/command_system";
+import { Command } from "@src/features/command_system";
 import { Box3, Sphere, Vector3 } from "three";
 
 export const commandFitCameraToScene: Command<"fit_camera_to_scene"> = {
@@ -9,7 +9,7 @@ export const commandFitCameraToScene: Command<"fit_camera_to_scene"> = {
   run(threeCadEditor) {
 
     const {
-      sketchObjectGroup,
+      sketchObjectManager,
       globalStore,
       perspectiveCamera,
       orthographicCamera,
@@ -17,10 +17,10 @@ export const commandFitCameraToScene: Command<"fit_camera_to_scene"> = {
     } = threeCadEditor
 
     const boundingSphere =
-    sketchObjectGroup.children.length === 0
+    sketchObjectManager.sketchObjectGroup.children.length === 0
       ? new Sphere(new Vector3(0, 0, 0), AXES_HELPER_LINE_LENGTH)
       : new Box3()
-          .setFromObject(sketchObjectGroup)
+          .setFromObject(sketchObjectManager.sketchObjectGroup)
           .getBoundingSphere(new Sphere());
 
   const currentCameraType = globalStore.getState("currentCameraType");
