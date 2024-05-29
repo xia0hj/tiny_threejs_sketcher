@@ -28,9 +28,9 @@ type SketchObjectCustomConfig = {
   visible: boolean;
 };
 
-export type SketchObjectTreeItem = {
-  id: number;
-  children: Map<number, SketchObjectTreeItem>;
-  isSelected: boolean;
-  customConfig: SketchObjectCustomConfig;
-};
+// export type SketchObjectTreeItem = {
+//   id: number;
+//   children: Map<number, SketchObjectTreeItem>;
+//   isSelected: boolean;
+//   customConfig: SketchObjectCustomConfig;
+// };

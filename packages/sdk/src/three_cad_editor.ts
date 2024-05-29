@@ -42,7 +42,7 @@ export class ThreeCadEditor {
   private requestAnimationFrameId: number = 0;
   private eventAbortController: AbortController = new AbortController();
 
-  constructor({ canvasElement }: ThreeCadEditorProps) {
+  constructor({ canvasElement, globalStateWatcher }: ThreeCadEditorProps) {
     this.canvasElement = canvasElement;
 
     const canvasWidth = this.canvasElement.clientWidth;
@@ -82,7 +82,7 @@ export class ThreeCadEditor {
     this.orbitControls = new OrbitControls(this.camera, this.canvasElement);
 
     // init feature
-    this.globalStore = new GlobalStore();
+    this.globalStore = new GlobalStore(globalStateWatcher);
     this.sketchObjectManager = new SketchObjectManager(this);
     this.commandSystem = new CommandSystem(this);
     this.commandSystem.runCommand(COMMAND_KEY.fit_camera_to_scene);

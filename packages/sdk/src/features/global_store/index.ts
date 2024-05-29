@@ -1,10 +1,12 @@
 import { CAMERA_TYPE } from "@src/constant/enum";
 import { SketchObject } from "@src/features/sketch_object/type";
+import { SketchObjectTreeItem } from "@src/features/sketch_object_manager";
 import { ValueOf } from "@src/util";
 
 export type GlobalState = {
   selectedObjectList: SketchObject[];
   currentCameraType: ValueOf<typeof CAMERA_TYPE>;
+  sketchObjectTree?: SketchObjectTreeItem;
 };
 
 export type GlobalStateWatcher = {

@@ -9,6 +9,11 @@ export function useThreeCadEditor() {
     if (canvasElementRef.current != null) {
       const threeCadEditor = new ThreeCadEditor({
         canvasElement: canvasElementRef.current,
+        globalStateWatcher: {
+          sketchObjectTree(newTree) {
+            console.log(newTree)
+          }
+        }
       });
       setThreeCadEditor(threeCadEditor);
       return () => {
