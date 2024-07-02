@@ -5,24 +5,23 @@ import { Group, Object3D, Raycaster, Vector2 } from "three";
 
 export type SketchObjectTreeItem = {
   id: number;
+  obj: SketchObject;
   children: Map<number, SketchObjectTreeItem>;
 };
 
 export class SketchObjectManager {
-  sketchObjectGroup: Group = new Group();
+  sketchObjectGroup: Group = buildSketchObjectGroup();
   raycaster: Raycaster = new Raycaster();
 
   threeCadEditor: ThreeCadEditor;
 
   constructor(threeCadEditor: ThreeCadEditor) {
     this.threeCadEditor = threeCadEditor;
-    this.sketchObjectGroup.userData.type = "ROOT";
-    threeCadEditor.scene.add(this.sketchObjectGroup);
+    this.refreshTree();
   }
 
   add(sketchObject: SketchObject) {
     this.sketchObjectGroup.add(sketchObject);
-
     this.refreshTree();
   }
 
@@ -37,6 +36,7 @@ export class SketchObjectManager {
       }
       const treeItem: SketchObjectTreeItem = {
         id: obj.id,
+        obj,
         children: new Map(),
       };
       obj.children.forEach((childObj) => {
@@ -67,4 +67,10 @@ export class SketchObjectManager {
   dispose() {
     this.sketchObjectGroup.removeFromParent();
   }
+}
+
+function buildSketchObjectGroup() {
+  const sketchObjectGroup = new Group();
+  sketchObjectGroup.userData.type = "ROOT";
+  return sketchObjectGroup;
 }
