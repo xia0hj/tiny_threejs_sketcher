@@ -8,11 +8,15 @@ const defaultOperationMode = Object.freeze<OperationMode>({
   onPointerdown(event, threeCadEditor) {
     const intersectList =
       threeCadEditor.sketchObjectManager.getPointerIntersectList(event);
-    if(!Array.isArray(intersectList) || intersectList.length === 0){
+    if (!Array.isArray(intersectList) || intersectList.length === 0) {
+      threeCadEditor.globalStore.setState("selectedObjectList", []);
       return;
     }
     const firstIntersect = intersectList[0];
     firstIntersect.object.onSelect();
+    threeCadEditor.globalStore.setState("selectedObjectList", [
+      firstIntersect.object,
+    ]);
   },
 });
 

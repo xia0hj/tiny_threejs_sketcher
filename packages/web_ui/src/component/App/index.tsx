@@ -1,7 +1,6 @@
 import { useThreeCadEditor } from "@src/component/App/useThreeCadEditor";
 import style from "./index.module.less";
 import { Toolbar } from "@src/component/Toolbar";
-import { toolbarButtonList } from "@src/component/Toolbar/toolbar_button_list";
 import { SketchObjectTree } from "@src/component/ObjectTree";
 
 export const App = () => {

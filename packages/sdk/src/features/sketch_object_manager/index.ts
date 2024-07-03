@@ -17,6 +17,7 @@ export class SketchObjectManager {
 
   constructor(threeCadEditor: ThreeCadEditor) {
     this.threeCadEditor = threeCadEditor;
+    threeCadEditor.scene.add(this.sketchObjectGroup);
     this.refreshTree();
   }
 
@@ -28,7 +29,7 @@ export class SketchObjectManager {
   refreshTree() {
     const treeRoot = bfs(this.sketchObjectGroup);
 
-    this.threeCadEditor.globalStore.setState("sketchObjectTree", treeRoot);
+    this.threeCadEditor.globalStore.setState("sketchObjectTreeRoot", treeRoot);
 
     function bfs(obj: Object3D) {
       if (!checkIsSketchObject(obj)) {

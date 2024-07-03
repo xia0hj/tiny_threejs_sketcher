@@ -6,9 +6,14 @@ export type StoreState = {
   threeCadEditor?: ThreeCadEditor;
   setThreeCadEditor: (threeCadEditor: ThreeCadEditor | undefined) => void;
 
-  sketchObjectTree?: GlobalState["sketchObjectTree"];
+  sketchObjectTree?: GlobalState["sketchObjectTreeRoot"];
   setSketchObjectTree: (
-    sketchObjectTree: GlobalState["sketchObjectTree"],
+    sketchObjectTree: GlobalState["sketchObjectTreeRoot"],
+  ) => void;
+
+  selectedObjectList: GlobalState["selectedObjectList"];
+  setSelectedObjectList: (
+    selectedObjectList: GlobalState["selectedObjectList"],
   ) => void;
 };
 
@@ -23,5 +28,10 @@ export const useGlobalStore = create<StoreState>((set) => ({
   sketchObjectTree: undefined,
   setSketchObjectTree(sketchObjectTree) {
     set({ sketchObjectTree });
+  },
+
+  selectedObjectList: [],
+  setSelectedObjectList(selectedObjectList) {
+    set({ selectedObjectList });
   },
 }));

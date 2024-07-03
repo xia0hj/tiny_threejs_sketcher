@@ -8,14 +8,21 @@ export function useThreeCadEditor() {
   const setSketchObjectTree = useGlobalStore(
     (state) => state.setSketchObjectTree,
   );
+  const setSelectedObjectList = useGlobalStore(
+    (state) => state.setSelectedObjectList,
+  );
+
   useEffect(() => {
     if (canvasElementRef.current != null) {
       const threeCadEditor = new ThreeCadEditor({
         canvasElement: canvasElementRef.current,
         globalStateWatcher: {
-          sketchObjectTree(newTree) {
+          sketchObjectTreeRoot(newTree) {
             console.log(newTree);
             setSketchObjectTree(newTree);
+          },
+          selectedObjectList(objList) {
+            setSelectedObjectList([...objList]);
           },
         },
       });

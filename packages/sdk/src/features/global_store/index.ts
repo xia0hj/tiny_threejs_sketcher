@@ -6,7 +6,7 @@ import { ValueOf } from "@src/util";
 export type GlobalState = {
   selectedObjectList: SketchObject[];
   currentCameraType: ValueOf<typeof CAMERA_TYPE>;
-  sketchObjectTree?: SketchObjectTreeItem;
+  sketchObjectTreeRoot?: SketchObjectTreeItem;
 };
 
 export type GlobalStateWatcher = {

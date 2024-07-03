@@ -1,5 +1,6 @@
 import { StoreState, useGlobalStore } from "@src/store";
 import { Tree, TreeDataNode } from "antd";
+import { useState } from "react";
 
 function mapSketchObjectTreeToTreeData(
   sketchObjectTreeItem: StoreState["sketchObjectTree"],
@@ -18,18 +19,27 @@ function mapSketchObjectTreeToTreeData(
 
   const curNode: TreeDataNode = {
     title: `${sketchObjectTreeItem.obj.userData.type}_${sketchObjectTreeItem.obj.id}`,
-    key: sketchObjectTreeItem.obj.id,
+    key: String(sketchObjectTreeItem.obj.id),
     children: childrenArr,
   };
 
   return curNode;
 }
 
-
-
 export function SketchObjectTree() {
   const sketchObjectTree = useGlobalStore((state) => state.sketchObjectTree);
   const rootNode = mapSketchObjectTreeToTreeData(sketchObjectTree);
+  const selectedKeys = useGlobalStore((state) => state.selectedObjectList).map(
+    (obj) => String(obj.id),
+  );
 
-  return <Tree treeData={rootNode ? [rootNode] : []} />;
+  return (
+    <Tree
+      treeData={rootNode ? [rootNode] : []}
+      showLine
+      defaultExpandAll
+      selectable
+      selectedKeys={selectedKeys}
+    />
+  );
 }
