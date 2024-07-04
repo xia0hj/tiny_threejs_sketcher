@@ -1,11 +1,14 @@
+import { PRESS_MIN_DURATION } from "@src/constant/config";
 import { ThreeCadEditor } from "@src/three_cad_editor";
 
 export type OperationMode = {
   onPointerdown?: (event: PointerEvent, threeCadEditor: ThreeCadEditor) => void;
+  onPointerup?: (event: PointerEvent, threeCadEditor: ThreeCadEditor) => void;
+  onClick?: (event: PointerEvent, threeCadEditor: ThreeCadEditor) => void;
 };
 
 const defaultOperationMode = Object.freeze<OperationMode>({
-  onPointerdown(event, threeCadEditor) {
+  onClick(event, threeCadEditor) {
     const intersectList =
       threeCadEditor.sketchObjectManager.getPointerIntersectList(event);
     if (!Array.isArray(intersectList) || intersectList.length === 0) {
@@ -24,6 +27,7 @@ export class OperationModeSwitcher {
   threeCadEditor: ThreeCadEditor;
 
   private abortController = new AbortController();
+  private pressStartTimestamp = 0;
 
   currentOperationMode: OperationMode = defaultOperationMode;
 
@@ -33,10 +37,22 @@ export class OperationModeSwitcher {
     threeCadEditor.canvasElement.addEventListener(
       "pointerdown",
       (event) => {
+        if (event.button === 0) {
+          this.pressStartTimestamp = Date.now();
+        }
         this.currentOperationMode?.onPointerdown?.(event, threeCadEditor);
       },
       { signal: this.abortController.signal },
     );
+
+    threeCadEditor.canvasElement.addEventListener("pointerup", (event) => {
+      const pressDuration = Date.now() - this.pressStartTimestamp;
+      if (pressDuration < PRESS_MIN_DURATION) {
+        this.currentOperationMode?.onClick?.(event, threeCadEditor);
+      } else {
+        this.currentOperationMode?.onPointerup?.(event, threeCadEditor);
+      }
+    });
   }
 
   resetOperationMode() {
