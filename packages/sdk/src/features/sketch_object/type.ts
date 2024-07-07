@@ -15,14 +15,17 @@ export abstract class SketchObject extends Mesh<
   abstract updateCustomConfig(customConfig: SketchObjectCustomConfig): void;
 }
 
-export type SketchObjectUserData = {
-  type: typeof SKETCH_OBJECT_TYPE.plane;
-  normal:{x:number,y:number,z:number};
-  constant: number
-} | {
-  type: typeof SKETCH_OBJECT_TYPE.line;
-
-};
+export type SketchObjectUserData =
+  | {
+      type: typeof SKETCH_OBJECT_TYPE.plane;
+      normal: { x: number; y: number; z: number };
+      constant: number;
+    }
+  | {
+      type: typeof SKETCH_OBJECT_TYPE.line;
+      startPoint: { x: number; y: number; z: number };
+      endPoint: { x: number; y: number; z: number };
+    };
 
 type SketchObjectCustomConfig = {
   visible: boolean;

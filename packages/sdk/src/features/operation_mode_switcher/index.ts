@@ -24,16 +24,12 @@ const defaultOperationMode = Object.freeze<OperationMode>({
 });
 
 export class OperationModeSwitcher {
-  threeCadEditor: ThreeCadEditor;
-
   private abortController = new AbortController();
   private pressStartTimestamp = 0;
 
   currentOperationMode: OperationMode = defaultOperationMode;
 
   constructor(threeCadEditor: ThreeCadEditor) {
-    this.threeCadEditor = threeCadEditor;
-
     threeCadEditor.canvasElement.addEventListener(
       "pointerdown",
       (event) => {
@@ -53,6 +49,10 @@ export class OperationModeSwitcher {
         this.currentOperationMode?.onPointerup?.(event, threeCadEditor);
       }
     });
+  }
+
+  setOperationMode(operationMode: OperationMode) {
+    this.currentOperationMode = operationMode;
   }
 
   resetOperationMode() {

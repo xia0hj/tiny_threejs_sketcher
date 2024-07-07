@@ -10,7 +10,6 @@ import { COMMAND_KEY } from "@src/index";
 import {
   AmbientLight,
   AxesHelper,
-  Group,
   Light,
   OrthographicCamera,
   PerspectiveCamera,

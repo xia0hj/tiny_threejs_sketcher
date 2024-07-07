@@ -7,6 +7,7 @@ export type GlobalState = {
   selectedObjectList: SketchObject[];
   currentCameraType: ValueOf<typeof CAMERA_TYPE>;
   sketchObjectTreeRoot?: SketchObjectTreeItem;
+  isSketcher2dMode: boolean;
 };
 
 export type GlobalStateWatcher = {
@@ -21,6 +22,7 @@ export class GlobalStore {
     this.state = {
       selectedObjectList: [],
       currentCameraType: CAMERA_TYPE.perspectiveCamera,
+      isSketcher2dMode: false,
     };
     this.watcher = watcher;
   }
