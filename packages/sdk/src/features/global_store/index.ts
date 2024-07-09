@@ -7,7 +7,9 @@ export type GlobalState = {
   selectedObjectList: SketchObject[];
   currentCameraType: ValueOf<typeof CAMERA_TYPE>;
   sketchObjectTreeRoot?: SketchObjectTreeItem;
-  isSketcher2dMode: boolean;
+
+  /** 用于区分是否处于 2d 草图模式 */
+  sketcher2dBasePlane?: SketchObject;
 };
 
 export type GlobalStateWatcher = {
@@ -16,15 +18,14 @@ export type GlobalStateWatcher = {
 
 export class GlobalStore {
   private state: GlobalState;
-  private watcher?: GlobalStateWatcher;
+  private watchers?: GlobalStateWatcher[];
 
-  constructor(watcher?: GlobalStateWatcher) {
+  constructor(watchers?: GlobalStateWatcher[]) {
     this.state = {
       selectedObjectList: [],
       currentCameraType: CAMERA_TYPE.perspectiveCamera,
-      isSketcher2dMode: false,
     };
-    this.watcher = watcher;
+    this.watchers = watchers;
   }
 
   getState<K extends keyof GlobalState>(key: K): GlobalState[K] {
@@ -33,6 +34,6 @@ export class GlobalStore {
 
   setState<K extends keyof GlobalState>(key: K, val: GlobalState[K]) {
     this.state[key] = val;
-    this.watcher?.[key]?.(val);
+    this.watchers?.forEach(watcher => watcher?.[key]?.(val));
   }
 }

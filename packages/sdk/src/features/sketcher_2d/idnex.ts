@@ -2,52 +2,29 @@ import { Command } from "@src/features/command_system";
 import { OperationMode } from "@src/features/operation_mode_switcher";
 import { SketchObject } from "@src/features/sketch_object/type";
 import { ThreeCadEditor } from "@src/three_cad_editor";
+import { Plane, Vector3 } from "three";
 
 export const commandEnterSketcher2d: Command<"enter_sketcher_2d"> = {
   key: "enter_sketcher_2d",
-  modification: true,
-  run(threeCadEditor, parameter) {
-    return {
-      key: this.key,
-      parameter,
-      rollback() {},
-    };
+  modification: false,
+  run(threeCadEditor, parameter: SketchObject) {
+    if (parameter.userData.type !== "plane") {
+      console.warn("没有选中面");
+      return;
+    }
+    threeCadEditor.globalStore.setState("sketcher2dBasePlane", parameter);
   },
 };
 
-const sketcher2dOperationMode = Object.freeze<OperationMode>({});
-
-export class Sketcher2d {
-  private threeCadEditor: ThreeCadEditor;
-
-  private plane?: SketchObject;
-
-  constructor(threeCadEditor: ThreeCadEditor) {
-    this.threeCadEditor = threeCadEditor;
-  }
-
-  enter() {
-    const selectedObjectList =
-      this.threeCadEditor.globalStore.getState("selectedObjectList");
+export const commandExitSketcher2d: Command<"exit_sketcher_2d"> = {
+  key: "exit_sketcher_2d",
+  modification: false,
+  run(threeCadEditor) {
     if (
-      selectedObjectList.length !== 1 ||
-      selectedObjectList[0].userData.type !== "plane"
+      threeCadEditor.globalStore.getState("sketcher2dBasePlane") === undefined
     ) {
-      console.warn("没有选中面");
-      this.threeCadEditor.globalStore.setState("isSketcher2dMode", false);
-      return;
+      console.warn("当前不是 2d 编辑模式");
     }
-
-    this.threeCadEditor.globalStore.setState("isSketcher2dMode", true);
-    this.threeCadEditor.operationModeSwitcher.setOperationMode(
-      sketcher2dOperationMode,
-    );
-    this.plane = selectedObjectList[0];
-  }
-
-  exit() {
-    this.plane = undefined;
-    this.threeCadEditor.operationModeSwitcher.resetOperationMode();
-    this.threeCadEditor.globalStore.setState("isSketcher2dMode", false);
-  }
-}
+    threeCadEditor.globalStore.setState("sketcher2dBasePlane", undefined);
+  },
+};

@@ -81,7 +81,16 @@ export class ThreeCadEditor {
     this.orbitControls = new OrbitControls(this.camera, this.canvasElement);
 
     // init feature
-    this.globalStore = new GlobalStore(globalStateWatcher);
+    const internalWatcher: GlobalStateWatcher = {
+      sketcher2dBasePlane: () => {
+        this.operationModeSwitcher.resetOperationMode();
+      },
+    };
+    this.globalStore = new GlobalStore(
+      globalStateWatcher
+        ? [internalWatcher, globalStateWatcher]
+        : [internalWatcher],
+    );
     this.sketchObjectManager = new SketchObjectManager(this);
     this.commandSystem = new CommandSystem(this);
     this.commandSystem.runCommand(COMMAND_KEY.fit_camera_to_scene);

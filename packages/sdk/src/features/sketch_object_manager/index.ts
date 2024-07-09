@@ -1,7 +1,7 @@
 import { SketchObject } from "@src/features/sketch_object/type";
 import { ThreeCadEditor } from "@src/three_cad_editor";
 import { checkIsSketchObject } from "@src/util";
-import { Group, Object3D, Raycaster, Vector2 } from "three";
+import { Group, Object3D, Plane, Raycaster, Vector2, Vector3 } from "three";
 
 export type SketchObjectTreeItem = {
   id: number;
@@ -63,6 +63,19 @@ export class SketchObjectManager {
     return this.raycaster.intersectObjects<SketchObject>(
       this.sketchObjectGroup.children,
     );
+  }
+
+  public getIntersectPointOnPlane(event: PointerEvent, plane: Plane) {
+
+    const canvasElement = this.threeCadEditor.canvasElement;
+    this.raycaster.setFromCamera(
+      new Vector2(
+        (event.offsetX / canvasElement.width) * 2 - 1,
+        -(event.offsetY / canvasElement.height) * 2 + 1,
+      ),
+      this.threeCadEditor.camera,
+    );
+    return this.raycaster.ray.intersectPlane(plane, new Vector3());
   }
 
   dispose() {
