@@ -6,10 +6,14 @@ import {
 } from "@src/constant/config";
 import { SKETCH_OBJECT_TYPE } from "@src/constant/enum";
 import { COMMAND_KEY } from "@src/index";
-import { SketchObject, SketchObjectUserData } from "@src/features/sketch_object/type";
+import {
+  SketchObject,
+  SketchObjectUserData,
+} from "@src/features/sketch_object/type";
 import {
   BufferGeometry,
   DoubleSide,
+  Mesh,
   MeshStandardMaterial,
   Vector3,
 } from "three";
@@ -18,34 +22,33 @@ export type CreatePlaneParameter = {
   parallelTo: "XY" | "XZ" | "YZ";
   offset: number;
 };
-export const commandCreatePlane: Command<"create_plane"> =
-  {
-    key: "create_plane",
-    modification: true,
-    run(context, parameter) {
-      const plane = new SketchPlane(parameter);
-      context.sketchObjectManager.add(plane);
-      // context.commandSystem.runCommand({
-      //   key: CommandKeyList.edit_plane,
-      //   parameter: {
-      //     constant: -parameter.offset,
-      //     normal: {
-      //       x: 1,
-      //       y: 0,
-      //       z: 0,
-      //     },
-      //   },
-      // });
-      return {
-        key: this.key,
-        parameter: { ...parameter },
-        rollback() {
-          plane.removeFromParent();
-          plane.dispose();
-        },
-      };
-    },
-  } as const;
+export const commandCreatePlane: Command<"create_plane"> = {
+  key: "create_plane",
+  modification: true,
+  run(context, parameter) {
+    const plane = new SketchPlane(parameter);
+    context.sketchObjectManager.add(plane);
+    // context.commandSystem.runCommand({
+    //   key: CommandKeyList.edit_plane,
+    //   parameter: {
+    //     constant: -parameter.offset,
+    //     normal: {
+    //       x: 1,
+    //       y: 0,
+    //       z: 0,
+    //     },
+    //   },
+    // });
+    return {
+      key: this.key,
+      parameter: { ...parameter },
+      rollback() {
+        plane.removeFromParent();
+        plane.dispose();
+      },
+    };
+  },
+} as const;
 
 // export const CommandEditPlane: Command<
 //   "edit_plane",
@@ -62,7 +65,10 @@ export const commandCreatePlane: Command<"create_plane"> =
 //   },
 // };
 
-export class SketchPlane extends SketchObject {
+export class SketchPlane
+  extends Mesh<BufferGeometry, MeshStandardMaterial>
+  implements SketchObject
+{
   userData: SketchObjectUserData;
   constructor(createPlaneParameter: CreatePlaneParameter) {
     super(
@@ -85,18 +91,6 @@ export class SketchPlane extends SketchObject {
             : { x: 1, y: 0, z: 0 },
       constant: createPlaneParameter.offset,
     };
-  }
-  onMouseEnter(): void {
-    throw new Error("Method not implemented.");
-  }
-  onMouseLeave(): void {
-    throw new Error("Method not implemented.");
-  }
-  onSelect(): void {
-    console.log('被选中', this);
-  }
-  onDeselect(): void {
-    throw new Error("Method not implemented.");
   }
   updateCustomConfig(customConfig: { visible: boolean }): void {
     this.visible = customConfig.visible;

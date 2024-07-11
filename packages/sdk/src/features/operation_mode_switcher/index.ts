@@ -17,17 +17,15 @@ class DefaultOperationMode implements OperationMode {
       return;
     }
     const firstIntersect = intersectList[0];
-    firstIntersect.object.onSelect();
+    firstIntersect.object.onSelect?.();
+    console.log("选中了", firstIntersect.object);
     threeCadEditor.globalStore.setState("selectedObjectList", [
       firstIntersect.object,
     ]);
   }
 }
 
-
-class Sketcher2dOperationMode implements OperationMode {
-
-}
+class Sketcher2dOperationMode implements OperationMode {}
 
 export class OperationModeSwitcher {
   private threeCadEditor: ThreeCadEditor;
@@ -56,6 +54,10 @@ export class OperationModeSwitcher {
       } else {
         this.currentOperationMode?.onPointerup?.(event, threeCadEditor);
       }
+    });
+
+    threeCadEditor.canvasElement.addEventListener("pointermove", (event) => {
+      this.currentOperationMode?.onPointermove?.(event, threeCadEditor);
     });
   }
 

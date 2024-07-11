@@ -1,7 +1,7 @@
 import { SketchObject } from "@src/features/sketch_object/type";
 import { ThreeCadEditor } from "@src/three_cad_editor";
 import { checkIsSketchObject } from "@src/util";
-import { Group, Object3D, Plane, Raycaster, Vector2, Vector3 } from "three";
+import { BufferGeometry, Group, Line, Object3D, Plane, Raycaster, Vector2, Vector3 } from "three";
 
 export type SketchObjectTreeItem = {
   id: number;
@@ -19,6 +19,13 @@ export class SketchObjectManager {
     this.threeCadEditor = threeCadEditor;
     threeCadEditor.scene.add(this.sketchObjectGroup);
     this.refreshTree();
+
+    this.sketchObjectGroup.add(new Line(
+      new BufferGeometry().setFromPoints([
+        new Vector3(1,1,1),
+        new Vector3(5,5,5),
+      ]),
+    ))
   }
 
   add(sketchObject: SketchObject) {

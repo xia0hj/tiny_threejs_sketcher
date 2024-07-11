@@ -10,10 +10,17 @@ import { COMMAND_KEY } from "@src/index";
 import {
   AmbientLight,
   AxesHelper,
+  BufferAttribute,
+  BufferGeometry,
+  Color,
   Light,
+  LineBasicMaterial,
+  Mesh,
+  MeshBasicMaterial,
   OrthographicCamera,
   PerspectiveCamera,
   Scene,
+  Vector3,
   WebGLRenderer,
 } from "three";
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";

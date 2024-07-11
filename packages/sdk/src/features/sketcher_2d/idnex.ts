@@ -8,11 +8,13 @@ export const commandEnterSketcher2d: Command<"enter_sketcher_2d"> = {
   key: "enter_sketcher_2d",
   modification: false,
   run(threeCadEditor, parameter: SketchObject) {
-    if (parameter.userData.type !== "plane") {
-      console.warn("没有选中面");
-      return;
-    }
-    threeCadEditor.globalStore.setState("sketcher2dBasePlane", parameter);
+    // if (parameter.userData.type !== "plane") {
+    //   console.warn("没有选中面");
+    //   return;
+    // }
+    // threeCadEditor.globalStore.setState("sketcher2dBasePlane", parameter);
+    
+    threeCadEditor.globalStore.setState("sketcher2dBasePlane", threeCadEditor.globalStore.getState('selectedObjectList')[0]);
   },
 };
 

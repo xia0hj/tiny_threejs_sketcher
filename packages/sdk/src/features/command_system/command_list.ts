@@ -1,10 +1,21 @@
-import { type Command } from "@src/features/command_system";
 import { commandFitCameraToScene } from "@src/features/camera";
 import { commandCreatePlane } from "@src/features/sketch_object/sketch_plane";
+import {
+  commandEnterSketcher2d,
+  commandExitSketcher2d,
+} from "@src/features/sketcher_2d/idnex";
+import {
+  commandStartDrawLine,
+  commandStopDrawLine,
+} from "@src/features/sketch_object/line2d";
 
 export const commandList = Object.freeze([
   commandFitCameraToScene,
-  commandCreatePlane
+  commandCreatePlane,
+  commandEnterSketcher2d,
+  commandExitSketcher2d,
+  commandStartDrawLine,
+  commandStopDrawLine,
 ]);
 
 export const COMMAND_KEY = Object.freeze(

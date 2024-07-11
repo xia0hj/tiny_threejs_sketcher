@@ -5,17 +5,19 @@ import {
   SketchObjectUserData,
 } from "@src/features/sketch_object/type";
 import { ThreeCadEditor } from "@src/three_cad_editor";
-import { BufferGeometry, Plane, Vector2, Vector3 } from "three";
+import { BufferGeometry, Line, Mesh, Plane, Vector2, Vector3 } from "three";
 
 class LineDrawer implements OperationMode {
   plane: Plane;
   startPoint?: Vector3 | null;
   planeObj: SketchObject;
+  line2d: Line2d;
 
-  constructor(planeObj: SketchObject, line: Line) {
+  constructor(planeObj: SketchObject, line2d: Line2d) {
     if (planeObj === undefined || planeObj.userData.type !== "plane") {
       throw new Error("无法在非平面上绘制2d线段");
     }
+    this.line2d = line2d;
     this.planeObj = planeObj;
     this.plane = new Plane(
       new Vector3(
@@ -30,39 +32,65 @@ class LineDrawer implements OperationMode {
   onClick(event: PointerEvent, threeCadEditor: ThreeCadEditor) {
     if (this.startPoint) {
       // 完成绘制
-      
-    } else {
-      // 开始绘制
-      this.startPoint = threeCadEditor.sketchObjectManager.getIntersectPointOnPlane(event, this.plane);
+      this.startPoint = undefined;
+      threeCadEditor.commandSystem.runCommand("stop_draw_line");
+      return;
     }
+
+    this.startPoint =
+      threeCadEditor.sketchObjectManager.getIntersectPointOnPlane(
+        event,
+        this.plane,
+      );
+    if (this.startPoint == undefined) {
+      return;
+    }
+
+    // 开始绘制
+    this.line2d.updatePosition(this.startPoint, this.startPoint);
   }
 
   onPointermove(event: PointerEvent, threeCadEditor: ThreeCadEditor) {
-    if(!this.startPoint) {
+    if (this.startPoint == null) {
       return;
+    }
+
+    const endPoint =
+      threeCadEditor.sketchObjectManager.getIntersectPointOnPlane(
+        event,
+        this.plane,
+      );
+
+    if (endPoint != undefined) {
+      this.line2d.updatePosition(this.startPoint, endPoint);
     }
   }
 }
 
 export const commandStartDrawLine: Command<"start_draw_line"> = {
   key: "start_draw_line",
-  modification: false,
+  modification: true,
   run(threeCadEditor) {
     const planeObj = threeCadEditor.globalStore.getState("sketcher2dBasePlane");
 
     if (planeObj === undefined) {
-      console.warn("未进入2d草图模式");
-      return;
+      throw new Error("未进入2d草图模式");
     }
 
-    // todo: 关闭 orbitControls
-    // todo: 此处创建 line，如何用 Mesh 表示线段？
+    const line2d = new Line2d();
+    planeObj.add(line2d);
 
-    // const line = new Line(new BufferGeometry())
-
+    threeCadEditor.orbitControls.enabled = false;
     threeCadEditor.operationModeSwitcher.setOperationMode(
-      new LineDrawer(planeObj),
+      new LineDrawer(planeObj, line2d),
     );
+
+    return {
+      key: this.key,
+      rollback() {
+        line2d.removeFromParent();
+      },
+    };
   },
 };
 
@@ -81,51 +109,24 @@ export const commandStopDrawLine: Command<"stop_draw_line"> = {
   },
 };
 
-export const commandCreateLine: Command<"create_line"> = {
-  key: "create_line",
-  modification: true,
-  run(threeCadEditor, parameter) {
-    return {
-      key: this.key,
-      parameter,
-      rollback() {},
-    };
-  },
-};
-
-export type CreateLineParameter = {
-  startPoint: { x: number; y: number; z: number };
-  endPoint: { x: number; y: number; z: number };
-};
-
-export class Line extends SketchObject {
+export class Line2d extends Line implements SketchObject {
   userData: SketchObjectUserData;
 
-  constructor(createLineParameter: CreateLineParameter) {
+  constructor() {
     super();
     this.userData = {
       type: "line",
-      startPoint: { ...createLineParameter.startPoint },
-      endPoint: { ...createLineParameter.endPoint },
+      startPoint: { x: 0, y: 0, z: 0 },
+      endPoint: { x: 0, y: 0, z: 0 },
     };
   }
 
-  onMouseEnter(): void {
-    throw new Error("Method not implemented.");
-  }
-  onMouseLeave(): void {
-    throw new Error("Method not implemented.");
-  }
-  onSelect(): void {
-    throw new Error("Method not implemented.");
-  }
-  onDeselect(): void {
-    throw new Error("Method not implemented.");
-  }
-  dispose(): void {
-    throw new Error("Method not implemented.");
-  }
-  updateCustomConfig(customConfig: { visible: boolean }): void {
-    throw new Error("Method not implemented.");
+  updatePosition(startPoint: Vector3, endPoint: Vector3) {
+    this.geometry.setFromPoints([startPoint, endPoint]);
+    this.userData = {
+      type: "line",
+      startPoint: { x: startPoint.x, y: startPoint.y, z: startPoint.z },
+      endPoint: { x: endPoint.x, y: endPoint.y, z: endPoint.z },
+    };
   }
 }
