@@ -1,7 +1,16 @@
 import { SketchObject } from "@src/features/sketch_object/type";
 import { ThreeCadEditor } from "@src/three_cad_editor";
 import { checkIsSketchObject } from "@src/util";
-import { BufferGeometry, Group, Line, Object3D, Plane, Raycaster, Vector2, Vector3 } from "three";
+import {
+  BufferGeometry,
+  Group,
+  Line,
+  Object3D,
+  Plane,
+  Raycaster,
+  Vector2,
+  Vector3,
+} from "three";
 
 export type SketchObjectTreeItem = {
   id: number;
@@ -11,6 +20,7 @@ export type SketchObjectTreeItem = {
 
 export class SketchObjectManager {
   sketchObjectGroup: Group = buildSketchObjectGroup();
+  previewGroup = new Group();
   raycaster: Raycaster = new Raycaster();
 
   threeCadEditor: ThreeCadEditor;
@@ -20,17 +30,33 @@ export class SketchObjectManager {
     threeCadEditor.scene.add(this.sketchObjectGroup);
     this.refreshTree();
 
-    this.sketchObjectGroup.add(new Line(
-      new BufferGeometry().setFromPoints([
-        new Vector3(1,1,1),
-        new Vector3(5,5,5),
-      ]),
-    ))
+    this.sketchObjectGroup.add(
+      new Line(
+        new BufferGeometry().setFromPoints([
+          new Vector3(1, 1, 1),
+          new Vector3(5, 5, 5),
+        ]),
+      ),
+    );
   }
 
   add(sketchObject: SketchObject) {
     this.sketchObjectGroup.add(sketchObject);
     this.refreshTree();
+  }
+
+  addObject2d(obj: SketchObject) {
+    const plane = this.threeCadEditor.globalStore.getState(
+      "sketcher2dBasePlane",
+    );
+    if (plane) {
+      plane.add(obj);
+      this.refreshTree();
+    }
+  }
+
+  addPreviewObject(obj: Object3D) {
+    this.previewGroup.add(obj);
   }
 
   refreshTree() {
@@ -73,7 +99,6 @@ export class SketchObjectManager {
   }
 
   public getIntersectPointOnPlane(event: PointerEvent, plane: Plane) {
-
     const canvasElement = this.threeCadEditor.canvasElement;
     this.raycaster.setFromCamera(
       new Vector2(

@@ -5,20 +5,29 @@ import {
   SketchObjectUserData,
 } from "@src/features/sketch_object/type";
 import { ThreeCadEditor } from "@src/three_cad_editor";
-import { BufferGeometry, Line, Mesh, Plane, Vector2, Vector3 } from "three";
+import assert from "assert";
+import {
+  BufferGeometry,
+  Line,
+  Material,
+  Mesh,
+  Plane,
+  Vector2,
+  Vector3,
+} from "three";
 
 class LineDrawer implements OperationMode {
   plane: Plane;
   startPoint?: Vector3 | null;
-  planeObj: SketchObject;
   line2d: Line2d;
+  previewLine2d = new Line2d();
+  isStartPointFixed = false;
 
   constructor(planeObj: SketchObject, line2d: Line2d) {
     if (planeObj === undefined || planeObj.userData.type !== "plane") {
       throw new Error("无法在非平面上绘制2d线段");
     }
     this.line2d = line2d;
-    this.planeObj = planeObj;
     this.plane = new Plane(
       new Vector3(
         planeObj.userData.normal.x,
@@ -30,10 +39,27 @@ class LineDrawer implements OperationMode {
   }
 
   onClick(event: PointerEvent, threeCadEditor: ThreeCadEditor) {
-    if (this.startPoint) {
+    if (this.startPoint && this.previewLine2d.userData.type === "line") {
       // 完成绘制
       this.startPoint = undefined;
-      threeCadEditor.commandSystem.runCommand("stop_draw_line");
+
+      this.line2d.updatePosition(
+        new Vector3(
+          this.previewLine2d.userData.startPoint.x,
+          this.previewLine2d.userData.startPoint.y,
+          this.previewLine2d.userData.startPoint.z,
+        ),
+        new Vector3(
+          this.previewLine2d.userData.endPoint.x,
+          this.previewLine2d.userData.endPoint.y,
+          this.previewLine2d.userData.endPoint.z,
+        ),
+      );
+      this.previewLine2d.removeFromParent();
+      threeCadEditor.sketchObjectManager.addObject2d(this.line2d);
+      console.log("完成绘制线段", this.line2d);
+
+      // threeCadEditor.commandSystem.runCommand("stop_draw_line");
       return;
     }
 
@@ -47,10 +73,16 @@ class LineDrawer implements OperationMode {
     }
 
     // 开始绘制
-    this.line2d.updatePosition(this.startPoint, this.startPoint);
+    this.previewLine2d.updatePosition(this.startPoint, this.startPoint);
+    threeCadEditor.sketchObjectManager.addPreviewObject(this.previewLine2d);
   }
 
   onPointermove(event: PointerEvent, threeCadEditor: ThreeCadEditor) {
+
+    if (this.isStartPointFixed) {
+      
+    }
+
     if (this.startPoint == null) {
       return;
     }
@@ -78,7 +110,6 @@ export const commandStartDrawLine: Command<"start_draw_line"> = {
     }
 
     const line2d = new Line2d();
-    planeObj.add(line2d);
 
     threeCadEditor.orbitControls.enabled = false;
     threeCadEditor.operationModeSwitcher.setOperationMode(
@@ -128,5 +159,10 @@ export class Line2d extends Line implements SketchObject {
       startPoint: { x: startPoint.x, y: startPoint.y, z: startPoint.z },
       endPoint: { x: endPoint.x, y: endPoint.y, z: endPoint.z },
     };
+  }
+
+  dispose() {
+    this.geometry.dispose();
+    (this.material as Material).dispose();
   }
 }

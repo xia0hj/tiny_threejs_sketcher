@@ -14,8 +14,7 @@
     "normalize.css": "^8.0.1",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "sdk": "workspace:*",
-    "zustand": "^4.4.7"
+    "sdk": "workspace:*"
   },
   "devDependencies": {
     "@types/react": "^18.2.43",
