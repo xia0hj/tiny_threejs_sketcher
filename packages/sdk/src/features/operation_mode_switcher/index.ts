@@ -13,15 +13,15 @@ class DefaultOperationMode implements OperationMode {
     const intersectList =
       threeCadEditor.sketchObjectManager.getPointerIntersectList(event);
     if (!Array.isArray(intersectList) || intersectList.length === 0) {
-      threeCadEditor.globalStore.setState("selectedObjectList", []);
+      threeCadEditor.globalStore.setState({selectedObjectList: []});
       return;
     }
     const firstIntersect = intersectList[0];
     firstIntersect.object.onSelect?.();
     console.log("选中了", firstIntersect.object);
-    threeCadEditor.globalStore.setState("selectedObjectList", [
-      firstIntersect.object,
-    ]);
+    threeCadEditor.globalStore.setState({
+      selectedObjectList: [firstIntersect.object]
+    })
   }
 }
 
@@ -67,7 +67,7 @@ export class OperationModeSwitcher {
 
   resetOperationMode() {
     if (
-      this.threeCadEditor.globalStore.getState("sketcher2dBasePlane") !==
+      this.threeCadEditor.globalStore.getState().sketcher2dBasePlane !==
       undefined
     ) {
       this.currentOperationMode = new Sketcher2dOperationMode();

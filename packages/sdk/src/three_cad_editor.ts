@@ -3,7 +3,7 @@ import {
   SCENE_BACKGROUND_COLOR,
 } from "@src/constant/config";
 import { CommandSystem } from "@src/features/command_system";
-import { GlobalStateWatcher, GlobalStore } from "@src/features/global_store";
+import { createGlobalStore } from "@src/features/global_store";
 import { OperationModeSwitcher } from "@src/features/operation_mode_switcher";
 import { SketchObjectManager } from "@src/features/sketch_object_manager";
 import { COMMAND_KEY } from "@src/index";
@@ -27,7 +27,6 @@ import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
 
 export type ThreeCadEditorProps = {
   canvasElement: HTMLCanvasElement;
-  globalStateWatcher?: GlobalStateWatcher;
 };
 
 export class ThreeCadEditor {
@@ -41,14 +40,14 @@ export class ThreeCadEditor {
   orbitControls: OrbitControls;
 
   commandSystem: CommandSystem;
-  globalStore: GlobalStore;
+  globalStore;
   sketchObjectManager: SketchObjectManager;
   operationModeSwitcher: OperationModeSwitcher;
 
   private requestAnimationFrameId: number = 0;
   private eventAbortController: AbortController = new AbortController();
 
-  constructor({ canvasElement, globalStateWatcher }: ThreeCadEditorProps) {
+  constructor({ canvasElement }: ThreeCadEditorProps) {
     this.canvasElement = canvasElement;
 
     const canvasWidth = this.canvasElement.clientWidth;
@@ -88,15 +87,10 @@ export class ThreeCadEditor {
     this.orbitControls = new OrbitControls(this.camera, this.canvasElement);
 
     // init feature
-    const internalWatcher: GlobalStateWatcher = {
-      sketcher2dBasePlane: () => {
-        this.operationModeSwitcher.resetOperationMode();
-      },
-    };
-    this.globalStore = new GlobalStore(
-      globalStateWatcher
-        ? [internalWatcher, globalStateWatcher]
-        : [internalWatcher],
+    this.globalStore = createGlobalStore();
+    this.globalStore.subscribe(
+      (state) => state.sketcher2dBasePlane,
+      () => this.operationModeSwitcher.resetOperationMode(),
     );
     this.sketchObjectManager = new SketchObjectManager(this);
     this.commandSystem = new CommandSystem(this);

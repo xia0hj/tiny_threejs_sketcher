@@ -78,11 +78,6 @@ class LineDrawer implements OperationMode {
   }
 
   onPointermove(event: PointerEvent, threeCadEditor: ThreeCadEditor) {
-
-    if (this.isStartPointFixed) {
-      
-    }
-
     if (this.startPoint == null) {
       return;
     }
@@ -103,7 +98,7 @@ export const commandStartDrawLine: Command<"start_draw_line"> = {
   key: "start_draw_line",
   modification: true,
   run(threeCadEditor) {
-    const planeObj = threeCadEditor.globalStore.getState("sketcher2dBasePlane");
+    const planeObj = threeCadEditor.globalStore.getState().sketcher2dBasePlane;
 
     if (planeObj === undefined) {
       throw new Error("未进入2d草图模式");
@@ -130,7 +125,7 @@ export const commandStopDrawLine: Command<"stop_draw_line"> = {
   modification: false,
   run(threeCadEditor) {
     if (
-      threeCadEditor.globalStore.getState("sketcher2dBasePlane") === undefined
+      threeCadEditor.globalStore.getState().sketcher2dBasePlane === undefined
     ) {
       console.warn("未进入2d草图模式");
       return;

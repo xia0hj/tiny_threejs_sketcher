@@ -46,9 +46,8 @@ export class SketchObjectManager {
   }
 
   addObject2d(obj: SketchObject) {
-    const plane = this.threeCadEditor.globalStore.getState(
-      "sketcher2dBasePlane",
-    );
+    const plane =
+      this.threeCadEditor.globalStore.getState().sketcher2dBasePlane;
     if (plane) {
       plane.add(obj);
       this.refreshTree();
@@ -62,7 +61,9 @@ export class SketchObjectManager {
   refreshTree() {
     const treeRoot = bfs(this.sketchObjectGroup);
 
-    this.threeCadEditor.globalStore.setState("sketchObjectTreeRoot", treeRoot);
+    this.threeCadEditor.globalStore.setState({
+      sketchObjectTreeRoot: treeRoot,
+    });
 
     function bfs(obj: Object3D) {
       if (!checkIsSketchObject(obj)) {

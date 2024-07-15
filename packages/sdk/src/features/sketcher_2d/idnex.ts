@@ -13,8 +13,11 @@ export const commandEnterSketcher2d: Command<"enter_sketcher_2d"> = {
     //   return;
     // }
     // threeCadEditor.globalStore.setState("sketcher2dBasePlane", parameter);
-    
-    threeCadEditor.globalStore.setState("sketcher2dBasePlane", threeCadEditor.globalStore.getState('selectedObjectList')[0]);
+
+    threeCadEditor.globalStore.setState({
+      sketcher2dBasePlane:
+        threeCadEditor.globalStore.getState().selectedObjectList[0],
+    });
   },
 };
 
@@ -23,10 +26,10 @@ export const commandExitSketcher2d: Command<"exit_sketcher_2d"> = {
   modification: false,
   run(threeCadEditor) {
     if (
-      threeCadEditor.globalStore.getState("sketcher2dBasePlane") === undefined
+      threeCadEditor.globalStore.getState().sketcher2dBasePlane === undefined
     ) {
       console.warn("当前不是 2d 编辑模式");
     }
-    threeCadEditor.globalStore.setState("sketcher2dBasePlane", undefined);
+    threeCadEditor.globalStore.setState({ sketcher2dBasePlane: undefined });
   },
 };
