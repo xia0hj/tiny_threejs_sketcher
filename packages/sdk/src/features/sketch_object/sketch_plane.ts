@@ -22,8 +22,8 @@ export type CreatePlaneParameter = {
   parallelTo: "XY" | "XZ" | "YZ";
   offset: number;
 };
-export const commandCreatePlane: Command<"create_plane"> = {
-  key: "create_plane",
+export const commandCreatePlane: Command<"create_sketch_plane"> = {
+  key: "create_sketch_plane",
   modification: true,
   run(context, parameter) {
     const plane = new SketchPlane(parameter);

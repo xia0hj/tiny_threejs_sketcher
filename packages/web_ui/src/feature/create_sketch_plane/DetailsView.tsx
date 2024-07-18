@@ -13,12 +13,12 @@ interface FieldType {
   offset: number;
 }
 
-export const ActivePanel: ToolbarButton["activePanel"] = ({ onExit }) => {
+export const DetailsView: ToolbarButton["detailsView"] = ({ onExit }) => {
   const [formInstance] = Form.useForm();
   const rootRenderer = useGlobalStore((state) => state.threeCadEditor);
   const onSubmit = (values: FieldType) => {
     console.log(values);
-    rootRenderer?.commandSystem.runCommand(COMMAND_KEY.create_plane, {
+    rootRenderer?.commandSystem.runCommand(COMMAND_KEY.create_sketch_plane, {
       offset: values.offset,
       parallelTo: values.parallelTo,
     });

@@ -16,23 +16,32 @@ export function useThreeCadEditor() {
     if (canvasElementRef.current != null) {
       const threeCadEditor = new ThreeCadEditor({
         canvasElement: canvasElementRef.current,
-        globalStateWatcher: {
-          sketchObjectTreeRoot(newTree) {
-            console.log(newTree);
-            setSketchObjectTree(newTree);
-          },
-          selectedObjectList(objList) {
-            setSelectedObjectList([...objList]);
-          },
-        },
       });
+
+      const unsubscribeFn = [
+        threeCadEditor.globalStore.subscribe(
+          (state) => state.sketchObjectTreeRoot,
+          (tree) => setSketchObjectTree(tree),
+        ),
+        threeCadEditor.globalStore.subscribe(
+          (state) => state.selectedObjectList,
+          (objList) => setSelectedObjectList([...objList]),
+        ),
+      ];
+
       (window as any).tce = threeCadEditor;
       setThreeCadEditor(threeCadEditor);
       return () => {
         threeCadEditor.dispose();
         setThreeCadEditor(undefined);
+        unsubscribeFn.forEach((unsubscribe) => unsubscribe());
       };
     }
-  }, [canvasElementRef, setThreeCadEditor, setSketchObjectTree]);
+  }, [
+    canvasElementRef,
+    setThreeCadEditor,
+    setSketchObjectTree,
+    setSelectedObjectList,
+  ]);
   return canvasElementRef;
 }

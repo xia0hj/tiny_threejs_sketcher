@@ -23,7 +23,7 @@ export const commandFitCameraToScene: Command<"fit_camera_to_scene"> = {
           .setFromObject(sketchObjectManager.sketchObjectGroup)
           .getBoundingSphere(new Sphere());
 
-  const currentCameraType = globalStore.getState("currentCameraType");
+  const currentCameraType = globalStore.getState().currentCameraType;
 
   if (currentCameraType === CAMERA_TYPE.perspectiveCamera) {
     const fov = (perspectiveCamera.fov * Math.PI) / 180;

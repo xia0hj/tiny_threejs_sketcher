@@ -5,6 +5,7 @@ import { SketchObjectTreeItem } from "@src/features/sketch_object_manager";
 import { ValueOf } from "@src/util";
 import { createStore } from "zustand/vanilla";
 import { subscribeWithSelector } from "zustand/middleware";
+import { Vector3 } from "three";
 
 
 export type GlobalState = {
@@ -16,7 +17,8 @@ export type GlobalState = {
   sketcher2dBasePlane?: SketchObject;
 
   // #todo: 记录正在绘制的线段信息，通知完成绘制
-  curDrawingLine2d?: Line2d;
+  curDrawingLine2dStartPoint?: Vector3;
+  curDrawingLine2dEndPoint?: Vector3;
 };
 
 

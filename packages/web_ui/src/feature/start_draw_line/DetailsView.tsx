@@ -6,7 +6,7 @@ import { COMMAND_KEY } from "sdk";
 import style from "./index.module.less";
 import { useEffect } from "react";
 
-export const ActivePanel: ToolbarButton["activePanel"] = ({ onExit }) => {
+export const DetailsView: ToolbarButton["detailsView"] = ({ onExit }) => {
   const rootRenderer = useGlobalStore((state) => state.threeCadEditor);
 
   useEffect(() => {
