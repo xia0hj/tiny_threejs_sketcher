@@ -5,7 +5,7 @@ import { toolbarButtonList } from "@src/component/Toolbar/toolbar_button_list";
 export type ToolbarButton = {
   label: string;
   icon: ReactElement;
-  detailsView: (props: { onExit: () => void }) => ReactElement;
+  DetailsView: (props: { onExit: () => void }) => ReactElement;
 };
 
 export const Toolbar: FunctionComponent = () => {
@@ -30,6 +30,6 @@ export const Toolbar: FunctionComponent = () => {
       </div>
     );
   } else {
-    return <curActiveBtn.detailsView onExit={onExit} />;
+    return <curActiveBtn.DetailsView onExit={onExit} />;
   }
 };

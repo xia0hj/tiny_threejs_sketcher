@@ -6,6 +6,8 @@ export type OperationMode = {
   onPointerup?: (event: PointerEvent, threeCadEditor: ThreeCadEditor) => void;
   onClick?: (event: PointerEvent, threeCadEditor: ThreeCadEditor) => void;
   onPointermove?: (event: PointerEvent, threeCadEditor: ThreeCadEditor) => void;
+
+  dispose?: (threeCadEditor: ThreeCadEditor) => void;
 };
 
 class DefaultOperationMode implements OperationMode {
@@ -13,15 +15,15 @@ class DefaultOperationMode implements OperationMode {
     const intersectList =
       threeCadEditor.sketchObjectManager.getPointerIntersectList(event);
     if (!Array.isArray(intersectList) || intersectList.length === 0) {
-      threeCadEditor.globalStore.setState({selectedObjectList: []});
+      threeCadEditor.globalStore.setState({ selectedObjectList: [] });
       return;
     }
     const firstIntersect = intersectList[0];
     firstIntersect.object.onSelect?.();
     console.log("选中了", firstIntersect.object);
     threeCadEditor.globalStore.setState({
-      selectedObjectList: [firstIntersect.object]
-    })
+      selectedObjectList: [firstIntersect.object],
+    });
   }
 }
 
@@ -62,6 +64,7 @@ export class OperationModeSwitcher {
   }
 
   setOperationMode(operationMode: OperationMode) {
+    this.currentOperationMode?.dispose?.(this.threeCadEditor);
     this.currentOperationMode = operationMode;
   }
 
@@ -70,9 +73,9 @@ export class OperationModeSwitcher {
       this.threeCadEditor.globalStore.getState().sketcher2dBasePlane !==
       undefined
     ) {
-      this.currentOperationMode = new Sketcher2dOperationMode();
+      this.setOperationMode(new Sketcher2dOperationMode());
     } else {
-      this.currentOperationMode = new DefaultOperationMode();
+      this.setOperationMode(new DefaultOperationMode());
     }
 
     this.threeCadEditor.orbitControls.enabled = true;

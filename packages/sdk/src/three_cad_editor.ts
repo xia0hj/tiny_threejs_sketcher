@@ -39,10 +39,10 @@ export class ThreeCadEditor {
   orthographicCamera: OrthographicCamera;
   orbitControls: OrbitControls;
 
-  commandSystem: CommandSystem;
-  globalStore;
-  sketchObjectManager: SketchObjectManager;
-  operationModeSwitcher: OperationModeSwitcher;
+  commandSystem!: CommandSystem;
+  globalStore!: ReturnType<typeof createGlobalStore>;
+  sketchObjectManager!: SketchObjectManager;
+  operationModeSwitcher!: OperationModeSwitcher;
 
   private requestAnimationFrameId: number = 0;
   private eventAbortController: AbortController = new AbortController();
@@ -87,6 +87,17 @@ export class ThreeCadEditor {
     this.orbitControls = new OrbitControls(this.camera, this.canvasElement);
 
     // init feature
+    this.initFeatures();
+
+    this.animate();
+  }
+
+  public dispose() {
+    window.cancelAnimationFrame(this.requestAnimationFrameId);
+    this.eventAbortController.abort();
+  }
+
+  private initFeatures() {
     this.globalStore = createGlobalStore();
     this.globalStore.subscribe(
       (state) => state.sketcher2dBasePlane,
@@ -96,13 +107,6 @@ export class ThreeCadEditor {
     this.commandSystem = new CommandSystem(this);
     this.commandSystem.runCommand(COMMAND_KEY.fit_camera_to_scene);
     this.operationModeSwitcher = new OperationModeSwitcher(this);
-
-    this.animate();
-  }
-
-  public dispose() {
-    window.cancelAnimationFrame(this.requestAnimationFrameId);
-    this.eventAbortController.abort();
   }
 
   private animate() {

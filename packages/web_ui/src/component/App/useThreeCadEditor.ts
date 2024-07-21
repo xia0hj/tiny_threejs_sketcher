@@ -31,6 +31,7 @@ export function useThreeCadEditor() {
 
       (window as any).tce = threeCadEditor;
       setThreeCadEditor(threeCadEditor);
+      // setUseSdkStore(() => useStore(threeCadEditor.globalStore));
       return () => {
         threeCadEditor.dispose();
         setThreeCadEditor(undefined);

@@ -28,16 +28,8 @@ export class SketchObjectManager {
   constructor(threeCadEditor: ThreeCadEditor) {
     this.threeCadEditor = threeCadEditor;
     threeCadEditor.scene.add(this.sketchObjectGroup);
+    threeCadEditor.scene.add(this.previewGroup);
     this.refreshTree();
-
-    this.sketchObjectGroup.add(
-      new Line(
-        new BufferGeometry().setFromPoints([
-          new Vector3(1, 1, 1),
-          new Vector3(5, 5, 5),
-        ]),
-      ),
-    );
   }
 
   add(sketchObject: SketchObject) {

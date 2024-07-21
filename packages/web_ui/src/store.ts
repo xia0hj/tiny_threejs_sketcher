@@ -20,9 +20,7 @@ export type StoreState = {
 export const useGlobalStore = create<StoreState>((set) => ({
   threeCadEditor: undefined,
   setThreeCadEditor(threeCadEditor) {
-    set({
-      threeCadEditor,
-    });
+    set({ threeCadEditor });
   },
 
   sketchObjectTree: undefined,

@@ -6,5 +6,5 @@ import { Button } from "antd";
 export const btnStartDrawLine: ToolbarButton = {
   label: "绘制线段",
   icon: <BorderOuterOutlined />,
-  detailsView: DetailsView,
+  DetailsView: DetailsView,
 } as const;

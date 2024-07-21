@@ -5,6 +5,7 @@ import {
   commandExitSketcher2d,
 } from "@src/features/sketcher_2d/idnex";
 import {
+  commandAddLine2d,
   commandStartDrawLine,
   commandStopDrawLine,
 } from "@src/features/sketch_object/line2d";
@@ -15,6 +16,7 @@ export const commandList = Object.freeze([
   commandEnterSketcher2d,
   commandExitSketcher2d,
   commandStartDrawLine,
+  commandAddLine2d,
   commandStopDrawLine,
 ]);
 
