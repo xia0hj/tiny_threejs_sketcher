@@ -1,119 +1,36 @@
 import {
-  AXES_HELPER_LINE_LENGTH,
-  SCENE_BACKGROUND_COLOR,
-} from "@src/constant/config";
-import { CommandSystem } from "@src/features/command_system";
-import { createGlobalStore } from "@src/features/global_store";
-import { OperationModeSwitcher } from "@src/features/operation_mode_switcher";
-import { SketchObjectManager } from "@src/features/sketch_object_manager";
-import { COMMAND_KEY } from "@src/index";
-import {
-  AmbientLight,
-  AxesHelper,
-  BufferAttribute,
-  BufferGeometry,
-  Color,
-  Light,
-  LineBasicMaterial,
-  Mesh,
-  MeshBasicMaterial,
-  OrthographicCamera,
-  PerspectiveCamera,
-  Scene,
-  Vector3,
-  WebGLRenderer,
-} from "three";
-import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
-
-export type ThreeCadEditorProps = {
-  canvasElement: HTMLCanvasElement;
-};
+  MODULE_NAME,
+  Module,
+  ModuleNameMap,
+  ModuleNameUnion,
+  getAllModules,
+} from "@src/modules";
 
 export class ThreeCadEditor {
-  canvasElement: HTMLCanvasElement;
-  scene: Scene = new Scene();
-  light: Light;
-  renderer: WebGLRenderer;
-  camera: PerspectiveCamera | OrthographicCamera;
-  perspectiveCamera: PerspectiveCamera;
-  orthographicCamera: OrthographicCamera;
-  orbitControls: OrbitControls;
+  #modules: Module[] = [];
 
-  commandSystem!: CommandSystem;
-  globalStore!: ReturnType<typeof createGlobalStore>;
-  sketchObjectManager!: SketchObjectManager;
-  operationModeSwitcher!: OperationModeSwitcher;
+  constructor() {
+    getAllModules().forEach((module) => {
+      module.install((getModuleName) => {
+        if (!module.dependencies.includes(getModuleName)) {
+          throw new Error("can not get non-dependent module");
+        }
+        return this.getModule(getModuleName);
+      });
+    });
+  }
 
-  private requestAnimationFrameId: number = 0;
-  private eventAbortController: AbortController = new AbortController();
+  public getModule<Name extends ModuleNameUnion>(
+    moduleName: Name,
+  ): ModuleNameMap[Name] {
+    return this.#modules.find((module) => module.name === moduleName) as any;
+  }
 
-  constructor({ canvasElement }: ThreeCadEditorProps) {
-    this.canvasElement = canvasElement;
-
-    const canvasWidth = this.canvasElement.clientWidth;
-    const canvasHeight = this.canvasElement.clientHeight;
-
-    // AxesHelper
-    this.scene.add(new AxesHelper(AXES_HELPER_LINE_LENGTH));
-
-    // light
-    this.light = new AmbientLight();
-    this.scene.add(this.light);
-
-    // renderer
-    const renderer = new WebGLRenderer({ canvas: this.canvasElement });
-    renderer.setSize(canvasWidth, canvasHeight);
-    renderer.setClearColor(SCENE_BACKGROUND_COLOR);
-    this.renderer = renderer;
-
-    // camera
-    this.perspectiveCamera = new PerspectiveCamera(
-      45,
-      canvasWidth / canvasHeight,
-      0.1,
-      1000,
-    );
-    this.orthographicCamera = new OrthographicCamera(
-      canvasWidth / -2,
-      canvasWidth / 2,
-      canvasHeight / 2,
-      canvasHeight / -2,
-      0,
-      1000,
-    );
-    this.camera = this.perspectiveCamera;
-
-    // control
-    this.orbitControls = new OrbitControls(this.camera, this.canvasElement);
-
-    // init feature
-    this.initFeatures();
-
-    this.animate();
+  public startRender(canvasElement: HTMLCanvasElement) {
+    this.getModule(MODULE_NAME.SceneBuilder).startRender(canvasElement);
   }
 
   public dispose() {
-    window.cancelAnimationFrame(this.requestAnimationFrameId);
-    this.eventAbortController.abort();
-  }
-
-  private initFeatures() {
-    this.globalStore = createGlobalStore();
-    this.globalStore.subscribe(
-      (state) => state.sketcher2dBasePlane,
-      () => this.operationModeSwitcher.resetOperationMode(),
-    );
-    this.sketchObjectManager = new SketchObjectManager(this);
-    this.commandSystem = new CommandSystem(this);
-    this.commandSystem.runCommand(COMMAND_KEY.fit_camera_to_scene);
-    this.operationModeSwitcher = new OperationModeSwitcher(this);
-  }
-
-  private animate() {
-    this.requestAnimationFrameId = window.requestAnimationFrame(() => {
-      this.animate();
-    });
-    this.orbitControls.update();
-    this.renderer.render(this.scene, this.camera);
+    this.#modules.forEach((module) => module.dispose());
   }
 }
