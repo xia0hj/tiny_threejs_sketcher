@@ -1,6 +1,6 @@
 import { CAMERA_TYPE } from "@src/constant/enum";
 import { MODULE_NAME, Module } from "@src/modules";
-import { ValueOf } from "@src/util";
+import { ValueOf } from "@src/utils";
 import mitt from "mitt";
 
 export type GlobalState = {

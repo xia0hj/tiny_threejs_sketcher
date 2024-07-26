@@ -1,6 +1,6 @@
 
 import { MODULE_NAME, Module, ModuleGetter, ModuleNameMap } from "@src/modules";
-import { ValueOf } from "@src/util";
+import { ValueOf } from "@src/utils";
 import { Group } from "three";
 
 export class SketchObjectManager implements Module {

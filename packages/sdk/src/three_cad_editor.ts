@@ -6,16 +6,17 @@ import {
 } from "@src/modules";
 import { COMMAND_KEY } from "@src/modules/command_system/all_commands";
 import { Options } from "@src/modules/config_storage";
-import { ValueOf } from "@src/util";
+import { ValueOf } from "@src/utils";
 
 export class ThreeCadEditor {
   #modules: Module[] = [];
 
   constructor(options?: Partial<Options>) {
-    getAllModules().forEach((module) => {
-      module.install((getModuleName) => this.getModule(getModuleName));
-      this.#modules.push(module);
+    getAllModules().forEach(([_, curModule]) => {
+      curModule.install((getModuleName) => this.getModule(getModuleName));
+      this.#modules.push(curModule);
     });
+
     this.getModule(MODULE_NAME.ConfigStorage).setInitOptions(options);
   }
 
