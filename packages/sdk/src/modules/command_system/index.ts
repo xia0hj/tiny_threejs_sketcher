@@ -1,20 +1,26 @@
-import { MODULE_NAME, Module, ModuleGetter } from "@src/modules";
-import { allCommands } from "@src/modules/command_system/all_commands";
+import { MODULE_NAME, Module, ModuleGetter, ModuleNameMap, ModuleNameUnion } from "@src/modules";
+import {
+  COMMAND_KEY,
+  CommandKeyMap,
+  allCommands,
+} from "@src/modules/command_system/all_commands";
+import { ValueOf } from "@src/utils";
 
 export class CommandSystem implements Module {
   name = MODULE_NAME.CommandSystem;
-  getModule!: ModuleGetter;
-  install(getModule: ModuleGetter) {
-    this.getModule = getModule;
-  }
 
   modificationHistoryArray: ModificationHistory[] = [];
   modificationHistoryIndex: number = -1;
   commandMap: Map<string, Command> = new Map(
     allCommands.map((command) => [command.key, command]),
   );
+  getModule: ModuleGetter;
 
-  runCommand(key: string, parameter?: Record<string, any>) {
+  constructor(getModule: ModuleGetter) {
+    this.getModule = getModule
+  }
+
+  runCommand(key: ValueOf<typeof COMMAND_KEY>, parameter?: any) {
     const command = this.commandMap.get(key);
     if (command == undefined) {
       return;
@@ -38,20 +44,17 @@ export type Command<K = string> = Readonly<
   | {
       key: K;
       modification: false;
-      run: (getModule: ModuleGetter, parameter?: Record<string, any>) => void;
+      run: (getModule: ModuleGetter, parameter?: any) => void;
     }
   | {
       key: K;
       modification: true;
-      run: (
-        getModule: ModuleGetter,
-        parameter?: Record<string, any>,
-      ) => ModificationHistory;
+      run: (getModule: ModuleGetter, parameter?: any) => ModificationHistory;
     }
 >;
 
 export type ModificationHistory = Readonly<{
   key: string;
-  parameter?: object;
+  parameter?: any;
   rollback: () => void;
 }>;

@@ -4,5 +4,5 @@ import { btnStartDrawLine } from "@src/feature/start_draw_line";
 
 export const toolbarButtonList: ToolbarButton[] = [
   btnCreateSketchPlane,
-  btnStartDrawLine
+  // btnStartDrawLine
 ] as const;

@@ -2,41 +2,39 @@ import {
   MODULE_NAME,
   Module,
   ModuleNameMap,
-  getAllModules,
+  ModuleNameUnion,
+  initAllModules,
 } from "@src/modules";
 import { COMMAND_KEY } from "@src/modules/command_system/all_commands";
-import { Options } from "@src/modules/config_storage";
+import { Options } from "@src/modules/configurator";
 import { ValueOf } from "@src/utils";
 
 export class ThreeCadEditor {
-  #modules: Module[] = [];
+  #modules = new Map();
 
-  constructor(options?: Partial<Options>) {
-    getAllModules().forEach(([_, curModule]) => {
-      curModule.install((getModuleName) => this.getModule(getModuleName));
-      this.#modules.push(curModule);
-    });
-
-    this.getModule(MODULE_NAME.ConfigStorage).setInitOptions(options);
+  constructor(canvasElement: HTMLCanvasElement, options?: Partial<Options>) {
+    this.#modules = initAllModules(canvasElement, options)
   }
 
-  public getModule<Name extends ValueOf<typeof MODULE_NAME>>(moduleName: Name) {
-    return this.#modules.find(
-      (module) => module.name === moduleName,
-    ) as ModuleNameMap[Name];
+  public getModule<Name extends ModuleNameUnion>(moduleName: Name) {
+    return this.#modules.get(moduleName) as ModuleNameMap[Name];
   }
 
-  public startRender(canvasElement: HTMLCanvasElement) {
-    this.getModule(MODULE_NAME.SceneBuilder).startRender(canvasElement);
+  public startRender() {
+    this.getModule(MODULE_NAME.SceneBuilder).startRender();
     this.getModule(MODULE_NAME.CommandSystem).runCommand(
       COMMAND_KEY.fitCameraToScene,
     );
-    this.getModule(MODULE_NAME.OperationModeSwitcher).startListenCanvas(
-      canvasElement,
-    );
+  }
+
+  public runCommand(key: ValueOf<typeof COMMAND_KEY>, parameter?: any) {
+    this.getModule(MODULE_NAME.CommandSystem).runCommand(key, parameter);
   }
 
   public dispose() {
-    this.#modules.forEach((module) => module.dispose());
+    for(const module of this.#modules.values()) {
+      module.dispose?.();
+    }
   }
+
 }

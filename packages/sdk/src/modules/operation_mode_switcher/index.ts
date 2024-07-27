@@ -16,13 +16,9 @@ export type OperationMode = {
 
 export class OperationModeSwitcher implements Module {
   name = MODULE_NAME.OperationModeSwitcher;
-  getModule!: ModuleGetter;
-  install(getModule: ModuleGetter) {
+  getModule: ModuleGetter;
+  constructor(getModule: ModuleGetter) {
     this.getModule = getModule;
-  }
-
-  startListenCanvas(canvasElement: HTMLCanvasElement) {
-    
   }
 
   dispose() {}

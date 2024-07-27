@@ -7,7 +7,7 @@ export const commandFitCameraToScene: Command<"fitCameraToScene"> = {
   modification: false,
 
   run(getModule: ModuleGetter) {
-    const options = getModule(MODULE_NAME.ConfigStorage).getOptions();
+    const options = getModule(MODULE_NAME.Configurator).getOptions();
 
     const { perspectiveCamera, orthographicCamera, orbitControls } = getModule(
       MODULE_NAME.SceneBuilder,

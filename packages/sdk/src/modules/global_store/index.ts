@@ -10,12 +10,6 @@ export type GlobalState = {
 export class GlobalStore implements Module {
   name = MODULE_NAME.GlobalStore;
 
-  install() {}
-  dispose() {
-    this.#stateMap.clear();
-    this.#emitter.all.clear();
-  }
-
   #stateMap = new Map();
   #emitter = mitt<GlobalState>();
 
@@ -25,5 +19,10 @@ export class GlobalStore implements Module {
 
   public getEmitter() {
     return this.#emitter;
+  }
+
+  dispose() {
+    this.#stateMap.clear();
+    this.#emitter.all.clear();
   }
 }

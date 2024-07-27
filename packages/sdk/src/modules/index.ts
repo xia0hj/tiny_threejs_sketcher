@@ -1,5 +1,5 @@
 import { CommandSystem } from "@src/modules/command_system";
-import { ConfigStorage, Options } from "@src/modules/config_storage";
+import { Configurator, Options } from "@src/modules/configurator";
 import { GlobalStore } from "@src/modules/global_store";
 import { OperationModeSwitcher } from "@src/modules/operation_mode_switcher";
 import { SceneBuilder } from "@src/modules/scene_builder";
@@ -7,37 +7,46 @@ import { SketchObjectManager } from "@src/modules/sketch_object_manager";
 import { ThreeCadEditor } from "@src/three_cad_editor";
 import { ValueOf } from "@src/utils";
 
-// register module name, then add module into all modules array
+// register module name, then use module in initAllModules()
 export const MODULE_NAME = Object.freeze({
+  Configurator: "Configurator",
   SceneBuilder: "SceneBuilder",
   GlobalStore: "GlobalStore",
   CommandSystem: "CommandSystem",
-  OperationModeSwitcher: "OperationModeSwitcher",
   SketchObjectManager: "SketchObjectManager",
-  ConfigStorage: "ConfigStorage",
+  OperationModeSwitcher: "OperationModeSwitcher",
 });
-export function getAllModules() {
-  return [
-    [MODULE_NAME.ConfigStorage, new ConfigStorage()] as const,
-    [MODULE_NAME.SceneBuilder, new SceneBuilder()] as const,
-    [MODULE_NAME.GlobalStore, new GlobalStore()] as const,
-    [MODULE_NAME.CommandSystem, new CommandSystem()] as const,
-    [MODULE_NAME.SketchObjectManager, new SketchObjectManager()] as const,
-    [MODULE_NAME.OperationModeSwitcher, new OperationModeSwitcher()] as const,
-  ] as const;
+export type ModuleNameMap = {
+  Configurator: Configurator;
+  SceneBuilder: SceneBuilder;
+  GlobalStore: GlobalStore;
+  CommandSystem: CommandSystem;
+  SketchObjectManager: SketchObjectManager;
+  OperationModeSwitcher: OperationModeSwitcher;
+};
+export function initAllModules(
+  canvasElement: HTMLCanvasElement,
+  options?: Partial<Options>,
+) {
+  const modulesMap = new Map();
+  const useModule = (module: Module) => modulesMap.set(module.name, module);
+  const getModule = (moduleName: ModuleNameUnion) => modulesMap.get(moduleName);
+
+  useModule(new Configurator(options));
+  useModule(new SceneBuilder(getModule, canvasElement));
+  useModule(new GlobalStore());
+  useModule(new CommandSystem(getModule));
+  useModule(new SketchObjectManager(getModule));
+  useModule(new OperationModeSwitcher(getModule));
+
+  return modulesMap;
 }
 
-export type ModuleNameMap = {
-  [K in ReturnType<typeof getAllModules>[number][0]]: Extract<
-    ReturnType<typeof getAllModules>[number][1],
-    { name: K }
-  >;
-};
-
 export type Module = {
-  name: string;
-  install: (getModule: ModuleGetter) => void;
-  dispose: () => void;
+  name: ModuleNameUnion;
+  getModule?: ModuleGetter;
+  dispose?: () => void;
 };
 
 export type ModuleGetter = ThreeCadEditor["getModule"];
+export type ModuleNameUnion = ValueOf<typeof MODULE_NAME>;

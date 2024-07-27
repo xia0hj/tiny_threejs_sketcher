@@ -11,8 +11,8 @@ export const App = () => {
       <div className={style.app_navbar}></div>
       <div className={style.app_main}>
         <div className={style.left_sidebar}>
-          {/* <Toolbar />
-          <SketchObjectTree /> */}
+          <Toolbar />
+          {/* <SketchObjectTree /> */}
         </div>
         <canvas className={style.app_canvas} ref={canvasRef} />
       </div>

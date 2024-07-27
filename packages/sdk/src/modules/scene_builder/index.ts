@@ -1,5 +1,6 @@
 import { MODULE_NAME, Module, ModuleGetter } from "@src/modules";
-import { Options } from "@src/modules/config_storage";
+import { COMMAND_KEY } from "@src/modules/command_system/all_commands";
+import { Options } from "@src/modules/configurator";
 import {
   AmbientLight,
   AxesHelper,
@@ -14,21 +15,19 @@ import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
 export class SceneBuilder implements Module {
   name = MODULE_NAME.SceneBuilder;
 
-  getModule!: ModuleGetter;
-  install(getModule: ModuleGetter) {
+  getModule: ModuleGetter;
+
+  canvasElement: HTMLCanvasElement;
+  scene: Scene;
+  renderer: WebGLRenderer;
+  camera: PerspectiveCamera | OrthographicCamera;
+  perspectiveCamera: PerspectiveCamera;
+  orthographicCamera: OrthographicCamera;
+  orbitControls: OrbitControls;
+
+  constructor(getModule: ModuleGetter, canvasElement: HTMLCanvasElement) {
     this.getModule = getModule;
-  }
-
-  canvasElement!: HTMLCanvasElement;
-  scene!: Scene;
-  renderer!: WebGLRenderer;
-  camera!: PerspectiveCamera | OrthographicCamera;
-  perspectiveCamera!: PerspectiveCamera;
-  orthographicCamera!: OrthographicCamera;
-  orbitControls!: OrbitControls;
-
-  startRender(canvasElement: HTMLCanvasElement) {
-    const options = this.getModule(MODULE_NAME.ConfigStorage).getOptions();
+    const options = this.getModule(MODULE_NAME.Configurator).getOptions();
 
     this.canvasElement = canvasElement;
     const canvasWidth = this.canvasElement.clientWidth;
@@ -63,7 +62,9 @@ export class SceneBuilder implements Module {
 
     // control
     this.orbitControls = new OrbitControls(this.camera, this.canvasElement);
+  }
 
+  startRender() {
     this.#animate();
   }
 

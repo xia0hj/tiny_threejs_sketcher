@@ -14,8 +14,8 @@ export function useThreeCadEditor() {
 
   useEffect(() => {
     if (canvasElementRef.current != null) {
-      const threeCadEditor = new ThreeCadEditor();
-      threeCadEditor.startRender(canvasElementRef.current);
+      const threeCadEditor = new ThreeCadEditor(canvasElementRef.current, { debug: true });
+      threeCadEditor.startRender();
 
       (window as any).tce = threeCadEditor;
       setThreeCadEditor(threeCadEditor);
