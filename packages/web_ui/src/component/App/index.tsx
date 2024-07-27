@@ -12,7 +12,7 @@ export const App = () => {
       <div className={style.app_main}>
         <div className={style.left_sidebar}>
           <Toolbar />
-          <SketchObjectTree />
+          {/* <SketchObjectTree /> */}
         </div>
         <canvas className={style.app_canvas} ref={canvasRef} />
       </div>

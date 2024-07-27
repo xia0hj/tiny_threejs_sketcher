@@ -14,28 +14,14 @@ export function useThreeCadEditor() {
 
   useEffect(() => {
     if (canvasElementRef.current != null) {
-      const threeCadEditor = new ThreeCadEditor({
-        canvasElement: canvasElementRef.current,
-      });
-
-      const unsubscribeFn = [
-        threeCadEditor.globalStore.subscribe(
-          (state) => state.sketchObjectTreeRoot,
-          (tree) => setSketchObjectTree(tree),
-        ),
-        threeCadEditor.globalStore.subscribe(
-          (state) => state.selectedObjectList,
-          (objList) => setSelectedObjectList([...objList]),
-        ),
-      ];
+      const threeCadEditor = new ThreeCadEditor(canvasElementRef.current, { debug: true });
+      threeCadEditor.startRender();
 
       (window as any).tce = threeCadEditor;
       setThreeCadEditor(threeCadEditor);
-      // setUseSdkStore(() => useStore(threeCadEditor.globalStore));
+
       return () => {
         threeCadEditor.dispose();
-        setThreeCadEditor(undefined);
-        unsubscribeFn.forEach((unsubscribe) => unsubscribe());
       };
     }
   }, [

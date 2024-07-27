@@ -1,31 +1,27 @@
-import { AXES_HELPER_LINE_LENGTH } from "@src/constant/config";
-import { CAMERA_TYPE } from "@src/constant/enum";
-import { Command } from "@src/features/command_system";
+import { MODULE_NAME, ModuleGetter } from "@src/modules";
+import { Command } from "@src/modules/command_system";
 import { Box3, Sphere, Vector3 } from "three";
 
-export const commandFitCameraToScene: Command<"fit_camera_to_scene"> = {
-  key:"fit_camera_to_scene",
+export const commandFitCameraToScene: Command<"fitCameraToScene"> = {
+  key: "fitCameraToScene",
   modification: false,
-  run(threeCadEditor) {
 
-    const {
-      sketchObjectManager,
-      globalStore,
-      perspectiveCamera,
-      orthographicCamera,
-      orbitControls
-    } = threeCadEditor
+  run(getModule: ModuleGetter) {
+    const options = getModule(MODULE_NAME.Configurator).getOptions();
 
+    const { perspectiveCamera, orthographicCamera, orbitControls } = getModule(
+      MODULE_NAME.SceneBuilder,
+    );
+
+    const sketchObjectManager = getModule(MODULE_NAME.SketchObjectManager);
     const boundingSphere =
-    sketchObjectManager.sketchObjectGroup.children.length === 0
-      ? new Sphere(new Vector3(0, 0, 0), AXES_HELPER_LINE_LENGTH)
-      : new Box3()
-          .setFromObject(sketchObjectManager.sketchObjectGroup)
-          .getBoundingSphere(new Sphere());
+      sketchObjectManager.sketchObjectGroup.children.length === 0
+        ? new Sphere(new Vector3(0, 0, 0), options.axesHelperLineLength)
+        : new Box3()
+            .setFromObject(sketchObjectManager.sketchObjectGroup)
+            .getBoundingSphere(new Sphere());
 
-  const currentCameraType = globalStore.getState().currentCameraType;
-
-  if (currentCameraType === CAMERA_TYPE.perspectiveCamera) {
+    // handle perspectiveCamera
     const fov = (perspectiveCamera.fov * Math.PI) / 180;
     const distance = boundingSphere.radius / Math.sin(fov / 2);
     perspectiveCamera.position.set(
@@ -34,12 +30,10 @@ export const commandFitCameraToScene: Command<"fit_camera_to_scene"> = {
       boundingSphere.center.z + distance,
     );
     perspectiveCamera.zoom = 0.9;
-    orbitControls.target = boundingSphere.center;
-  } else if (currentCameraType === CAMERA_TYPE.orthographicCamera) {
-    const cameraWidth =
-      orthographicCamera.right - orthographicCamera.left;
-    const cameraHeight =
-      orthographicCamera.top - orthographicCamera.bottom;
+
+    // handle orthographicCamera
+    const cameraWidth = orthographicCamera.right - orthographicCamera.left;
+    const cameraHeight = orthographicCamera.top - orthographicCamera.bottom;
     if (cameraWidth >= cameraHeight) {
       orthographicCamera.top = boundingSphere.radius;
       orthographicCamera.bottom = -boundingSphere.radius;
@@ -61,7 +55,7 @@ export const commandFitCameraToScene: Command<"fit_camera_to_scene"> = {
       boundingSphere.center.z + boundingSphere.radius,
     );
     orthographicCamera.zoom = 0.9;
+
     orbitControls.target = boundingSphere.center;
-  }
   },
-}
+};

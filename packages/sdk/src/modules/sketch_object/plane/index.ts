@@ -1,15 +1,8 @@
-import { Command } from "@src/features/command_system";
 import {
-  SCENE_PLANE_COLOR,
-  SCENE_PLANE_LENGTH,
-  SCENE_PLANE_OPACITY,
-} from "@src/constant/config";
-import { SKETCH_OBJECT_TYPE } from "@src/constant/enum";
-import { COMMAND_KEY } from "@src/index";
-import {
+  SKETCH_OBJECT_TYPE,
   SketchObject,
   SketchObjectUserData,
-} from "@src/features/sketch_object/type";
+} from "@src/modules/sketch_object";
 import {
   BufferGeometry,
   DoubleSide,
@@ -21,64 +14,30 @@ import {
 export type CreatePlaneParameter = {
   parallelTo: "XY" | "XZ" | "YZ";
   offset: number;
+
+  planeLength: number;
+  planeColor: number;
+  planeOpacity: number;
 };
-export const commandCreatePlane: Command<"create_sketch_plane"> = {
-  key: "create_sketch_plane",
-  modification: true,
-  run(context, parameter) {
-    const plane = new SketchPlane(parameter);
-    context.sketchObjectManager.add(plane);
-    // context.commandSystem.runCommand({
-    //   key: CommandKeyList.edit_plane,
-    //   parameter: {
-    //     constant: -parameter.offset,
-    //     normal: {
-    //       x: 1,
-    //       y: 0,
-    //       z: 0,
-    //     },
-    //   },
-    // });
-    return {
-      key: this.key,
-      parameter: { ...parameter },
-      rollback() {
-        plane.removeFromParent();
-        plane.dispose();
-      },
-    };
-  },
-} as const;
 
-// export const CommandEditPlane: Command<
-//   "edit_plane",
-//   { normal: { x: number; y: number; z: number }; constant: number }
-// > = {
-//   key: "edit_plane",
-//   modification: false,
-//   run(rootRenderer, { normal, constant }) {
-//     rootRenderer.inputEventHandler = new LineDrawer(
-//       normal,
-//       constant,
-//       rootRenderer.sketchObjectGroup,
-//     );
-//   },
-// };
-
-export class SketchPlane
+export class Plane
   extends Mesh<BufferGeometry, MeshStandardMaterial>
   implements SketchObject
 {
-  userData: SketchObjectUserData;
+  userData: Extract<
+    SketchObjectUserData,
+    { type: typeof SKETCH_OBJECT_TYPE.plane }
+  >;
+
   constructor(createPlaneParameter: CreatePlaneParameter) {
     super(
-      buildPlaneGeomtry(createPlaneParameter, SCENE_PLANE_LENGTH),
+      buildPlaneGeomtry(createPlaneParameter),
       new MeshStandardMaterial({
         vertexColors: false,
-        color: SCENE_PLANE_COLOR,
+        color: createPlaneParameter.planeColor,
         side: DoubleSide,
         transparent: true,
-        opacity: SCENE_PLANE_OPACITY,
+        opacity: createPlaneParameter.planeOpacity,
       }),
     );
     this.userData = {
@@ -92,19 +51,18 @@ export class SketchPlane
       constant: createPlaneParameter.offset,
     };
   }
-  updateCustomConfig(customConfig: { visible: boolean }): void {
-    this.visible = customConfig.visible;
-  }
+
   dispose(): void {
     this.geometry.dispose();
     this.material.dispose();
   }
 }
 
-function buildPlaneGeomtry(
-  { parallelTo, offset }: CreatePlaneParameter,
-  planeLength: number,
-): BufferGeometry {
+function buildPlaneGeomtry({
+  parallelTo,
+  offset,
+  planeLength,
+}: CreatePlaneParameter): BufferGeometry {
   const distance = planeLength / 2;
   if (parallelTo === "XY") {
     const minPosition = new Vector3(-distance, -distance, offset);
