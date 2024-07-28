@@ -1,6 +1,7 @@
 import { useGlobalStore } from "@src/store";
 import { useEffect, useRef } from "react";
-import { ThreeCadEditor } from "sdk";
+import { ThreeCadEditor, MODULE_NAME } from "sdk";
+
 
 export function useThreeCadEditor() {
   const canvasElementRef = useRef<HTMLCanvasElement>(null);
@@ -14,8 +15,17 @@ export function useThreeCadEditor() {
 
   useEffect(() => {
     if (canvasElementRef.current != null) {
-      const threeCadEditor = new ThreeCadEditor(canvasElementRef.current, { debug: true });
+      const threeCadEditor = new ThreeCadEditor(canvasElementRef.current, {
+        debug: true,
+      });
       threeCadEditor.startRender();
+
+      const emitter = threeCadEditor
+        .getModule(MODULE_NAME.GlobalStore)
+        .getEmitter();
+      emitter.on("sketchObjectTreeRoot", (treeRoot) => {
+        setSketchObjectTree(treeRoot);
+      });
 
       (window as any).tce = threeCadEditor;
       setThreeCadEditor(threeCadEditor);

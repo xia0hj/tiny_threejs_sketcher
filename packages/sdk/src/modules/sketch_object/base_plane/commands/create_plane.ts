@@ -1,6 +1,6 @@
 import { MODULE_NAME, ModuleGetter } from "@src/modules";
 import { Command } from "@src/modules/command_system";
-import { CreatePlaneParameter, Plane } from "@src/modules/sketch_object/plane";
+import { CreatePlaneParameter, Plane } from "@src/modules/sketch_object/base_plane";
 
 export const commandCreatePlane = Object.freeze<Command<"create_plane">>({
   key: "create_plane",
