@@ -29,7 +29,7 @@ function mapSketchObjectTreeToTreeData(
 export function SketchObjectTree() {
   const sketchObjectTree = useGlobalStore((state) => state.sketchObjectTree);
   const rootNode = mapSketchObjectTreeToTreeData(sketchObjectTree);
-  const selectedKeys = useGlobalStore((state) => state.selectedObjectList).map(
+  const selectedKeys = useGlobalStore((state) => state.selectedObjects).map(
     (obj) => String(obj.id),
   );
 

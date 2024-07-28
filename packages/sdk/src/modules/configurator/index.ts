@@ -8,6 +8,7 @@ export type Options = Readonly<{
   planeColor: number;
   planeLength: number;
   planeOpacity: number;
+  pressMinDuration: number;
 }>;
 
 export class Configurator implements Module {
@@ -22,6 +23,7 @@ export class Configurator implements Module {
       planeColor: 0x2193b0,
       planeLength: 3,
       planeOpacity: 0.6,
+      pressMinDuration: 500,
     };
 
     const mergedOptions = Object.assign(defaultOptions, initOptions);

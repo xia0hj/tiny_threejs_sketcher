@@ -11,9 +11,9 @@ export type StoreState = {
     sketchObjectTree: GlobalState["sketchObjectTreeRoot"],
   ) => void;
 
-  selectedObjectList: GlobalState["selectedObjectList"];
-  setSelectedObjectList: (
-    selectedObjectList: GlobalState["selectedObjectList"],
+  selectedObjects: GlobalState["selectedObjects"];
+  setSelectedObjects: (
+    selectedObjectList: GlobalState["selectedObjects"],
   ) => void;
 };
 
@@ -28,8 +28,8 @@ export const useGlobalStore = create<StoreState>((set) => ({
     set({ sketchObjectTree });
   },
 
-  selectedObjectList: [],
-  setSelectedObjectList(selectedObjectList) {
-    set({ selectedObjectList });
+  selectedObjects: [],
+  setSelectedObjects(selectedObjectList) {
+    set({ selectedObjects: selectedObjectList });
   },
 }));

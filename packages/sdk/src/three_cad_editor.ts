@@ -13,7 +13,7 @@ export class ThreeCadEditor {
   #modules = new Map();
 
   constructor(canvasElement: HTMLCanvasElement, options?: Partial<Options>) {
-    this.#modules = initAllModules(canvasElement, options)
+    this.#modules = initAllModules(canvasElement, options);
   }
 
   public getModule<Name extends ModuleNameUnion>(moduleName: Name) {
@@ -25,6 +25,7 @@ export class ThreeCadEditor {
     this.getModule(MODULE_NAME.CommandSystem).runCommand(
       COMMAND_KEY.fitCameraToScene,
     );
+    this.getModule(MODULE_NAME.OperationModeSwitcher).startListenCanvas();
   }
 
   public runCommand(key: ValueOf<typeof COMMAND_KEY>, parameter?: any) {
@@ -32,9 +33,8 @@ export class ThreeCadEditor {
   }
 
   public dispose() {
-    for(const module of this.#modules.values()) {
+    for (const module of this.#modules.values()) {
       module.dispose?.();
     }
   }
-
 }
