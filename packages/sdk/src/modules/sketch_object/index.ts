@@ -2,7 +2,7 @@ import { ValueOf } from "@src/utils";
 import { Object3D } from "three";
 
 export const SKETCH_OBJECT_TYPE = Object.freeze({
-  plane: "plane",
+  basePlane: "basePlane",
   line2d: "line2d",
 });
 
@@ -18,7 +18,7 @@ export interface SketchObject extends Object3D {
 
 export type SketchObjectUserData =
   | {
-      type: typeof SKETCH_OBJECT_TYPE.plane;
+      type: typeof SKETCH_OBJECT_TYPE.basePlane;
       normal: { x: number; y: number; z: number };
       constant: number;
     }

@@ -9,32 +9,28 @@ export type GlobalState = {
   curCameraType: ValueOf<typeof CAMERA_TYPE>;
   sketchObjectTreeRoot?: SketchObjectTreeItem;
   selectedObjects: SketchObject[];
+
+  /** 用于区分是否处于 2d 草图模式 */
+  editingBasePlane?: SketchObject;
 };
 
-const initGlobalState = Object.freeze<GlobalState>({
-  curCameraType: CAMERA_TYPE.perspectiveCamera,
-  selectedObjects: [],
-});
 
 export class GlobalStore implements Module {
   name = MODULE_NAME.GlobalStore;
-
-  stateMap = new Map();
   emitter = mitt<GlobalState>();
 
-  constructor() {
-    Object.entries(initGlobalState).forEach(([key, value]) => {
-      this.stateMap.set(key, value);
-    });
+  state: GlobalState = {
+    curCameraType: CAMERA_TYPE.perspectiveCamera,
+    selectedObjects: [],
   }
 
-  public getState<K extends keyof GlobalState>(key: K): GlobalState[K] {
-    return this.stateMap.get(key);
+  public getState(): GlobalState {
+    return this.state;
   }
 
   public setState(state: Partial<GlobalState>) {
     Object.entries(state).forEach(([key, value]) => {
-      this.stateMap.set(key, value);
+      this.state[key as keyof GlobalState] = value as any;
       this.emitter.emit(key as keyof GlobalState, value);
     });
   }
@@ -44,7 +40,6 @@ export class GlobalStore implements Module {
   }
 
   dispose() {
-    this.stateMap.clear();
     this.emitter.all.clear();
   }
 }

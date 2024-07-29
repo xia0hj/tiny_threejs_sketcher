@@ -33,4 +33,8 @@ export class Configurator implements Module {
   getOptions() {
     return this.#options;
   }
+
+  dispose() {
+    
+  }
 }

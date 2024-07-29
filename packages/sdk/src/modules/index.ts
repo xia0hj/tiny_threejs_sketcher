@@ -28,9 +28,9 @@ export function initAllModules(
   canvasElement: HTMLCanvasElement,
   options?: Partial<Options>,
 ) {
-  const modulesMap = new Map();
-  const useModule = (module: Module) => modulesMap.set(module.name, module);
-  const getModule = (moduleName: ModuleNameUnion) => modulesMap.get(moduleName);
+  const moduleMap = new Map();
+  const useModule = (module: Module) => moduleMap.set(module.name, module);
+  const getModule: ModuleGetter = (moduleName) => moduleMap.get(moduleName);
 
   useModule(new Configurator(options));
   useModule(new SceneBuilder(getModule, canvasElement));
@@ -39,7 +39,7 @@ export function initAllModules(
   useModule(new SketchObjectManager(getModule));
   useModule(new OperationModeSwitcher(getModule));
 
-  return modulesMap;
+  return { moduleMap, getModule };
 }
 
 export type Module = {
@@ -48,5 +48,7 @@ export type Module = {
   dispose?: () => void;
 };
 
-export type ModuleGetter = ThreeCadEditor["getModule"];
+export type ModuleGetter = <K extends ModuleNameUnion>(
+  moduleName: K,
+) => ModuleNameMap[K];
 export type ModuleNameUnion = ValueOf<typeof MODULE_NAME>;

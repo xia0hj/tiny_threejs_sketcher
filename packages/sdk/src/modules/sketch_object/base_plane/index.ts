@@ -15,18 +15,18 @@ export type CreatePlaneParameter = {
   parallelTo: "XY" | "XZ" | "YZ";
   offset: number;
 
-  planeLength: number;
-  planeColor: number;
-  planeOpacity: number;
+  basePlaneLength: number;
+  basePlaneColor: number;
+  basePlaneOpacity: number;
 };
 
-export class Plane
+export class BasePlane
   extends Mesh<BufferGeometry, MeshStandardMaterial>
   implements SketchObject
 {
   userData: Extract<
     SketchObjectUserData,
-    { type: typeof SKETCH_OBJECT_TYPE.plane }
+    { type: typeof SKETCH_OBJECT_TYPE.basePlane }
   >;
 
   constructor(createPlaneParameter: CreatePlaneParameter) {
@@ -34,14 +34,14 @@ export class Plane
       buildPlaneGeomtry(createPlaneParameter),
       new MeshStandardMaterial({
         vertexColors: false,
-        color: createPlaneParameter.planeColor,
+        color: createPlaneParameter.basePlaneColor,
         side: DoubleSide,
         transparent: true,
-        opacity: createPlaneParameter.planeOpacity,
+        opacity: createPlaneParameter.basePlaneOpacity,
       }),
     );
     this.userData = {
-      type: SKETCH_OBJECT_TYPE.plane,
+      type: SKETCH_OBJECT_TYPE.basePlane,
       normal:
         createPlaneParameter.parallelTo === "XY"
           ? { x: 0, y: 0, z: 1 }
@@ -61,7 +61,7 @@ export class Plane
 function buildPlaneGeomtry({
   parallelTo,
   offset,
-  planeLength,
+  basePlaneLength: planeLength,
 }: CreatePlaneParameter): BufferGeometry {
   const distance = planeLength / 2;
   if (parallelTo === "XY") {

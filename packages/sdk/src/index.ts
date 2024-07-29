@@ -6,4 +6,4 @@ export { type GlobalState } from "@src/modules/global_store";
 
 export { MODULE_NAME } from "@src/modules";
 
-// export { type SketchObjectTreeItem } from "@src/features/sketch_object_manager";
+export { type SketchObjectTreeItem } from "@src/modules/sketch_object_manager";

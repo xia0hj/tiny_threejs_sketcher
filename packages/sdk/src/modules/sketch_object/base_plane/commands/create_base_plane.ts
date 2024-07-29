@@ -1,9 +1,9 @@
 import { MODULE_NAME, ModuleGetter } from "@src/modules";
 import { Command } from "@src/modules/command_system";
-import { CreatePlaneParameter, Plane } from "@src/modules/sketch_object/base_plane";
+import { CreatePlaneParameter, BasePlane } from "@src/modules/sketch_object/base_plane";
 
-export const commandCreatePlane = Object.freeze<Command<"create_plane">>({
-  key: "create_plane",
+export const commandCreatePlane = Object.freeze<Command<"create_base_plane">>({
+  key: "create_base_plane",
   modification: false,
   run(getModule: ModuleGetter, parameter?: CreatePlaneParameter) {
     if (!parameter) {
@@ -16,13 +16,13 @@ export const commandCreatePlane = Object.freeze<Command<"create_plane">>({
     const defaultParameter: CreatePlaneParameter = {
       offset: 0,
       parallelTo: "XY",
-      planeColor,
-      planeLength,
-      planeOpacity,
+      basePlaneColor: planeColor,
+      basePlaneLength: planeLength,
+      basePlaneOpacity: planeOpacity,
     };
     const mergedParameter = Object.assign(defaultParameter, parameter);
 
-    const plane = new Plane(mergedParameter);
+    const plane = new BasePlane(mergedParameter);
     getModule(MODULE_NAME.SketchObjectManager).add(plane);
 
     return {

@@ -1,5 +1,5 @@
 import { commandFitCameraToScene } from "@src/modules/scene_builder/commands/fit_camera_to_scene";
-import { commandCreatePlane } from "@src/modules/sketch_object/base_plane/commands/create_plane";
+import { commandCreatePlane } from "@src/modules/sketch_object/base_plane/commands/create_base_plane";
 
 export const allCommands = Object.freeze([
   commandFitCameraToScene,

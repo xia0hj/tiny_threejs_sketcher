@@ -1,23 +1,26 @@
 import {
   MODULE_NAME,
   Module,
+  ModuleGetter,
   ModuleNameMap,
   ModuleNameUnion,
   initAllModules,
 } from "@src/modules";
+import { CommandSystem } from "@src/modules/command_system";
 import { COMMAND_KEY } from "@src/modules/command_system/all_commands";
-import { Options } from "@src/modules/configurator";
+import { Configurator, Options } from "@src/modules/configurator";
+import { GlobalStore } from "@src/modules/global_store";
+import { SceneBuilder } from "@src/modules/scene_builder";
 import { ValueOf } from "@src/utils";
 
 export class ThreeCadEditor {
-  #modules = new Map();
+  #moduleMap: Map<ModuleNameUnion, Module>;
+  public getModule: ModuleGetter;
 
   constructor(canvasElement: HTMLCanvasElement, options?: Partial<Options>) {
-    this.#modules = initAllModules(canvasElement, options);
-  }
-
-  public getModule<Name extends ModuleNameUnion>(moduleName: Name) {
-    return this.#modules.get(moduleName) as ModuleNameMap[Name];
+    const { moduleMap, getModule } = initAllModules(canvasElement, options);
+    this.#moduleMap = moduleMap;
+    this.getModule = getModule;
   }
 
   public startRender() {
@@ -33,8 +36,10 @@ export class ThreeCadEditor {
   }
 
   public dispose() {
-    for (const module of this.#modules.values()) {
-      module.dispose?.();
-    }
+    Array.from(this.#moduleMap.values())
+      .reverse()
+      .forEach((module) => {
+        module.dispose?.();
+      });
   }
 }

@@ -4,17 +4,18 @@ import {
   CommandKeyMap,
   allCommands,
 } from "@src/modules/command_system/all_commands";
+import { ThreeCadEditor } from "@src/three_cad_editor";
 import { ValueOf } from "@src/utils";
 
 export class CommandSystem implements Module {
   name = MODULE_NAME.CommandSystem;
+  getModule: ModuleGetter;
 
   modificationHistoryArray: ModificationHistory[] = [];
   modificationHistoryIndex: number = -1;
   commandMap: Map<string, Command> = new Map(
     allCommands.map((command) => [command.key, command]),
   );
-  getModule: ModuleGetter;
 
   constructor(getModule: ModuleGetter) {
     this.getModule = getModule
