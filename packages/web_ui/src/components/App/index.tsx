@@ -1,7 +1,12 @@
-import { useThreeCadEditor } from "@src/component/App/useThreeCadEditor";
+import { useThreeCadEditor } from "@src/components/App/useThreeCadEditor";
 import style from "./index.module.less";
-import { Toolbar } from "@src/component/Toolbar";
-import { SketchObjectTree } from "@src/component/ObjectTree";
+import { Toolbar, ToolbarButton } from "@src/components/Toolbar";
+import { SketchObjectTree } from "@src/components/ObjectTree";
+import { btnCreateBasePlane } from "@src/features/create_base_plane";
+
+const mainToolbarButtons: ToolbarButton[] = [
+  btnCreateBasePlane
+] as const;
 
 export const App = () => {
   const canvasRef = useThreeCadEditor();
@@ -11,7 +16,7 @@ export const App = () => {
       <div className={style.app_navbar}></div>
       <div className={style.app_main}>
         <div className={style.left_sidebar}>
-          <Toolbar />
+          <Toolbar toolbarButtons={mainToolbarButtons} />
           <SketchObjectTree />
         </div>
         <canvas className={style.app_canvas} ref={canvasRef} />

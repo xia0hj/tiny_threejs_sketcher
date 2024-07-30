@@ -3,10 +3,10 @@ import {
   CheckOutlined,
   CloseOutlined,
 } from "@ant-design/icons";
-import { ToolbarButton } from "@src/component/Toolbar";
+import { ToolbarButton } from "@src/components/Toolbar";
 import { Card, Form, InputNumber, Select } from "antd";
 import style from "./index.module.less";
-import { useGlobalStore } from "@src/store";
+import { useEditorStore } from "@src/store";
 import { COMMAND_KEY } from "sdk";
 interface FieldType {
   parallelTo: "XY" | "XZ" | "YZ";
@@ -15,10 +15,10 @@ interface FieldType {
 
 export const DetailsView: ToolbarButton["DetailsView"] = ({ onExit }) => {
   const [formInstance] = Form.useForm();
-  const threeCadEditor = useGlobalStore((state) => state.threeCadEditor);
+  const threeCadEditor = useEditorStore((state) => state.threeCadEditor);
   const onSubmit = (values: FieldType) => {
     console.log(values);
-    threeCadEditor?.runCommand(COMMAND_KEY.create_plane, {
+    threeCadEditor?.runCommand(COMMAND_KEY.create_base_plane, {
       offset: values.offset,
       parallelTo: values.parallelTo,
     });

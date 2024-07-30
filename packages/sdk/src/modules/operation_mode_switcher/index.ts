@@ -12,7 +12,7 @@ export type OperationMode = {
 class DefaultOperationMode implements OperationMode {
   onClick(event: PointerEvent, getModule: ModuleGetter) {
     const sketchObjectManager = getModule(MODULE_NAME.SketchObjectManager);
-    const globalStore = getModule(MODULE_NAME.GlobalStore);
+    const globalStore = getModule(MODULE_NAME.StateStore);
 
     const intersectList = sketchObjectManager.getPointerIntersectList(event);
     if (!Array.isArray(intersectList) || intersectList.length === 0) {

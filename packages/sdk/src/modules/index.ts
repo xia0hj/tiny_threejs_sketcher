@@ -1,6 +1,6 @@
 import { CommandSystem } from "@src/modules/command_system";
 import { Configurator, Options } from "@src/modules/configurator";
-import { GlobalStore } from "@src/modules/global_store";
+import { StateStore } from "@src/modules/state_store";
 import { OperationModeSwitcher } from "@src/modules/operation_mode_switcher";
 import { SceneBuilder } from "@src/modules/scene_builder";
 import { SketchObjectManager } from "@src/modules/sketch_object_manager";
@@ -11,7 +11,7 @@ import { ValueOf } from "@src/utils";
 export const MODULE_NAME = Object.freeze({
   Configurator: "Configurator",
   SceneBuilder: "SceneBuilder",
-  GlobalStore: "GlobalStore",
+  StateStore: "StateStore",
   CommandSystem: "CommandSystem",
   SketchObjectManager: "SketchObjectManager",
   OperationModeSwitcher: "OperationModeSwitcher",
@@ -19,7 +19,7 @@ export const MODULE_NAME = Object.freeze({
 export type ModuleNameMap = {
   Configurator: Configurator;
   SceneBuilder: SceneBuilder;
-  GlobalStore: GlobalStore;
+  StateStore: StateStore;
   CommandSystem: CommandSystem;
   SketchObjectManager: SketchObjectManager;
   OperationModeSwitcher: OperationModeSwitcher;
@@ -34,7 +34,7 @@ export function initAllModules(
 
   useModule(new Configurator(options));
   useModule(new SceneBuilder(getModule, canvasElement));
-  useModule(new GlobalStore());
+  useModule(new StateStore());
   useModule(new CommandSystem(getModule));
   useModule(new SketchObjectManager(getModule));
   useModule(new OperationModeSwitcher(getModule));

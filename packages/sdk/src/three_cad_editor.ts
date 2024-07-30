@@ -9,7 +9,7 @@ import {
 import { CommandSystem } from "@src/modules/command_system";
 import { COMMAND_KEY } from "@src/modules/command_system/all_commands";
 import { Configurator, Options } from "@src/modules/configurator";
-import { GlobalStore } from "@src/modules/global_store";
+import { StateStore } from "@src/modules/state_store";
 import { SceneBuilder } from "@src/modules/scene_builder";
 import { ValueOf } from "@src/utils";
 

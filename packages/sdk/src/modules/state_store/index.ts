@@ -5,7 +5,7 @@ import { SketchObjectTreeItem } from "@src/modules/sketch_object_manager";
 import { ValueOf } from "@src/utils";
 import mitt from "mitt";
 
-export type GlobalState = {
+export type EditorState = {
   curCameraType: ValueOf<typeof CAMERA_TYPE>;
   sketchObjectTreeRoot?: SketchObjectTreeItem;
   selectedObjects: SketchObject[];
@@ -15,23 +15,23 @@ export type GlobalState = {
 };
 
 
-export class GlobalStore implements Module {
-  name = MODULE_NAME.GlobalStore;
-  emitter = mitt<GlobalState>();
+export class StateStore implements Module {
+  name = MODULE_NAME.StateStore;
+  emitter = mitt<EditorState>();
 
-  state: GlobalState = {
+  state: EditorState = {
     curCameraType: CAMERA_TYPE.perspectiveCamera,
     selectedObjects: [],
   }
 
-  public getState(): GlobalState {
+  public getState(): EditorState {
     return this.state;
   }
 
-  public setState(state: Partial<GlobalState>) {
+  public setState(state: Partial<EditorState>) {
     Object.entries(state).forEach(([key, value]) => {
-      this.state[key as keyof GlobalState] = value as any;
-      this.emitter.emit(key as keyof GlobalState, value);
+      this.state[key as keyof EditorState] = value as any;
+      this.emitter.emit(key as keyof EditorState, value);
     });
   }
 

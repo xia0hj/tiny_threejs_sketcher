@@ -1,6 +1,5 @@
 import { Button, Divider, Menu, MenuProps, Tooltip } from "antd";
 import { useState, type ReactElement, FunctionComponent } from "react";
-import { toolbarButtonList } from "@src/component/Toolbar/toolbar_button_list";
 
 export type ToolbarButton = {
   label: string;
@@ -8,7 +7,7 @@ export type ToolbarButton = {
   DetailsView: (props: { onExit: () => void }) => ReactElement;
 };
 
-export const Toolbar: FunctionComponent = () => {
+export const Toolbar: FunctionComponent<{toolbarButtons: ToolbarButton[]}> = ({toolbarButtons}) => {
   const [curActiveBtn, setCurActiveBtn] = useState<ToolbarButton>();
   const onExit = () => setCurActiveBtn(undefined);
 
@@ -16,7 +15,7 @@ export const Toolbar: FunctionComponent = () => {
     return (
       <div>
         <Divider orientation="left">111</Divider>
-        {toolbarButtonList.map((btn) => (
+        {toolbarButtons.map((btn) => (
           <Tooltip title={btn.label}>
             <Button
               key={btn.label}

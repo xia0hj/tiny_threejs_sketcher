@@ -1,14 +1,14 @@
-import { useGlobalStore } from "@src/store";
+import { useEditorStore } from "@src/store";
 import { useEffect, useRef } from "react";
 import { ThreeCadEditor, MODULE_NAME } from "sdk";
 
 export function useThreeCadEditor() {
   const canvasElementRef = useRef<HTMLCanvasElement>(null);
-  const setThreeCadEditor = useGlobalStore((state) => state.setThreeCadEditor);
-  const setSketchObjectTree = useGlobalStore(
+  const setThreeCadEditor = useEditorStore((state) => state.setThreeCadEditor);
+  const setSketchObjectTree = useEditorStore(
     (state) => state.setSketchObjectTree,
   );
-  const setSelectedObjects = useGlobalStore(
+  const setSelectedObjects = useEditorStore(
     (state) => state.setSelectedObjects,
   );
 
@@ -20,7 +20,7 @@ export function useThreeCadEditor() {
       threeCadEditor.startRender();
 
       const emitter = threeCadEditor
-        .getModule(MODULE_NAME.GlobalStore)
+        .getModule(MODULE_NAME.StateStore)
         .getEmitter();
       emitter.on("sketchObjectTreeRoot", (treeRoot) => {
         setSketchObjectTree(treeRoot);

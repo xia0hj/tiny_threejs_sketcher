@@ -1,4 +1,3 @@
-
 import { SketchObject } from "@src/modules/sketch_object";
 import { Object3D } from "three";
 

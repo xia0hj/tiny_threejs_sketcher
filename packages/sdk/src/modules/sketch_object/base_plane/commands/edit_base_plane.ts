@@ -7,7 +7,7 @@ export const commandStartEditBasePlane: Command<"start_edit_base_plane"> = {
   key: "start_edit_base_plane",
   modification: false,
   run(getModule: ModuleGetter) {
-    const globalStore = getModule(MODULE_NAME.GlobalStore);
+    const globalStore = getModule(MODULE_NAME.StateStore);
 
     const [selectedBasePlane] = globalStore.getState().selectedObjects;
     if (
@@ -25,7 +25,7 @@ export const commandStopEditBasePlane: Command<"stop_edit_base_plane"> = {
   key: "stop_edit_base_plane",
   modification: false,
   run(getModule: ModuleGetter) {
-    const globalStore = getModule(MODULE_NAME.GlobalStore);
+    const globalStore = getModule(MODULE_NAME.StateStore);
 
     if (globalStore.getState().editingBasePlane === undefined) {
       console.warn("当前不是 2d 编辑模式");

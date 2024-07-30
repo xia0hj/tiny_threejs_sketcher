@@ -24,7 +24,7 @@ export class SketchObjectManager implements Module {
 
   refreshTree() {
     const treeRoot = bfs(this.sketchObjectGroup);
-    this.getModule(MODULE_NAME.GlobalStore).setState({
+    this.getModule(MODULE_NAME.StateStore).setState({
       sketchObjectTreeRoot: treeRoot,
     });
 
