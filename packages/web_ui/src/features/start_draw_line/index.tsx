@@ -1,6 +1,6 @@
 import { BorderOuterOutlined } from "@ant-design/icons";
-import { ToolbarButton } from "@src/component/Toolbar";
-import { DetailsView } from "@src/feature/start_draw_line/DetailsView";
+import { ToolbarButton } from "@src/components/Toolbar";
+import { DetailsView } from "@src/features/start_draw_line/DetailsView";
 import { Button } from "antd";
 
 export const btnStartDrawLine: ToolbarButton = {

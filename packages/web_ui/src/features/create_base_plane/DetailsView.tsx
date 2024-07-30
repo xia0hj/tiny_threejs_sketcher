@@ -13,7 +13,7 @@ interface FieldType {
   offset: number;
 }
 
-export const DetailsView: ToolbarButton["DetailsView"] = ({ onExit }) => {
+export const DetailsView: ToolbarButton["DetailsView"] = ({ exit: onExit }) => {
   const [formInstance] = Form.useForm();
   const threeCadEditor = useEditorStore((state) => state.threeCadEditor);
   const onSubmit = (values: FieldType) => {

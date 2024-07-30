@@ -4,14 +4,21 @@ import { useState, type ReactElement, FunctionComponent } from "react";
 export type ToolbarButton = {
   label: string;
   icon: ReactElement;
-  DetailsView: (props: { onExit: () => void }) => ReactElement;
+  DetailsView?: (props: { exit: () => void }) => ReactElement;
+  onClick?: () => void;
 };
 
-export const Toolbar: FunctionComponent<{toolbarButtons: ToolbarButton[]}> = ({toolbarButtons}) => {
+export const Toolbar: FunctionComponent<{
+  toolbarButtons: ToolbarButton[];
+}> = ({ toolbarButtons }) => {
   const [curActiveBtn, setCurActiveBtn] = useState<ToolbarButton>();
   const onExit = () => setCurActiveBtn(undefined);
+  const onClick = (btn: ToolbarButton) => {
+    setCurActiveBtn(btn);
+    btn.onClick?.();
+  };
 
-  if (curActiveBtn == undefined) {
+  if (curActiveBtn == undefined || curActiveBtn.DetailsView == undefined) {
     return (
       <div>
         <Divider orientation="left">111</Divider>
@@ -19,16 +26,16 @@ export const Toolbar: FunctionComponent<{toolbarButtons: ToolbarButton[]}> = ({t
           <Tooltip title={btn.label}>
             <Button
               key={btn.label}
-              type="text"
+              type={btn.label === curActiveBtn?.label ? undefined : "text"}
               size="large"
               icon={btn.icon}
-              onClick={() => setCurActiveBtn(btn)}
+              onClick={() => onClick(btn)}
             />
           </Tooltip>
         ))}
       </div>
     );
   } else {
-    return <curActiveBtn.DetailsView onExit={onExit} />;
+    return <curActiveBtn.DetailsView exit={onExit} />;
   }
 };

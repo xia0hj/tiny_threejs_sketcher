@@ -1,5 +1,5 @@
 import { CheckOutlined, CloseOutlined } from "@ant-design/icons";
-import { ToolbarButton } from "@src/component/Toolbar";
+import { ToolbarButton } from "@src/components/Toolbar";
 import { useEditorStore } from "@src/store";
 import { Card } from "antd";
 import { COMMAND_KEY } from "sdk";
@@ -17,7 +17,7 @@ const PointDetails = ({ x, y, z }: { x?: number; y?: number; z?: number }) => {
   );
 };
 
-export const DetailsView: ToolbarButton["DetailsView"] = ({ onExit }) => {
+export const DetailsView: ToolbarButton["DetailsView"] = ({ exit: onExit }) => {
   const rootRenderer = useEditorStore((state) => state.threeCadEditor);
   const threeCadEditor = useEditorStore((state) => state.threeCadEditor);
   const startPoint = useStore(
