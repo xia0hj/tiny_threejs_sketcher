@@ -7,7 +7,7 @@ import { ToolbarButton } from "@src/components/Toolbar";
 import { Card, Form, InputNumber, Select } from "antd";
 import style from "./index.module.less";
 import { useEditorStore } from "@src/store";
-import { COMMAND_KEY } from "sdk";
+import { COMMAND_KEY } from "tiny_threejs_sketcher";
 interface FieldType {
   parallelTo: "XY" | "XZ" | "YZ";
   offset: number;

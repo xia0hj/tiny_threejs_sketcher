@@ -11,7 +11,7 @@
     },
     {
       "label": "dev_esbuild",
-      "path": "packages/sdk",
+      "path": "packages/tiny_threejs_sketcher",
       "type": "npm",
       "script": "dev_esbuild",
       "presentation": {
@@ -21,7 +21,7 @@
     },
     {
       "label": "dev_dts",
-      "path": "packages/sdk",
+      "path": "packages/tiny_threejs_sketcher",
       "type": "npm",
       "script": "dev_dts",
       "presentation": {

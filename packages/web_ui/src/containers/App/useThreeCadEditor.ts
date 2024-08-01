@@ -1,6 +1,6 @@
 import { useEditorStore } from "@src/store";
 import { useEffect, useRef } from "react";
-import { ThreeCadEditor, MODULE_NAME } from "sdk";
+import { ThreeCadEditor, MODULE_NAME } from "tiny_threejs_sketcher";
 
 export function useThreeCadEditor() {
   const canvasElementRef = useRef<HTMLCanvasElement>(null);

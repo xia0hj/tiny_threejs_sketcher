@@ -1,6 +1,6 @@
-import { ThreeCadEditor } from "sdk";
+import { ThreeCadEditor } from "tiny_threejs_sketcher";
 import { create } from "zustand";
-import { type GlobalState } from "sdk";
+import { type GlobalState } from "tiny_threejs_sketcher";
 import { WithSetter } from "@src/utils";
 
 export type StoreState = WithSetter<{

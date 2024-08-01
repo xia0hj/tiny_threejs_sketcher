@@ -2,7 +2,7 @@ import { CheckOutlined, CloseOutlined } from "@ant-design/icons";
 import { ToolbarButton } from "@src/components/Toolbar";
 import { useEditorStore } from "@src/store";
 import { Card } from "antd";
-import { COMMAND_KEY } from "sdk";
+import { COMMAND_KEY } from "tiny_threejs_sketcher";
 import style from "./index.module.less";
 import { useEffect } from "react";
 import { useStore } from "zustand";

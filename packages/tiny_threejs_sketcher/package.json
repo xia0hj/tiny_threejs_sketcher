@@ -1,5 +1,5 @@
 {
-  "name": "sdk",
+  "name": "tiny_threejs_sketcher",
   "version": "1.0.0",
   "type": "module",
   "module": "./dist/index.js",
