@@ -4,7 +4,7 @@ import {
   FormOutlined,
   LogoutOutlined,
 } from "@ant-design/icons";
-import { Toolbar, ToolbarButton } from "@src/components/Toolbar";
+import { Toolbar, ToolbarButton } from "@src/components/toolbar";
 
 export const DetailsView: ToolbarButton["DetailsView"] = ({ exit }) => {
   const editor2dButtons: ToolbarButton[] = [

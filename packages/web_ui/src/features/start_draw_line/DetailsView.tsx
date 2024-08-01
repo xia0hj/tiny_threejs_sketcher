@@ -1,6 +1,6 @@
 import { CheckOutlined, CloseOutlined } from "@ant-design/icons";
-import { ToolbarButton } from "@src/components/Toolbar";
-import { useEditorStore } from "@src/store";
+import { ToolbarButton } from "@src/components/toolbar";
+import { useSketcherStore } from "@src/store";
 import { Card } from "antd";
 import { COMMAND_KEY } from "tiny_threejs_sketcher";
 import style from "./index.module.less";
@@ -18,8 +18,8 @@ const PointDetails = ({ x, y, z }: { x?: number; y?: number; z?: number }) => {
 };
 
 export const DetailsView: ToolbarButton["DetailsView"] = ({ exit: onExit }) => {
-  const rootRenderer = useEditorStore((state) => state.tinyThreejsSketcher);
-  const threeCadEditor = useEditorStore((state) => state.tinyThreejsSketcher);
+  const rootRenderer = useSketcherStore((state) => state.tinyThreejsSketcher);
+  const threeCadEditor = useSketcherStore((state) => state.tinyThreejsSketcher);
   const startPoint = useStore(
     threeCadEditor!.globalStore,
     (state) => state.curDrawingLine2dStartPoint,

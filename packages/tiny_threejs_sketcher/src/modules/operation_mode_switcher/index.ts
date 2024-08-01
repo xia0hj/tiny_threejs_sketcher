@@ -12,17 +12,17 @@ export type OperationMode = {
 class DefaultOperationMode implements OperationMode {
   onClick(event: PointerEvent, getModule: ModuleGetter) {
     const sketchObjectManager = getModule(MODULE_NAME.SketchObjectManager);
-    const globalStore = getModule(MODULE_NAME.StateStore);
+    const stateStore = getModule(MODULE_NAME.StateStore);
 
     const intersectList = sketchObjectManager.getPointerIntersectList(event);
     if (!Array.isArray(intersectList) || intersectList.length === 0) {
-      globalStore.setState({ selectedObjects: [] });
+      stateStore.setState({ selectedObjects: [] });
       return;
     }
     const firstIntersect = intersectList[0];
     firstIntersect.object.onSelect?.();
     console.log("选中了", firstIntersect.object);
-    globalStore.setState({
+    stateStore.setState({
       selectedObjects: [firstIntersect.object],
     });
   }

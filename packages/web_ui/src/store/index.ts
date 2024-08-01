@@ -1,15 +1,15 @@
 import { TinyThreejsSketcher } from "tiny_threejs_sketcher";
 import { create } from "zustand";
-import { type GlobalState } from "tiny_threejs_sketcher";
+import { type SketcherState } from "tiny_threejs_sketcher";
 import { WithSetter } from "@src/utils";
 
 export type StoreState = WithSetter<{
   tinyThreejsSketcher?: TinyThreejsSketcher;
-  sketchObjectTree?: GlobalState["sketchObjectTreeRoot"];
-  selectedObjects: GlobalState["selectedObjects"];
+  sketchObjectTree?: SketcherState["sketchObjectTreeRoot"];
+  selectedObjects: SketcherState["selectedObjects"];
 }>;
 
-export const useEditorStore = create<StoreState>((set) => ({
+export const useSketcherStore = create<StoreState>((set) => ({
   tinyThreejsSketcher: undefined,
   setTinyThreejsSketcher: (tinyThreejsSketcher) => set({ tinyThreejsSketcher: tinyThreejsSketcher }),
 

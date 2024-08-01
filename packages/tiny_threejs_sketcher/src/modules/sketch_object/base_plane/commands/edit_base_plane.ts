@@ -7,9 +7,9 @@ export const commandStartEditBasePlane: Command<"start_edit_base_plane"> = {
   key: "start_edit_base_plane",
   modification: false,
   run(getModule: ModuleGetter) {
-    const globalStore = getModule(MODULE_NAME.StateStore);
+    const sketcherStore = getModule(MODULE_NAME.StateStore);
 
-    const [selectedBasePlane] = globalStore.getState().selectedObjects;
+    const [selectedBasePlane] = sketcherStore.getState().selectedObjects;
     if (
       !selectedBasePlane ||
       selectedBasePlane.userData.type !== SKETCH_OBJECT_TYPE.basePlane
@@ -17,7 +17,7 @@ export const commandStartEditBasePlane: Command<"start_edit_base_plane"> = {
       console.warn("没有选中面");
       return;
     }
-    globalStore.setState({ editingBasePlane: selectedBasePlane });
+    sketcherStore.setState({ editingBasePlane: selectedBasePlane });
   },
 };
 
@@ -25,11 +25,11 @@ export const commandStopEditBasePlane: Command<"stop_edit_base_plane"> = {
   key: "stop_edit_base_plane",
   modification: false,
   run(getModule: ModuleGetter) {
-    const globalStore = getModule(MODULE_NAME.StateStore);
+    const sketcherStore = getModule(MODULE_NAME.StateStore);
 
-    if (globalStore.getState().editingBasePlane === undefined) {
+    if (sketcherStore.getState().editingBasePlane === undefined) {
       console.warn("当前不是 2d 编辑模式");
     }
-    globalStore.setState({ editingBasePlane: undefined });
+    sketcherStore.setState({ editingBasePlane: undefined });
   },
 };

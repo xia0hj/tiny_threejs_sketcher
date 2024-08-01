@@ -1,14 +1,14 @@
-import { useEditorStore } from "@src/store";
+import { useSketcherStore } from "@src/store";
 import { useEffect, useRef } from "react";
 import { TinyThreejsSketcher, MODULE_NAME } from "tiny_threejs_sketcher";
 
 export function useTinyThreejsSketcher() {
   const canvasElementRef = useRef<HTMLCanvasElement>(null);
-  const setTinyThreejsSketcher = useEditorStore((state) => state.setTinyThreejsSketcher);
-  const setSketchObjectTree = useEditorStore(
+  const setTinyThreejsSketcher = useSketcherStore((state) => state.setTinyThreejsSketcher);
+  const setSketchObjectTree = useSketcherStore(
     (state) => state.setSketchObjectTree,
   );
-  const setSelectedObjects = useEditorStore(
+  const setSelectedObjects = useSketcherStore(
     (state) => state.setSelectedObjects,
   );
 

@@ -1,9 +1,9 @@
-import { useTinyThreejsSketcher } from "@src/containers/App/useTinyThreejsSketcher";
+import { useTinyThreejsSketcher } from "@src/containers/app/useTinyThreejsSketcher";
 import style from "./index.module.less";
-import { Toolbar, ToolbarButton } from "@src/components/Toolbar";
-import { SketchObjectTree } from "@src/containers/ObjectTree";
-import { btnCreateBasePlane } from "@src/features/create_base_plane";
-import { btnEditBasePlane } from "@src/features/edit_base_plane";
+import { Toolbar, ToolbarButton } from "@src/components/toolbar";
+import { SketchObjectTree } from "@src/containers/object_tree";
+import { btnCreateBasePlane } from "@src/containers/toolbar_buttons/create_base_plane";
+import { btnEditBasePlane } from "@src/containers/toolbar_buttons/edit_base_plane";
 
 const mainToolbarButtons: ToolbarButton[] = [
   btnCreateBasePlane,

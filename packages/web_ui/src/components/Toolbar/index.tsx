@@ -23,7 +23,7 @@ export const Toolbar: FunctionComponent<{
       <div>
         <Divider orientation="left">111</Divider>
         {toolbarButtons.map((btn) => (
-          <Tooltip title={btn.label}>
+          <Tooltip key={btn.label} title={btn.label}>
             <Button
               key={btn.label}
               type={btn.label === curActiveBtn?.label ? undefined : "text"}
