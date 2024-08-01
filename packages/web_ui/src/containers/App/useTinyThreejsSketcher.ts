@@ -1,10 +1,10 @@
 import { useEditorStore } from "@src/store";
 import { useEffect, useRef } from "react";
-import { ThreeCadEditor, MODULE_NAME } from "tiny_threejs_sketcher";
+import { TinyThreejsSketcher, MODULE_NAME } from "tiny_threejs_sketcher";
 
-export function useThreeCadEditor() {
+export function useTinyThreejsSketcher() {
   const canvasElementRef = useRef<HTMLCanvasElement>(null);
-  const setThreeCadEditor = useEditorStore((state) => state.setThreeCadEditor);
+  const setTinyThreejsSketcher = useEditorStore((state) => state.setTinyThreejsSketcher);
   const setSketchObjectTree = useEditorStore(
     (state) => state.setSketchObjectTree,
   );
@@ -14,7 +14,7 @@ export function useThreeCadEditor() {
 
   useEffect(() => {
     if (canvasElementRef.current != null) {
-      const threeCadEditor = new ThreeCadEditor(canvasElementRef.current, {
+      const threeCadEditor = new TinyThreejsSketcher(canvasElementRef.current, {
         debug: true,
       });
 
@@ -31,7 +31,7 @@ export function useThreeCadEditor() {
       threeCadEditor.startRender();
 
       (window as any).tce = threeCadEditor;
-      setThreeCadEditor(threeCadEditor);
+      setTinyThreejsSketcher(threeCadEditor);
 
       return () => {
         threeCadEditor.dispose();
@@ -39,7 +39,7 @@ export function useThreeCadEditor() {
     }
   }, [
     canvasElementRef,
-    setThreeCadEditor,
+    setTinyThreejsSketcher,
     setSketchObjectTree,
     setSelectedObjects,
   ]);

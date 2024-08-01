@@ -1,7 +1,7 @@
 import { MODULE_NAME, Module, ModuleGetter } from "@src/modules";
 import { COMMAND_KEY } from "@src/modules/command_system/all_commands";
 import { Options } from "@src/modules/configurator";
-import { ThreeCadEditor } from "@src/three_cad_editor";
+import { TinyThreejsSketcher } from "@src/tiny_threejs_sketcher";
 import {
   AmbientLight,
   AxesHelper,

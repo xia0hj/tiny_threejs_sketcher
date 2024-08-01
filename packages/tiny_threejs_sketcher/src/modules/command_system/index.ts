@@ -4,7 +4,7 @@ import {
   CommandKeyMap,
   allCommands,
 } from "@src/modules/command_system/all_commands";
-import { ThreeCadEditor } from "@src/three_cad_editor";
+import { TinyThreejsSketcher } from "@src/tiny_threejs_sketcher";
 import { ValueOf } from "@src/utils";
 
 export class CommandSystem implements Module {

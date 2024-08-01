@@ -4,7 +4,7 @@ import { StateStore } from "@src/modules/state_store";
 import { OperationModeSwitcher } from "@src/modules/operation_mode_switcher";
 import { SceneBuilder } from "@src/modules/scene_builder";
 import { SketchObjectManager } from "@src/modules/sketch_object_manager";
-import { ThreeCadEditor } from "@src/three_cad_editor";
+import { TinyThreejsSketcher } from "@src/tiny_threejs_sketcher";
 import { ValueOf } from "@src/utils";
 
 // register module name, then use module in initAllModules()

@@ -18,8 +18,8 @@ const PointDetails = ({ x, y, z }: { x?: number; y?: number; z?: number }) => {
 };
 
 export const DetailsView: ToolbarButton["DetailsView"] = ({ exit: onExit }) => {
-  const rootRenderer = useEditorStore((state) => state.threeCadEditor);
-  const threeCadEditor = useEditorStore((state) => state.threeCadEditor);
+  const rootRenderer = useEditorStore((state) => state.tinyThreejsSketcher);
+  const threeCadEditor = useEditorStore((state) => state.tinyThreejsSketcher);
   const startPoint = useStore(
     threeCadEditor!.globalStore,
     (state) => state.curDrawingLine2dStartPoint,

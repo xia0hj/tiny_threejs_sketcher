@@ -1,4 +1,4 @@
-export { ThreeCadEditor } from "@src/three_cad_editor";
+export { TinyThreejsSketcher } from "@src/tiny_threejs_sketcher";
 
 export { COMMAND_KEY } from "@src/modules/command_system/all_commands";
 

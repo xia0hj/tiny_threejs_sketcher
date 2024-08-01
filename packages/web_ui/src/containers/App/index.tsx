@@ -1,4 +1,4 @@
-import { useThreeCadEditor } from "@src/containers/App/useThreeCadEditor";
+import { useTinyThreejsSketcher } from "@src/containers/App/useTinyThreejsSketcher";
 import style from "./index.module.less";
 import { Toolbar, ToolbarButton } from "@src/components/Toolbar";
 import { SketchObjectTree } from "@src/containers/ObjectTree";
@@ -11,7 +11,7 @@ const mainToolbarButtons: ToolbarButton[] = [
 ] as const;
 
 export const App = () => {
-  const canvasRef = useThreeCadEditor();
+  const canvasRef = useTinyThreejsSketcher();
 
   return (
     <div className={style.app}>

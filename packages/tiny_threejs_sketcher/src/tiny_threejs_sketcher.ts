@@ -13,7 +13,7 @@ import { StateStore } from "@src/modules/state_store";
 import { SceneBuilder } from "@src/modules/scene_builder";
 import { ValueOf } from "@src/utils";
 
-export class ThreeCadEditor {
+export class TinyThreejsSketcher {
   #moduleMap: Map<ModuleNameUnion, Module>;
   public getModule: ModuleGetter;
 

@@ -15,7 +15,7 @@ interface FieldType {
 
 export const DetailsView: ToolbarButton["DetailsView"] = ({ exit: onExit }) => {
   const [formInstance] = Form.useForm();
-  const threeCadEditor = useEditorStore((state) => state.threeCadEditor);
+  const threeCadEditor = useEditorStore((state) => state.tinyThreejsSketcher);
   const onSubmit = (values: FieldType) => {
     console.log(values);
     threeCadEditor?.runCommand(COMMAND_KEY.create_base_plane, {
