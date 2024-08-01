@@ -14,10 +14,12 @@ export const commandStartEditBasePlane: Command<"start_edit_base_plane"> = {
       !selectedBasePlane ||
       selectedBasePlane.userData.type !== SKETCH_OBJECT_TYPE.basePlane
     ) {
+
       console.warn("没有选中面");
-      return;
+      return false;
     }
     sketcherStore.setState({ editingBasePlane: selectedBasePlane });
+    return true;
   },
 };
 
@@ -29,7 +31,9 @@ export const commandStopEditBasePlane: Command<"stop_edit_base_plane"> = {
 
     if (sketcherStore.getState().editingBasePlane === undefined) {
       console.warn("当前不是 2d 编辑模式");
+      return false;
     }
     sketcherStore.setState({ editingBasePlane: undefined });
+    return true;
   },
 };

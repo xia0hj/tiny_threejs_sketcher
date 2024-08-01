@@ -13,6 +13,6 @@ export const btnEditBasePlane: ToolbarButton = {
     if (tinyThreejsSketcher == null) {
       throw new Error("Error: can not get TinyThreejsSketcher instance.");
     }
-    tinyThreejsSketcher.runCommand(COMMAND_KEY.start_edit_base_plane);
+    return tinyThreejsSketcher.runCommand(COMMAND_KEY.start_edit_base_plane);
   },
 } as const;

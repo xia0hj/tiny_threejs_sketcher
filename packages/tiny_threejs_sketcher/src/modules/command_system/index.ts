@@ -1,10 +1,12 @@
-import { MODULE_NAME, Module, ModuleGetter, ModuleNameMap, ModuleNameUnion } from "@src/modules";
+import {
+  MODULE_NAME,
+  Module,
+  ModuleGetter,
+} from "@src/modules";
 import {
   COMMAND_KEY,
-  CommandKeyMap,
   allCommands,
 } from "@src/modules/command_system/all_commands";
-import { TinyThreejsSketcher } from "@src/tiny_threejs_sketcher";
 import { ValueOf } from "@src/utils";
 
 export class CommandSystem implements Module {
@@ -18,20 +20,24 @@ export class CommandSystem implements Module {
   );
 
   constructor(getModule: ModuleGetter) {
-    this.getModule = getModule
+    this.getModule = getModule;
   }
 
-  runCommand(key: ValueOf<typeof COMMAND_KEY>, parameter?: any) {
+  runCommand(key: ValueOf<typeof COMMAND_KEY>, parameter?: any): boolean {
     const command = this.commandMap.get(key);
     if (command == undefined) {
-      return;
+      return false;
     }
     if (command.modification) {
       const modificationHistory = command.run(this.getModule, parameter);
+      if (modificationHistory == null) {
+        return false
+      }
       this.modificationHistoryArray.push(modificationHistory);
       this.modificationHistoryIndex++;
+      return true
     } else {
-      command.run(this.getModule, parameter);
+      return command.run(this.getModule, parameter);
     }
   }
 
@@ -45,12 +51,12 @@ export type Command<K = string> = Readonly<
   | {
       key: K;
       modification: false;
-      run: (getModule: ModuleGetter, parameter?: any) => void;
+      run: (getModule: ModuleGetter, parameter?: any) => boolean;
     }
   | {
       key: K;
       modification: true;
-      run: (getModule: ModuleGetter, parameter?: any) => ModificationHistory;
+      run: (getModule: ModuleGetter, parameter?: any) => ModificationHistory | undefined;
     }
 >;
 

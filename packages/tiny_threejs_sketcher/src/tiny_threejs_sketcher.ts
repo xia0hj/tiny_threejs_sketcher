@@ -33,7 +33,7 @@ export class TinyThreejsSketcher {
   }
 
   public runCommand(key: ValueOf<typeof COMMAND_KEY>, parameter?: any) {
-    this.getModule(MODULE_NAME.CommandSystem).runCommand(key, parameter);
+    return this.getModule(MODULE_NAME.CommandSystem).runCommand(key, parameter);
   }
 
   public dispose() {
