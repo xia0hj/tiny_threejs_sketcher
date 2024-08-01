@@ -1,7 +1,7 @@
-import { useThreeCadEditor } from "@src/components/App/useThreeCadEditor";
+import { useThreeCadEditor } from "@src/containers/App/useThreeCadEditor";
 import style from "./index.module.less";
 import { Toolbar, ToolbarButton } from "@src/components/Toolbar";
-import { SketchObjectTree } from "@src/components/ObjectTree";
+import { SketchObjectTree } from "@src/containers/ObjectTree";
 import { btnCreateBasePlane } from "@src/features/create_base_plane";
 import { btnEditBasePlane } from "@src/features/edit_base_plane";
 

@@ -6,4 +6,8 @@ export const btnEditBasePlane: ToolbarButton = {
   label: "编辑平面",
   icon: <FormOutlined />,
   DetailsView,
+  onClick() {
+    
+  },
 } as const;
+

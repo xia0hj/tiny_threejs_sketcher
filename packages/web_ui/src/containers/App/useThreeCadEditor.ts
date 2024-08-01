@@ -17,7 +17,6 @@ export function useThreeCadEditor() {
       const threeCadEditor = new ThreeCadEditor(canvasElementRef.current, {
         debug: true,
       });
-      threeCadEditor.startRender();
 
       const emitter = threeCadEditor
         .getModule(MODULE_NAME.StateStore)
@@ -28,6 +27,8 @@ export function useThreeCadEditor() {
       emitter.on("selectedObjects", (objects) => {
         setSelectedObjects(objects);
       });
+
+      threeCadEditor.startRender();
 
       (window as any).tce = threeCadEditor;
       setThreeCadEditor(threeCadEditor);

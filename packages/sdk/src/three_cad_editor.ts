@@ -29,6 +29,7 @@ export class ThreeCadEditor {
       COMMAND_KEY.fitCameraToScene,
     );
     this.getModule(MODULE_NAME.OperationModeSwitcher).startListenCanvas();
+    this.getModule(MODULE_NAME.SketchObjectManager).refreshTree();
   }
 
   public runCommand(key: ValueOf<typeof COMMAND_KEY>, parameter?: any) {
