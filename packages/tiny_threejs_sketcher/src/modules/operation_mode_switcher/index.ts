@@ -1,4 +1,9 @@
-import { MODULE_NAME, Module, ModuleGetter, ModuleNameMap } from "@src/modules/module_registry";
+import {
+  MODULE_NAME,
+  Module,
+  ModuleGetter,
+} from "@src/modules/module_registry";
+import { DefaultOperationMode } from "@src/modules/operation_mode_switcher/operation_modes/default_operation_mode";
 
 export type OperationMode = {
   onPointerdown?: (event: PointerEvent, getModule: ModuleGetter) => void;
@@ -6,35 +11,17 @@ export type OperationMode = {
   onClick?: (event: PointerEvent, getModule: ModuleGetter) => void;
   onPointermove?: (event: PointerEvent, getModule: ModuleGetter) => void;
 
+  enable?: (getModule: ModuleGetter) => void;
   dispose?: () => void;
 };
 
-class DefaultOperationMode implements OperationMode {
-  onClick(event: PointerEvent, getModule: ModuleGetter) {
-    const sketchObjectManager = getModule(MODULE_NAME.SketchObjectManager);
-    const stateStore = getModule(MODULE_NAME.StateStore);
-
-    const intersectList = sketchObjectManager.getPointerIntersectList(event);
-    if (!Array.isArray(intersectList) || intersectList.length === 0) {
-      stateStore.setState({ selectedObjects: [] });
-      return;
-    }
-    const firstIntersect = intersectList[0];
-    firstIntersect.object.onSelect?.();
-    console.log("选中了", firstIntersect.object);
-    stateStore.setState({
-      selectedObjects: [firstIntersect.object],
-    });
-  }
-}
-
 export class OperationModeSwitcher implements Module {
-  name = MODULE_NAME.OperationModeSwitcher;
-  getModule: ModuleGetter;
+  public name = MODULE_NAME.OperationModeSwitcher;
+  private getModule: ModuleGetter;
 
-  abortController = new AbortController();
+  private abortController = new AbortController();
 
-  curOperationMode: OperationMode = new DefaultOperationMode();
+  public curOperationMode: OperationMode = new DefaultOperationMode();
 
   #pressStartTimestamp = 0;
 
@@ -42,9 +29,11 @@ export class OperationModeSwitcher implements Module {
     this.getModule = getModule;
   }
 
-  startListenCanvas() {
-    const {canvasElement} = this.getModule(MODULE_NAME.SceneBuilder);
-    const { pressMinDuration } = this.getModule(MODULE_NAME.Configurator).getOptions()
+  public startListenCanvas() {
+    const { canvasElement } = this.getModule(MODULE_NAME.SceneBuilder);
+    const { pressMinDuration } = this.getModule(
+      MODULE_NAME.Configurator,
+    ).getOptions();
 
     canvasElement.addEventListener(
       "pointerdown",
@@ -71,7 +60,13 @@ export class OperationModeSwitcher implements Module {
     });
   }
 
-  dispose() {
+  public setOperationMode(operationMode: OperationMode) {
+    this.curOperationMode.dispose?.();
+    operationMode.enable?.(this.getModule);
+    this.curOperationMode = operationMode;
+  }
+
+  public dispose() {
     this.abortController.abort();
   }
 }

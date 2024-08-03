@@ -1,4 +1,3 @@
-import { ValueOf } from "@src/utils";
 import { Object3D } from "three";
 
 export const SKETCH_OBJECT_TYPE = Object.freeze({
@@ -12,8 +11,7 @@ export interface SketchObject extends Object3D {
   onMouseLeave?: () => void;
   onSelect?: () => void;
   onDeselect?: () => void;
-  dispose?: () => void;
-  // updateCustomConfig?: (customConfig: SketchObjectCustomConfig) => void;
+  dispose: () => void;
 }
 
 export type SketchObjectUserData =
@@ -28,6 +26,3 @@ export type SketchObjectUserData =
       endPoint: { x: number; y: number; z: number };
     };
 
-// type SketchObjectCustomConfig = {
-//   visible: boolean;
-// };

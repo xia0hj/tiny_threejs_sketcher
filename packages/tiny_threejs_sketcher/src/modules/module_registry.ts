@@ -53,7 +53,6 @@ export const MODULE_NAME = (
 
 export type Module = {
   name: ModuleNameUnion;
-  getModule?: ModuleGetter;
   dispose?: () => void;
 };
 

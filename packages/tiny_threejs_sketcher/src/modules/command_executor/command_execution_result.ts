@@ -5,8 +5,7 @@ export type CommandExecutionResult = {
     okCallback: (value: any) => void,
     errCallback: (error: Error) => void,
   ) => void;
-  unwrap: () => unknown;
-  
+  unwrap: () => any | never;
 };
 
 export function commandOk<T>(value?: T): CommandExecutionResult {

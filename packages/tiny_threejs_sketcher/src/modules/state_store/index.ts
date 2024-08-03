@@ -4,6 +4,7 @@ import { SketchObject } from "@src/modules/sketch_object";
 import { SketchObjectTreeItem } from "@src/modules/sketch_object_manager";
 import { ValueOf } from "@src/utils";
 import mitt from "mitt";
+import { Vector3 } from "three";
 
 export type SketcherState = {
   curCameraType: ValueOf<typeof CAMERA_TYPE>;
@@ -12,6 +13,10 @@ export type SketcherState = {
 
   /** 用于区分是否处于 2d 草图模式 */
   editingBasePlane?: SketchObject;
+
+  // 记录正在绘制的线段信息，通知完成绘制
+  drawingLine2dStartPoint?: Vector3;
+  drawingLine2dEndPoint?: Vector3;
 };
 
 

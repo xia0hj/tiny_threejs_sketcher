@@ -1,11 +1,16 @@
-import { MODULE_NAME, Module, ModuleGetter, ModuleNameMap } from "@src/modules/module_registry";
+import {
+  MODULE_NAME,
+  Module,
+  ModuleGetter,
+  ModuleNameMap,
+} from "@src/modules/module_registry";
 import { SketchObject } from "@src/modules/sketch_object";
 import { ValueOf, checkIsSketchObject } from "@src/utils";
 import { Group, Object3D, Plane, Raycaster, Vector2, Vector3 } from "three";
 
 export class SketchObjectManager implements Module {
-  name = MODULE_NAME.SketchObjectManager;
-  getModule: ModuleGetter;
+  public name = MODULE_NAME.SketchObjectManager;
+  private getModule: ModuleGetter;
   sketchObjectGroup = buildSketchObjectGroup();
   previewGroup = new Group();
   raycaster: Raycaster = new Raycaster();
@@ -17,12 +22,27 @@ export class SketchObjectManager implements Module {
     sceneBuilder.scene.add(this.previewGroup);
   }
 
-  add(obj: SketchObject) {
+  public add(obj: SketchObject) {
     this.sketchObjectGroup.add(obj);
     this.refreshTree();
   }
 
-  refreshTree() {
+  public addObject2d(obj: SketchObject) {
+    const { editingBasePlane } = this.getModule(
+      MODULE_NAME.StateStore,
+    ).getState();
+    if (!editingBasePlane) {
+      throw new Error("没有进入2d编辑模式，无法添加2d对象");
+    }
+    editingBasePlane.add(obj);
+    this.refreshTree();
+  }
+
+  public addPreviewObject(obj: SketchObject) {
+    this.previewGroup.add(obj);
+  }
+
+  public refreshTree() {
     const treeRoot = bfs(this.sketchObjectGroup);
     this.getModule(MODULE_NAME.StateStore).setState({
       sketchObjectTreeRoot: treeRoot,
