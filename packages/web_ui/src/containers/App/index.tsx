@@ -1,4 +1,4 @@
-import { useTinyThreejsSketcher } from "@src/containers/app/useTinyThreejsSketcher";
+import { useTinyThreejsSketcher } from "@src/containers/app/use_tiny_threejs_sketcher";
 import style from "./index.module.less";
 import { Toolbar, ToolbarButton } from "@src/components/toolbar";
 import { SketchObjectTree } from "@src/containers/object_tree";

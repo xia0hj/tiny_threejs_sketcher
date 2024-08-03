@@ -5,7 +5,7 @@ export type ToolbarButton = {
   label: string;
   icon: ReactElement;
   DetailsView?: (props: { exit: () => void }) => ReactElement;
-  onClick?: () => boolean;
+  onClick?: () => boolean | Promise<boolean>;
 };
 
 export const Toolbar: FunctionComponent<{
@@ -13,8 +13,8 @@ export const Toolbar: FunctionComponent<{
 }> = ({ toolbarButtons }) => {
   const [curActiveBtn, setCurActiveBtn] = useState<ToolbarButton>();
   const onExit = () => setCurActiveBtn(undefined);
-  const onClick = (btn: ToolbarButton) => {
-    const isSuccess = btn.onClick?.();
+  const onClick = async (btn: ToolbarButton) => {
+    const isSuccess = await btn.onClick?.();
     if (btn.onClick && !isSuccess) {
       return;
     }

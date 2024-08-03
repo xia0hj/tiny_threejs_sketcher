@@ -14,10 +14,10 @@ import {
 export class CommandCreateBasePlane implements Command {
   name = "create_base_plane";
 
-  parameter: CreatePlaneParameter;
+  parameter;
   plane?: BasePlane;
 
-  constructor(parameter: CreatePlaneParameter) {
+  constructor(parameter: Pick<CreatePlaneParameter, "offset"|"parallelTo"> ) {
     this.parameter = parameter;
   }
 

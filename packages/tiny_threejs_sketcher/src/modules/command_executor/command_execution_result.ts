@@ -6,6 +6,7 @@ export type CommandExecutionResult = {
     errCallback: (error: Error) => void,
   ) => void;
   unwrap: () => unknown;
+  
 };
 
 export function commandOk<T>(value?: T): CommandExecutionResult {

@@ -1,13 +1,9 @@
-import {
-  BorderOuterOutlined,
-  CheckOutlined,
-  CloseOutlined,
-} from "@ant-design/icons";
+import { CheckOutlined, CloseOutlined } from "@ant-design/icons";
 import { ToolbarButton } from "@src/components/toolbar";
 import { Card, Form, InputNumber, Select } from "antd";
 import style from "./index.module.less";
 import { useSketcherStore } from "@src/store";
-import { COMMAND_KEY } from "tiny_threejs_sketcher";
+import { CommandCreateBasePlane } from "tiny_threejs_sketcher";
 interface FieldType {
   parallelTo: "XY" | "XZ" | "YZ";
   offset: number;
@@ -16,13 +12,17 @@ interface FieldType {
 export const DetailsView: ToolbarButton["DetailsView"] = ({ exit: onExit }) => {
   const [formInstance] = Form.useForm();
   const threeCadEditor = useSketcherStore((state) => state.tinyThreejsSketcher);
-  const onSubmit = (values: FieldType) => {
+  const onSubmit = async (values: FieldType) => {
     console.log(values);
-    threeCadEditor?.runCommand(COMMAND_KEY.create_base_plane, {
-      offset: values.offset,
-      parallelTo: values.parallelTo,
-    });
-    onExit();
+    const result = await threeCadEditor?.executeCommand(
+      new CommandCreateBasePlane({
+        offset: values.offset,
+        parallelTo: values.parallelTo,
+      }),
+    );
+    if (result?.isOk()) {
+      onExit();
+    }
   };
 
   return (

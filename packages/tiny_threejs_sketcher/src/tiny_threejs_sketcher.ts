@@ -28,7 +28,7 @@ export class TinyThreejsSketcher {
     this.getModule(MODULE_NAME.SketchObjectManager).refreshTree();
   }
 
-  public runCommand(command: Command) {
+  public executeCommand(command: Command) {
     return this.getModule(MODULE_NAME.CommandExecutor).executeCommand(command);
   }
 
