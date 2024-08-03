@@ -1,7 +1,6 @@
 import { MODULE_NAME, ModuleGetter } from "@src/modules/module_registry";
 import { Command } from "@src/modules/command_executor";
 import {
-  CommandExecutionResult,
   commandErr,
   commandOk,
 } from "@src/modules/command_executor/command_execution_result";
@@ -17,7 +16,7 @@ export class CommandCreateBasePlane implements Command {
   parameter;
   plane?: BasePlane;
 
-  constructor(parameter: Pick<CreatePlaneParameter, "offset"|"parallelTo"> ) {
+  constructor(parameter: Pick<CreatePlaneParameter, "offset" | "parallelTo">) {
     this.parameter = parameter;
   }
 

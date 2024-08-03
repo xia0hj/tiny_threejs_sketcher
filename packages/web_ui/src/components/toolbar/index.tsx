@@ -1,4 +1,4 @@
-import { Button, Divider, Menu, MenuProps, Tooltip } from "antd";
+import { Button, Divider, Tooltip } from "antd";
 import { useState, type ReactElement, FunctionComponent } from "react";
 
 export type ToolbarButton = {

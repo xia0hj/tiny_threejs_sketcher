@@ -1,4 +1,4 @@
-import { BorderOuterOutlined, FormOutlined } from "@ant-design/icons";
+import { FormOutlined } from "@ant-design/icons";
 import { ToolbarButton } from "@src/components/toolbar";
 import { DetailsView } from "@src/containers/toolbar_buttons/edit_base_plane/DetailsView";
 import { useSketcherStore } from "@src/store";
