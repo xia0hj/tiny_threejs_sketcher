@@ -1,6 +1,5 @@
 import { Command } from "@src/modules/command_executor";
 import {
-  CommandExecutionResult,
   commandErr,
   commandOk,
 } from "@src/modules/command_executor/command_execution_result";

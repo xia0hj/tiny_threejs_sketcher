@@ -1,5 +1,6 @@
 import { CheckOutlined } from "@ant-design/icons";
 import { Toolbar, ToolbarButton } from "@src/components/toolbar";
+import { btnStartDrawLine } from "@src/containers/toolbar_buttons/start_draw_line";
 import { useSketcherStore } from "@src/store";
 import { CommandStopEditBasePlane } from "tiny_threejs_sketcher";
 
@@ -23,6 +24,7 @@ export const DetailsView: ToolbarButton["DetailsView"] = ({ exit }) => {
         return false;
       },
     },
+    btnStartDrawLine,
   ];
 
   return <Toolbar toolbarButtons={editor2dButtons} />;

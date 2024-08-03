@@ -1,4 +1,3 @@
-import { CommandFitCameraToScene } from "@src/index";
 import {
   MODULE_NAME,
   Module,
@@ -8,6 +7,8 @@ import {
 } from "@src/modules/module_registry";
 import { Command } from "@src/modules/command_executor";
 import { Options } from "@src/modules/configurator";
+import { CommandFitCameraToScene } from "@src/modules/scene_builder/commands/fit_camera_to_scene";
+import { SketcherState } from "@src/index";
 
 export class TinyThreejsSketcher {
   #moduleMap: Map<ModuleNameUnion, Module>;
@@ -30,6 +31,13 @@ export class TinyThreejsSketcher {
 
   public executeCommand(command: Command) {
     return this.getModule(MODULE_NAME.CommandExecutor).executeCommand(command);
+  }
+
+  public addStateListener<K extends keyof SketcherState>(
+    key: K,
+    listener: (value: SketcherState[K]) => void,
+  ) {
+    return this.getModule(MODULE_NAME.StateStore).listenState(key, listener);
   }
 
   public dispose() {

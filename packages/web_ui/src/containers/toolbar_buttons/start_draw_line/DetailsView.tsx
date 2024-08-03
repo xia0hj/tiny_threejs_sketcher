@@ -1,11 +1,13 @@
-import { CheckOutlined, CloseOutlined } from "@ant-design/icons";
+import { CheckOutlined } from "@ant-design/icons";
 import { ToolbarButton } from "@src/components/toolbar";
 import { useSketcherStore } from "@src/store";
 import { Card } from "antd";
-import { COMMAND_KEY } from "tiny_threejs_sketcher";
 import style from "./index.module.less";
 import { useEffect } from "react";
-import { useStore } from "zustand";
+import {
+  CommandResetOperationMode,
+  CommandStartDrawLine,
+} from "tiny_threejs_sketcher";
 
 const PointDetails = ({ x, y, z }: { x?: number; y?: number; z?: number }) => {
   return (
@@ -18,22 +20,24 @@ const PointDetails = ({ x, y, z }: { x?: number; y?: number; z?: number }) => {
 };
 
 export const DetailsView: ToolbarButton["DetailsView"] = ({ exit: onExit }) => {
-  const rootRenderer = useSketcherStore((state) => state.tinyThreejsSketcher);
-  const threeCadEditor = useSketcherStore((state) => state.tinyThreejsSketcher);
-  const startPoint = useStore(
-    threeCadEditor!.globalStore,
-    (state) => state.curDrawingLine2dStartPoint,
-  );
-  const endPoint = useStore(
-    threeCadEditor!.globalStore,
-    (state) => state.curDrawingLine2dEndPoint,
+  const tinyThreejsSketcher = useSketcherStore(
+    (state) => state.tinyThreejsSketcher,
   );
 
+  const startPoint = useSketcherStore((state) => state.drawingLine2dStartPoint);
+  const endPoint = useSketcherStore((state) => state.drawingLine2dEndPoint);
+
   useEffect(() => {
-    rootRenderer?.commandSystem.runCommand(COMMAND_KEY.start_draw_line);
-    return () =>
-      rootRenderer?.commandSystem.runCommand(COMMAND_KEY.stop_draw_line);
-  }, [rootRenderer]);
+    const result = tinyThreejsSketcher?.executeCommand(
+      new CommandStartDrawLine(),
+    );
+    return () => {
+      // result?.then(
+      //   () =>
+      //     tinyThreejsSketcher?.executeCommand(new CommandResetOperationMode()),
+      // );
+    };
+  }, [tinyThreejsSketcher]);
 
   return (
     <div className={style.panel_container}>

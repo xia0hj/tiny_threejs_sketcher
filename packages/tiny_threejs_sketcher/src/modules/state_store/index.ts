@@ -19,7 +19,6 @@ export type SketcherState = {
   drawingLine2dEndPoint?: Vector3;
 };
 
-
 export class StateStore implements Module {
   name = MODULE_NAME.StateStore;
   emitter = mitt<SketcherState>();
@@ -27,7 +26,7 @@ export class StateStore implements Module {
   state: SketcherState = {
     curCameraType: CAMERA_TYPE.perspectiveCamera,
     selectedObjects: [],
-  }
+  };
 
   public getState(): SketcherState {
     return this.state;
@@ -40,8 +39,12 @@ export class StateStore implements Module {
     });
   }
 
-  public getEmitter() {
-    return this.emitter;
+  public listenState<K extends keyof SketcherState>(
+    key: K,
+    listener: (value: SketcherState[K]) => void,
+  ) {
+    this.emitter.on(key, listener);
+    return () => this.emitter.off(key, listener);
   }
 
   dispose() {

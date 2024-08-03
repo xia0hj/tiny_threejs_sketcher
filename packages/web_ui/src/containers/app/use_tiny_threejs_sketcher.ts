@@ -4,37 +4,50 @@ import { TinyThreejsSketcher, MODULE_NAME } from "tiny_threejs_sketcher";
 
 export function useTinyThreejsSketcher() {
   const canvasElementRef = useRef<HTMLCanvasElement>(null);
-  const setTinyThreejsSketcher = useSketcherStore((state) => state.setTinyThreejsSketcher);
-  const setSketchObjectTree = useSketcherStore(
-    (state) => state.setSketchObjectTree,
-  );
-  const setSelectedObjects = useSketcherStore(
-    (state) => state.setSelectedObjects,
-  );
+
+  const [
+    setTinyThreejsSketcher,
+    setSketchObjectTree,
+    setSelectedObjects,
+    setDrawingLine2dStartPoint,
+    setDrawingLine2dEndPoint,
+  ] = useSketcherStore((state) => [
+    state.setTinyThreejsSketcher,
+    state.setSketchObjectTree,
+    state.setSelectedObjects,
+    state.setDrawingLine2dStartPoint,
+    state.setDrawingLine2dEndPoint,
+  ]);
 
   useEffect(() => {
     if (canvasElementRef.current != null) {
-      const threeCadEditor = new TinyThreejsSketcher(canvasElementRef.current, {
-        debug: true,
-      });
+      const tinyThreejsSketcher = new TinyThreejsSketcher(
+        canvasElementRef.current,
+        {
+          debug: true,
+        },
+      );
 
-      const emitter = threeCadEditor
-        .getModule(MODULE_NAME.StateStore)
-        .getEmitter();
-      emitter.on("sketchObjectTreeRoot", (treeRoot) => {
-        setSketchObjectTree(treeRoot);
-      });
-      emitter.on("selectedObjects", (objects) => {
-        setSelectedObjects(objects);
-      });
+      tinyThreejsSketcher.addStateListener("sketchObjectTreeRoot", (treeRoot) =>
+        setSketchObjectTree(treeRoot),
+      );
+      tinyThreejsSketcher.addStateListener("selectedObjects", (objects) =>
+        setSelectedObjects(objects),
+      );
+      tinyThreejsSketcher.addStateListener("drawingLine2dStartPoint", (point) =>
+        setDrawingLine2dStartPoint(point),
+      );
+      tinyThreejsSketcher.addStateListener("drawingLine2dEndPoint", (point) =>
+        setDrawingLine2dEndPoint(point),
+      );
 
-      threeCadEditor.startRender();
+      tinyThreejsSketcher.startRender();
 
-      (window as any).tce = threeCadEditor;
-      setTinyThreejsSketcher(threeCadEditor);
+      (window as any).tce = tinyThreejsSketcher;
+      setTinyThreejsSketcher(tinyThreejsSketcher);
 
       return () => {
-        threeCadEditor.dispose();
+        tinyThreejsSketcher.dispose();
       };
     }
   }, [
@@ -42,6 +55,8 @@ export function useTinyThreejsSketcher() {
     setTinyThreejsSketcher,
     setSketchObjectTree,
     setSelectedObjects,
+    setDrawingLine2dStartPoint,
+    setDrawingLine2dEndPoint,
   ]);
   return canvasElementRef;
 }

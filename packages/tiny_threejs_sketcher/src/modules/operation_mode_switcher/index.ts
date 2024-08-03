@@ -55,6 +55,7 @@ export class OperationModeSwitcher implements Module {
       }
     });
 
+    // #todo: 需要节流避免多次触发
     canvasElement.addEventListener("pointermove", (event) => {
       this.curOperationMode?.onPointermove?.(event, this.getModule);
     });

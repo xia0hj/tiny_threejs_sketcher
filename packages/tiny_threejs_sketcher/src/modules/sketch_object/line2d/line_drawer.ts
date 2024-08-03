@@ -34,6 +34,10 @@ export class LineDrawer implements OperationMode {
       drawingLine2dStartPoint: undefined,
       drawingLine2dEndPoint: undefined,
     });
+
+    getModule(MODULE_NAME.SketchObjectManager).addPreviewObject(
+      this.previewLine2d,
+    );
   }
 
   async onClick(event: PointerEvent, getModule: ModuleGetter) {
@@ -62,6 +66,10 @@ export class LineDrawer implements OperationMode {
         () => {
           this.startPoint = undefined;
           this.previewLine2d.visible = false;
+          getModule(MODULE_NAME.StateStore).setState({
+            drawingLine2dStartPoint: undefined,
+            drawingLine2dEndPoint: undefined,
+          });
           if (debug) {
             console.log("完成绘制线段", line2d);
           }
@@ -104,5 +112,10 @@ export class LineDrawer implements OperationMode {
         drawingLine2dStartPoint: curPoint,
       });
     }
+  }
+
+  dispose() {
+    this.previewLine2d.removeFromParent();
+    this.previewLine2d.dispose();
   }
 }

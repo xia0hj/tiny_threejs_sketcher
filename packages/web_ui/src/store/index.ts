@@ -7,11 +7,15 @@ export type StoreState = WithSetter<{
   tinyThreejsSketcher?: TinyThreejsSketcher;
   sketchObjectTree?: SketcherState["sketchObjectTreeRoot"];
   selectedObjects: SketcherState["selectedObjects"];
+
+  drawingLine2dStartPoint?: SketcherState["drawingLine2dStartPoint"];
+  drawingLine2dEndPoint?: SketcherState["drawingLine2dEndPoint"];
 }>;
 
 export const useSketcherStore = create<StoreState>((set) => ({
   tinyThreejsSketcher: undefined,
-  setTinyThreejsSketcher: (tinyThreejsSketcher) => set({ tinyThreejsSketcher: tinyThreejsSketcher }),
+  setTinyThreejsSketcher: (tinyThreejsSketcher) =>
+    set({ tinyThreejsSketcher: tinyThreejsSketcher }),
 
   sketchObjectTree: undefined,
   setSketchObjectTree: (sketchObjectTree) => set({ sketchObjectTree }),
@@ -19,4 +23,12 @@ export const useSketcherStore = create<StoreState>((set) => ({
   selectedObjects: [],
   setSelectedObjects: (selectedObjectList) =>
     set({ selectedObjects: selectedObjectList }),
+
+  drawingLine2dStartPoint: undefined,
+  setDrawingLine2dStartPoint: (drawingLine2dStartPoint) =>
+    set({ drawingLine2dStartPoint }),
+
+  drawingLine2dEndPoint: undefined,
+  setDrawingLine2dEndPoint: (drawingLine2dEndPoint) =>
+    set({ drawingLine2dEndPoint }),
 }));

@@ -2,10 +2,9 @@ import {
   MODULE_NAME,
   Module,
   ModuleGetter,
-  ModuleNameMap,
 } from "@src/modules/module_registry";
 import { SketchObject } from "@src/modules/sketch_object";
-import { ValueOf, checkIsSketchObject } from "@src/utils";
+import { checkIsSketchObject } from "@src/utils";
 import { Group, Object3D, Plane, Raycaster, Vector2, Vector3 } from "three";
 
 export class SketchObjectManager implements Module {
