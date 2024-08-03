@@ -1,17 +1,13 @@
+import { CommandFitCameraToScene } from "@src/index";
 import {
   MODULE_NAME,
   Module,
   ModuleGetter,
-  ModuleNameMap,
   ModuleNameUnion,
   initAllModules,
-} from "@src/modules";
-import { CommandSystem } from "@src/modules/command_system";
-import { COMMAND_KEY } from "@src/modules/command_system/all_commands";
-import { Configurator, Options } from "@src/modules/configurator";
-import { StateStore } from "@src/modules/state_store";
-import { SceneBuilder } from "@src/modules/scene_builder";
-import { ValueOf } from "@src/utils";
+} from "@src/modules/module_registry";
+import { Command } from "@src/modules/command_executor";
+import { Options } from "@src/modules/configurator";
 
 export class TinyThreejsSketcher {
   #moduleMap: Map<ModuleNameUnion, Module>;
@@ -25,15 +21,15 @@ export class TinyThreejsSketcher {
 
   public startRender() {
     this.getModule(MODULE_NAME.SceneBuilder).startRender();
-    this.getModule(MODULE_NAME.CommandSystem).runCommand(
-      COMMAND_KEY.fitCameraToScene,
+    this.getModule(MODULE_NAME.CommandExecutor).executeCommand(
+      new CommandFitCameraToScene(),
     );
     this.getModule(MODULE_NAME.OperationModeSwitcher).startListenCanvas();
     this.getModule(MODULE_NAME.SketchObjectManager).refreshTree();
   }
 
-  public runCommand(key: ValueOf<typeof COMMAND_KEY>, parameter?: any) {
-    return this.getModule(MODULE_NAME.CommandSystem).runCommand(key, parameter);
+  public runCommand(command: Command) {
+    return this.getModule(MODULE_NAME.CommandExecutor).executeCommand(command);
   }
 
   public dispose() {

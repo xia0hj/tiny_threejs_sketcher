@@ -1,46 +1,55 @@
-import { CommandSystem } from "@src/modules/command_system";
+
 import { Configurator, Options } from "@src/modules/configurator";
 import { StateStore } from "@src/modules/state_store";
 import { OperationModeSwitcher } from "@src/modules/operation_mode_switcher";
 import { SceneBuilder } from "@src/modules/scene_builder";
 import { SketchObjectManager } from "@src/modules/sketch_object_manager";
-import { TinyThreejsSketcher } from "@src/tiny_threejs_sketcher";
+
+import { CommandExecutor } from "@src/modules/command_executor";
 import { ValueOf } from "@src/utils";
 
-// register module name, then use module in initAllModules()
-export const MODULE_NAME = Object.freeze({
-  Configurator: "Configurator",
-  SceneBuilder: "SceneBuilder",
-  StateStore: "StateStore",
-  CommandSystem: "CommandSystem",
-  SketchObjectManager: "SketchObjectManager",
-  OperationModeSwitcher: "OperationModeSwitcher",
+// register modules here, then call useModule() in initAllModules
+const moduleNameDefinition = Object.freeze({
+  Configurator,
+  SceneBuilder,
+  StateStore,
+  CommandExecutor,
+  SketchObjectManager,
+  OperationModeSwitcher,
 });
-export type ModuleNameMap = {
-  Configurator: Configurator;
-  SceneBuilder: SceneBuilder;
-  StateStore: StateStore;
-  CommandSystem: CommandSystem;
-  SketchObjectManager: SketchObjectManager;
-  OperationModeSwitcher: OperationModeSwitcher;
-};
 export function initAllModules(
   canvasElement: HTMLCanvasElement,
   options?: Partial<Options>,
 ) {
   const moduleMap = new Map();
-  const useModule = (module: Module) => moduleMap.set(module.name, module);
+  const useModule = (module: ValueOf<ModuleNameMap>) => moduleMap.set(module.name, module);
   const getModule: ModuleGetter = (moduleName) => moduleMap.get(moduleName);
 
   useModule(new Configurator(options));
   useModule(new SceneBuilder(getModule, canvasElement));
   useModule(new StateStore());
-  useModule(new CommandSystem(getModule));
+  useModule(new CommandExecutor(getModule));
   useModule(new SketchObjectManager(getModule));
   useModule(new OperationModeSwitcher(getModule));
-
+  
   return { moduleMap, getModule };
 }
+
+export type ModuleNameUnion = keyof typeof moduleNameDefinition;
+
+export type ModuleNameMap = {
+  [K in ModuleNameUnion]: InstanceType<(typeof moduleNameDefinition)[K]>
+};
+
+export const MODULE_NAME = (
+  Object.keys(moduleNameDefinition) as Array<ModuleNameUnion>
+).reduce(
+  (obj, curKey) => {
+    obj[curKey] = curKey;
+    return obj;
+  },
+  {} as Record<string, string>,
+) as Readonly<{ [K in ModuleNameUnion]: K }>;
 
 export type Module = {
   name: ModuleNameUnion;
@@ -51,4 +60,4 @@ export type Module = {
 export type ModuleGetter = <K extends ModuleNameUnion>(
   moduleName: K,
 ) => ModuleNameMap[K];
-export type ModuleNameUnion = ValueOf<typeof MODULE_NAME>;
+

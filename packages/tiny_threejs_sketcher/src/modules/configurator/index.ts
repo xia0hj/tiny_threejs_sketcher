@@ -1,5 +1,4 @@
-import { MODULE_NAME, Module, ModuleNameMap } from "@src/modules";
-import { ValueOf } from "@src/utils";
+import { MODULE_NAME, Module } from "@src/modules/module_registry";
 
 export type Options = Readonly<{
   debug: boolean;

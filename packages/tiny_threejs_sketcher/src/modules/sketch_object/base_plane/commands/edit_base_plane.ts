@@ -1,12 +1,16 @@
-import { MODULE_NAME, ModuleGetter } from "@src/modules";
-import { Command } from "@src/modules/command_system";
-import { SKETCH_OBJECT_TYPE } from "@src/modules/sketch_object";
-import { BasePlane } from "@src/modules/sketch_object/base_plane";
+import { MODULE_NAME, ModuleGetter } from "@src/modules/module_registry";
+import { Command } from "@src/modules/command_executor";
+import {
+  commandErr,
+  commandOk,
+} from "@src/modules/command_executor/command_execution_result";
 
-export const commandStartEditBasePlane: Command<"start_edit_base_plane"> = {
-  key: "start_edit_base_plane",
-  modification: false,
-  run(getModule: ModuleGetter) {
+import { SKETCH_OBJECT_TYPE } from "@src/modules/sketch_object";
+
+export class CommandStartEditBasePlane implements Command {
+  name = "start_edit_base_plane";
+
+  async execute(getModule: ModuleGetter) {
     const sketcherStore = getModule(MODULE_NAME.StateStore);
 
     const [selectedBasePlane] = sketcherStore.getState().selectedObjects;
@@ -14,26 +18,23 @@ export const commandStartEditBasePlane: Command<"start_edit_base_plane"> = {
       !selectedBasePlane ||
       selectedBasePlane.userData.type !== SKETCH_OBJECT_TYPE.basePlane
     ) {
-
-      console.warn("没有选中面");
-      return false;
+      return commandErr(new Error("没有选中面"));
     }
     sketcherStore.setState({ editingBasePlane: selectedBasePlane });
-    return true;
-  },
-};
+    return commandOk(selectedBasePlane);
+  }
+}
 
-export const commandStopEditBasePlane: Command<"stop_edit_base_plane"> = {
-  key: "stop_edit_base_plane",
-  modification: false,
-  run(getModule: ModuleGetter) {
+export class CommandStopEditBasePlane implements Command {
+  name = "stop_edit_base_plane";
+
+  async execute(getModule: ModuleGetter) {
     const sketcherStore = getModule(MODULE_NAME.StateStore);
 
     if (sketcherStore.getState().editingBasePlane === undefined) {
-      console.warn("当前不是 2d 编辑模式");
-      return false;
+      return commandErr(new Error("当前不是 2d 编辑模式"));
     }
     sketcherStore.setState({ editingBasePlane: undefined });
-    return true;
-  },
-};
+    return commandOk();
+  }
+}

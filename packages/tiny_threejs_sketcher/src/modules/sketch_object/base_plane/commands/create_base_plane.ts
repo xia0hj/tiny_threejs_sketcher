@@ -1,15 +1,27 @@
-import { MODULE_NAME, ModuleGetter } from "@src/modules";
-import { Command } from "@src/modules/command_system";
-import { CreatePlaneParameter, BasePlane } from "@src/modules/sketch_object/base_plane";
+import { MODULE_NAME, ModuleGetter } from "@src/modules/module_registry";
+import { Command } from "@src/modules/command_executor";
+import {
+  CommandExecutionResult,
+  commandErr,
+  commandOk,
+} from "@src/modules/command_executor/command_execution_result";
 
-export const commandCreatePlane = Object.freeze<Command<"create_base_plane">>({
-  key: "create_base_plane",
-  modification: false,
-  run(getModule: ModuleGetter, parameter?: CreatePlaneParameter) {
-    if (!parameter) {
-      throw new Error("Error: command parameter is undefined");
-    }
+import {
+  CreatePlaneParameter,
+  BasePlane,
+} from "@src/modules/sketch_object/base_plane";
 
+export class CommandCreateBasePlane implements Command {
+  name = "create_base_plane";
+
+  parameter: CreatePlaneParameter;
+  plane?: BasePlane;
+
+  constructor(parameter: CreatePlaneParameter) {
+    this.parameter = parameter;
+  }
+
+  async execute(getModule: ModuleGetter) {
     const { planeColor, planeLength, planeOpacity } = getModule(
       MODULE_NAME.Configurator,
     ).getOptions();
@@ -20,18 +32,20 @@ export const commandCreatePlane = Object.freeze<Command<"create_base_plane">>({
       basePlaneLength: planeLength,
       basePlaneOpacity: planeOpacity,
     };
-    const mergedParameter = Object.assign(defaultParameter, parameter);
+    const mergedParameter = Object.assign(defaultParameter, this.parameter);
 
-    const plane = new BasePlane(mergedParameter);
-    getModule(MODULE_NAME.SketchObjectManager).add(plane);
+    this.plane = new BasePlane(mergedParameter);
+    getModule(MODULE_NAME.SketchObjectManager).add(this.plane);
+    return commandOk(this.plane);
+  }
 
-    return {
-      key: this.key,
-      parameter,
-      rollback() {
-        plane.removeFromParent();
-        plane.dispose();
-      },
-    };
-  },
-});
+  async undo() {
+    if (this.plane == null) {
+      return commandErr(new Error("can not get plane when undo command"));
+    }
+
+    this.plane.removeFromParent();
+    this.plane.dispose();
+    return commandOk();
+  }
+}

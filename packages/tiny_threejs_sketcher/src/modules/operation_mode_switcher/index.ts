@@ -1,4 +1,4 @@
-import { MODULE_NAME, Module, ModuleGetter, ModuleNameMap } from "@src/modules";
+import { MODULE_NAME, Module, ModuleGetter, ModuleNameMap } from "@src/modules/module_registry";
 
 export type OperationMode = {
   onPointerdown?: (event: PointerEvent, getModule: ModuleGetter) => void;
