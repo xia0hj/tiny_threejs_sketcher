@@ -28,14 +28,16 @@ export const DetailsView: ToolbarButton["DetailsView"] = ({ exit: onExit }) => {
   const endPoint = useSketcherStore((state) => state.drawingLine2dEndPoint);
 
   useEffect(() => {
-    const result = tinyThreejsSketcher?.executeCommand(
-      new CommandStartDrawLine(),
-    );
+    (async function startDrawLine() {
+      await tinyThreejsSketcher?.executeCommand(new CommandStartDrawLine());
+    })();
+
     return () => {
-      // result?.then(
-      //   () =>
-      //     tinyThreejsSketcher?.executeCommand(new CommandResetOperationMode()),
-      // );
+      (async function stopDrawLine() {
+        await tinyThreejsSketcher?.executeCommand(
+          new CommandResetOperationMode(),
+        );
+      })();
     };
   }, [tinyThreejsSketcher]);
 

@@ -55,15 +55,16 @@ export class OperationModeSwitcher implements Module {
       }
     });
 
-    let lock = false;
+    /** 用 requestAnimationFrame 实现 pointermove 事件的节流 */
+    let throttleLock = false;
     canvasElement.addEventListener("pointermove", (event) => {
-      if (lock) {
+      if (throttleLock) {
         return;
       }
-      lock = true;
+      throttleLock = true;
       requestAnimationFrame(() => {
         this.curOperationMode?.onPointermove?.(event, this.getModule);
-        lock = false;
+        throttleLock = false;
       });
     });
   }
