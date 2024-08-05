@@ -8,7 +8,8 @@ import {
 import { Command } from "@src/modules/command_executor";
 import { Options } from "@src/modules/configurator";
 import { CommandFitCameraToScene } from "@src/modules/scene_builder/commands/fit_camera_to_scene";
-import { SketcherState } from "@src/index";
+import { SketcherState } from "@src/modules/state_store";
+
 
 export class TinyThreejsSketcher {
   #moduleMap: Map<ModuleNameUnion, Module>;

@@ -5,6 +5,7 @@ export type Options = Readonly<{
   sceneBackgroundColor: number;
   axesHelperLineLength: number;
   planeColor: number;
+  planeSelectColor: number;
   planeLength: number;
   planeOpacity: number;
   pressMinDuration: number;
@@ -20,9 +21,10 @@ export class Configurator implements Module {
       sceneBackgroundColor: 0xaaaaaa,
       axesHelperLineLength: 5,
       planeColor: 0x2193b0,
+      planeSelectColor: 0x54ff9f, // todo
       planeLength: 3,
       planeOpacity: 0.6,
-      pressMinDuration: 500,
+      pressMinDuration: 100,
     };
 
     const mergedOptions = Object.assign(defaultOptions, initOptions);
@@ -33,7 +35,5 @@ export class Configurator implements Module {
     return this.#options;
   }
 
-  dispose() {
-    
-  }
+  dispose() {}
 }

@@ -6,7 +6,7 @@ import {
 } from "@src/modules/command_executor/command_execution_result";
 
 import {
-  CreatePlaneParameter,
+  CreateBasePlaneParameter,
   BasePlane,
 } from "@src/modules/sketch_object/base_plane";
 
@@ -16,20 +16,22 @@ export class CommandCreateBasePlane implements Command {
   parameter;
   plane?: BasePlane;
 
-  constructor(parameter: Pick<CreatePlaneParameter, "offset" | "parallelTo">) {
+  constructor(
+    parameter: Pick<CreateBasePlaneParameter, "offset" | "parallelTo">,
+  ) {
     this.parameter = parameter;
   }
 
   async execute(getModule: ModuleGetter) {
-    const { planeColor, planeLength, planeOpacity } = getModule(
-      MODULE_NAME.Configurator,
-    ).getOptions();
-    const defaultParameter: CreatePlaneParameter = {
+    const { planeColor, planeLength, planeOpacity, planeSelectColor } =
+      getModule(MODULE_NAME.Configurator).getOptions();
+    const defaultParameter: CreateBasePlaneParameter = {
       offset: 0,
       parallelTo: "XY",
-      basePlaneColor: planeColor,
-      basePlaneLength: planeLength,
-      basePlaneOpacity: planeOpacity,
+      planeColor,
+      planeSelectColor,
+      planeLength,
+      planeOpacity,
     };
     const mergedParameter = Object.assign(defaultParameter, this.parameter);
 

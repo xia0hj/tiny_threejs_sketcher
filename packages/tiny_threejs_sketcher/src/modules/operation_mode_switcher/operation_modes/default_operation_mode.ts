@@ -8,6 +8,8 @@ export class DefaultOperationMode implements OperationMode {
 
     const intersectList = sketchObjectManager.getPointerIntersectList(event);
     if (!Array.isArray(intersectList) || intersectList.length === 0) {
+      const prevSelected = stateStore.getState().selectedObjects;
+      prevSelected.forEach((obj) => obj.onDeselect?.());
       stateStore.setState({ selectedObjects: [] });
       return;
     }

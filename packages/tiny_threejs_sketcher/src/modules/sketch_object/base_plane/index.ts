@@ -5,19 +5,21 @@ import {
 } from "@src/modules/sketch_object";
 import {
   BufferGeometry,
+  Color,
   DoubleSide,
   Mesh,
   MeshStandardMaterial,
   Vector3,
 } from "three";
 
-export type CreatePlaneParameter = {
+export type CreateBasePlaneParameter = {
   parallelTo: "XY" | "XZ" | "YZ";
   offset: number;
 
-  basePlaneLength: number;
-  basePlaneColor: number;
-  basePlaneOpacity: number;
+  planeLength: number;
+  planeColor: number;
+  planeSelectColor: number;
+  planeOpacity: number;
 };
 
 export class BasePlane
@@ -29,15 +31,18 @@ export class BasePlane
     { type: typeof SKETCH_OBJECT_TYPE.basePlane }
   >;
 
-  constructor(createPlaneParameter: CreatePlaneParameter) {
+  color: number;
+  selectColor: number;
+
+  constructor(createPlaneParameter: CreateBasePlaneParameter) {
     super(
       buildPlaneGeomtry(createPlaneParameter),
       new MeshStandardMaterial({
         vertexColors: false,
-        color: createPlaneParameter.basePlaneColor,
+        color: createPlaneParameter.planeColor,
         side: DoubleSide,
         transparent: true,
-        opacity: createPlaneParameter.basePlaneOpacity,
+        opacity: createPlaneParameter.planeOpacity,
       }),
     );
     this.userData = {
@@ -50,6 +55,16 @@ export class BasePlane
             : { x: 1, y: 0, z: 0 },
       constant: createPlaneParameter.offset,
     };
+    this.color = createPlaneParameter.planeColor;
+    this.selectColor = createPlaneParameter.planeSelectColor;
+  }
+
+  onSelect() {
+    this.material.color = new Color(this.selectColor);
+  }
+
+  onDeselect() {
+    this.material.color = new Color(this.color);
   }
 
   dispose(): void {
@@ -61,8 +76,8 @@ export class BasePlane
 function buildPlaneGeomtry({
   parallelTo,
   offset,
-  basePlaneLength: planeLength,
-}: CreatePlaneParameter): BufferGeometry {
+  planeLength: planeLength,
+}: CreateBasePlaneParameter): BufferGeometry {
   const distance = planeLength / 2;
   if (parallelTo === "XY") {
     const minPosition = new Vector3(-distance, -distance, offset);

@@ -1,6 +1,6 @@
 import { useSketcherStore } from "@src/store";
 import { useEffect, useRef } from "react";
-import { TinyThreejsSketcher, MODULE_NAME } from "tiny_threejs_sketcher";
+import { TinyThreejsSketcher } from "tiny_threejs_sketcher";
 
 export function useTinyThreejsSketcher() {
   const canvasElementRef = useRef<HTMLCanvasElement>(null);
