@@ -35,6 +35,9 @@ importers:
 
   packages/tiny_threejs_sketcher:
     dependencies:
+      geometric:
+        specifier: ^2.5.4
+        version: 2.5.4
       mitt:
         specifier: ^3.0.1
         version: 3.0.1
@@ -42,6 +45,9 @@ importers:
         specifier: ^0.160.0
         version: 0.160.0
     devDependencies:
+      '@types/geometric':
+        specifier: ^2.5.3
+        version: 2.5.3
       '@types/three':
         specifier: ^0.160.0
         version: 0.160.0
@@ -542,6 +548,9 @@ packages:
   '@types/estree@1.0.5':
     resolution: {integrity: sha512-/kYRxGDLWzHOB7q+wtSUQlFrtcdUccpfy+X+9iMBpHK8QLLhx2wIPYuS5DYtR9Wa/YlZAbIovy7qVdB1Aq6Lyw==}
 
+  '@types/geometric@2.5.3':
+    resolution: {integrity: sha512-8NBTc3oP2J5giu88sDI2cwLZv8ZGtMS4BvxWdSHU1/4oH/L79F/6gAdZuUQhS1s3RDKQ8wJDW6m0WULAAOxP2w==}
+
   '@types/json-schema@7.0.15':
     resolution: {integrity: sha512-5+fP8P8MFNC+AyZCDxrB2pkZFPGzqQWUzpSeuuVLvm8VMcorNYavBqoFcxK8bQz4Qsbn4oUEEem4wDLfcysGHA==}
 
@@ -924,6 +933,9 @@ packages:
     resolution: {integrity: sha512-5xoDfX+fL7faATnagmWPpbFtwh/R77WmMMqqHGS65C3vvB0YHrgF+B1YmZ3441tMj5n63k0212XNoJwzlhffQw==}
     engines: {node: ^8.16.0 || ^10.6.0 || >=11.0.0}
     os: [darwin]
+
+  geometric@2.5.4:
+    resolution: {integrity: sha512-6MQ0id8tzpYJ0abWrKX6xI1sQAj8TfAkKSVqo1gLQU6b3oSJcFF8r32Ji+t0efGdYDyY5E3ZgkjAdU6qdxDTyQ==}
 
   get-caller-file@2.0.5:
     resolution: {integrity: sha512-DyFP3BM/3YHTQOCUL/w0OZHR0lpKeGrxotcHWcqNEdnltqFwXVfhEBQ94eIo34AfQpo0rGki4cyIiftY06h2Fg==}
@@ -2169,6 +2181,8 @@ snapshots:
 
   '@types/estree@1.0.5': {}
 
+  '@types/geometric@2.5.3': {}
+
   '@types/json-schema@7.0.15': {}
 
   '@types/node@20.10.8':
@@ -2689,6 +2703,8 @@ snapshots:
 
   fsevents@2.3.3:
     optional: true
+
+  geometric@2.5.4: {}
 
   get-caller-file@2.0.5: {}
 
