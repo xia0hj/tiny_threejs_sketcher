@@ -6,7 +6,6 @@ import {
   initAllModules,
 } from "@src/modules/module_registry";
 import { Command } from "@src/modules/command_executor";
-import { Options } from "@src/modules/configurator";
 import { CommandFitCameraToScene } from "@src/modules/scene_builder/commands/fit_camera_to_scene";
 import { SketcherState } from "@src/modules/state_store";
 
@@ -15,8 +14,8 @@ export class TinyThreejsSketcher {
   #moduleMap: Map<ModuleNameUnion, Module>;
   public getModule: ModuleGetter;
 
-  constructor(canvasElement: HTMLCanvasElement, options?: Partial<Options>) {
-    const { moduleMap, getModule } = initAllModules(canvasElement, options);
+  constructor(canvasElement: HTMLCanvasElement) {
+    const { moduleMap, getModule } = initAllModules(canvasElement);
     this.#moduleMap = moduleMap;
     this.getModule = getModule;
   }

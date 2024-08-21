@@ -1,6 +1,6 @@
 import { useSketcherStore } from "@src/store";
 import { useEffect, useRef } from "react";
-import { TinyThreejsSketcher } from "tiny_threejs_sketcher";
+import { TinyThreejsSketcher, updateConfigVars } from "tiny_threejs_sketcher";
 
 export function useTinyThreejsSketcher() {
   const canvasElementRef = useRef<HTMLCanvasElement>(null);
@@ -23,10 +23,11 @@ export function useTinyThreejsSketcher() {
     if (canvasElementRef.current != null) {
       const tinyThreejsSketcher = new TinyThreejsSketcher(
         canvasElementRef.current,
-        {
-          debug: true,
-        },
       );
+
+      updateConfigVars({
+        debug: true,
+      });
 
       tinyThreejsSketcher.addStateListener("sketchObjectTreeRoot", (treeRoot) =>
         setSketchObjectTree(treeRoot),

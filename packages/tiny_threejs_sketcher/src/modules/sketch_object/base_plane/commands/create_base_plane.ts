@@ -23,15 +23,9 @@ export class CommandCreateBasePlane implements Command {
   }
 
   async execute(getModule: ModuleGetter) {
-    const { planeColor, planeLength, planeOpacity, planeSelectColor } =
-      getModule(MODULE_NAME.Configurator).getOptions();
     const defaultParameter: CreateBasePlaneParameter = {
       offset: 0,
       parallelTo: "XY",
-      planeColor,
-      planeSelectColor,
-      planeLength,
-      planeOpacity,
     };
     const mergedParameter = Object.assign(defaultParameter, this.parameter);
 

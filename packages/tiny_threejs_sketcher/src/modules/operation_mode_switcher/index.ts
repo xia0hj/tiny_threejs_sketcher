@@ -1,3 +1,4 @@
+import { CONFIG_VARS } from "@src/constant/config";
 import {
   MODULE_NAME,
   Module,
@@ -31,9 +32,6 @@ export class OperationModeSwitcher implements Module {
 
   public startListenCanvas() {
     const { canvasElement } = this.getModule(MODULE_NAME.SceneBuilder);
-    const { pressMinDuration } = this.getModule(
-      MODULE_NAME.Configurator,
-    ).getOptions();
 
     canvasElement.addEventListener(
       "pointerdown",
@@ -48,7 +46,7 @@ export class OperationModeSwitcher implements Module {
 
     canvasElement.addEventListener("pointerup", (event) => {
       const pressDuration = Date.now() - this.#pressStartTimestamp;
-      if (pressDuration < pressMinDuration) {
+      if (pressDuration < CONFIG_VARS.pressMinDuration) {
         this.curOperationMode?.onClick?.(event, this.getModule);
       } else {
         this.curOperationMode?.onPointerup?.(event, this.getModule);

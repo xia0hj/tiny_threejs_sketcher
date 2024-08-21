@@ -1,4 +1,9 @@
-import { MODULE_NAME, Module, ModuleGetter } from "@src/modules/module_registry";
+import { CONFIG_VARS } from "@src/constant/config";
+import {
+  MODULE_NAME,
+  Module,
+  ModuleGetter,
+} from "@src/modules/module_registry";
 import {
   AmbientLight,
   AxesHelper,
@@ -24,20 +29,19 @@ export class SceneBuilder implements Module {
 
   constructor(getModule: ModuleGetter, canvasElement: HTMLCanvasElement) {
     this.getModule = getModule;
-    const options = this.getModule(MODULE_NAME.Configurator).getOptions();
 
     this.canvasElement = canvasElement;
     const canvasWidth = this.canvasElement.clientWidth;
     const canvasHeight = this.canvasElement.clientHeight;
 
     this.scene = new Scene();
-    this.scene.add(new AxesHelper(options.axesHelperLineLength));
+    this.scene.add(new AxesHelper(CONFIG_VARS.axesHelperLineLength));
     this.scene.add(new AmbientLight());
 
     // renderer
     const renderer = new WebGLRenderer({ canvas: this.canvasElement });
     renderer.setSize(canvasWidth, canvasHeight);
-    renderer.setClearColor(options.sceneBackgroundColor);
+    renderer.setClearColor(CONFIG_VARS.sceneBackgroundColor);
     this.renderer = renderer;
 
     // camera

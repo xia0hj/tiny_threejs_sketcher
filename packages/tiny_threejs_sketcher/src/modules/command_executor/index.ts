@@ -5,6 +5,7 @@ import {
 } from "@src/modules/module_registry";
 import { CommandExecutionResult } from "@src/modules/command_executor/command_execution_result";
 import { checkIsUndoableCommand } from "@src/utils";
+import { CONFIG_VARS } from "@src/constant/config";
 
 export type Command = {
   name: string;
@@ -26,7 +27,6 @@ export class CommandExecutor implements Module {
 
   async executeCommand(command: Command) {
     const result = await command.execute(this.getModule);
-    const { debug } = this.getModule(MODULE_NAME.Configurator).getOptions();
     result.match(
       () => {
         if (checkIsUndoableCommand(command)) {
@@ -34,7 +34,7 @@ export class CommandExecutor implements Module {
         }
       },
       (error) => {
-        if (debug) {
+        if (CONFIG_VARS.debug) {
           console.error(error);
         }
       },

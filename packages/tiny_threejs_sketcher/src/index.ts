@@ -18,3 +18,5 @@ export {
   CommandStartDrawLine,
   CommandAddLine,
 } from "@src/modules/sketch_object/line2d/commands/draw_line";
+
+export { updateConfigVars } from "@src/constant/config";

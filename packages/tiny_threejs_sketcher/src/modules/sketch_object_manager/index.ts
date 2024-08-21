@@ -3,7 +3,7 @@ import {
   Module,
   ModuleGetter,
 } from "@src/modules/module_registry";
-import { SketchObject } from "@src/modules/sketch_object";
+import { SketchObject } from "@src/modules/sketch_object/type";
 import { checkIsSketchObject } from "@src/utils";
 import { Group, Object3D, Plane, Raycaster, Vector2, Vector3 } from "three";
 

@@ -19,7 +19,7 @@ export class CommandStartDrawLine implements Command {
     }
 
     getModule(MODULE_NAME.OperationModeSwitcher).setOperationMode(
-      new LineDrawer(),
+      new LineDrawer(getModule),
     );
 
     return commandOk();
@@ -43,4 +43,3 @@ export class CommandAddLine implements Command {
     return commandOk(this.line2d);
   }
 }
-

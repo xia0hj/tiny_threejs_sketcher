@@ -1,8 +1,10 @@
+import { CONFIG_VARS } from "@src/constant/config";
+import { SKETCH_OBJECT_TYPE } from "@src/constant/enum";
 import { MODULE_NAME, ModuleGetter } from "@src/modules/module_registry";
 import { OperationMode } from "@src/modules/operation_mode_switcher";
-import { SKETCH_OBJECT_TYPE } from "@src/modules/sketch_object";
 import { Line2d } from "@src/modules/sketch_object/line2d";
 import { CommandAddLine } from "@src/modules/sketch_object/line2d/commands/draw_line";
+import { checkSketchObjectType } from "@src/utils";
 import { Plane, Vector3 } from "three";
 
 export class LineDrawer implements OperationMode {
@@ -10,23 +12,18 @@ export class LineDrawer implements OperationMode {
 
   startPoint: Vector3 | null | undefined;
 
-  plane?: Plane;
+  plane: Plane;
 
-  enable(getModule: ModuleGetter) {
+  constructor(getModule: ModuleGetter) {
     const stateStore = getModule(MODULE_NAME.StateStore);
     const { editingBasePlane } = stateStore.getState();
     if (
-      !editingBasePlane ||
-      editingBasePlane.userData.type !== SKETCH_OBJECT_TYPE.basePlane
+      !checkSketchObjectType(editingBasePlane, SKETCH_OBJECT_TYPE.base_plane)
     ) {
       throw new Error("无法在非平面上绘制2d线段");
     }
     this.plane = new Plane(
-      new Vector3(
-        editingBasePlane.userData.normal.x,
-        editingBasePlane.userData.normal.y,
-        editingBasePlane.userData.normal.z,
-      ),
+      new Vector3().fromArray(editingBasePlane.userData.normal),
       editingBasePlane.userData.constant,
     );
 
@@ -41,22 +38,12 @@ export class LineDrawer implements OperationMode {
   }
 
   async onClick(event: PointerEvent, getModule: ModuleGetter) {
-    const { debug } = getModule(MODULE_NAME.Configurator).getOptions();
-
     // 起始点已存在，本次点击完成绘制
     if (this.startPoint) {
       const line2d = new Line2d();
       line2d.updatePosition(
-        new Vector3(
-          this.previewLine2d.userData.startPoint.x,
-          this.previewLine2d.userData.startPoint.y,
-          this.previewLine2d.userData.startPoint.z,
-        ),
-        new Vector3(
-          this.previewLine2d.userData.endPoint.x,
-          this.previewLine2d.userData.endPoint.y,
-          this.previewLine2d.userData.endPoint.z,
-        ),
+        new Vector3().fromArray(this.previewLine2d.userData.startPosition),
+        new Vector3().fromArray(this.previewLine2d.userData.endPosition),
       );
 
       const result = await getModule(
@@ -70,7 +57,7 @@ export class LineDrawer implements OperationMode {
             drawingLine2dStartPoint: undefined,
             drawingLine2dEndPoint: undefined,
           });
-          if (debug) {
+          if (CONFIG_VARS.debug) {
             console.log("完成绘制线段", line2d);
           }
         },
@@ -82,7 +69,7 @@ export class LineDrawer implements OperationMode {
     // 起始点不存在，本次点击固定起始点
     this.startPoint = getModule(
       MODULE_NAME.SketchObjectManager,
-    ).getIntersectPointOnPlane(event, this.plane!);
+    ).getIntersectPointOnPlane(event, this.plane);
     if (!this.startPoint) {
       return;
     }

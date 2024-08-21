@@ -1,6 +1,7 @@
 import { CAMERA_TYPE } from "@src/constant/enum";
 import { MODULE_NAME, Module } from "@src/modules/module_registry";
-import { SketchObject } from "@src/modules/sketch_object";
+import { BasePlane } from "@src/modules/sketch_object/base_plane";
+import { SketchObject } from "@src/modules/sketch_object/type";
 import { SketchObjectTreeItem } from "@src/modules/sketch_object_manager";
 import { ValueOf } from "@src/utils";
 import mitt from "mitt";
@@ -12,11 +13,14 @@ export type SketcherState = {
   selectedObjects: SketchObject[];
 
   /** 用于区分是否处于 2d 草图模式 */
-  editingBasePlane?: SketchObject;
+  editingBasePlane?: BasePlane;
 
   // 记录正在绘制的线段信息，通知完成绘制
   drawingLine2dStartPoint?: Vector3;
   drawingLine2dEndPoint?: Vector3;
+
+  drawingCircle2dCenter?: Vector3;
+  drawingCircle2dRadius?: number;
 };
 
 export class StateStore implements Module {
@@ -24,7 +28,7 @@ export class StateStore implements Module {
   emitter = mitt<SketcherState>();
 
   state: SketcherState = {
-    curCameraType: CAMERA_TYPE.perspectiveCamera,
+    curCameraType: CAMERA_TYPE.perspective_camera,
     selectedObjects: [],
   };
 
@@ -34,7 +38,7 @@ export class StateStore implements Module {
 
   public setState(state: Partial<SketcherState>) {
     Object.entries(state).forEach(([key, value]) => {
-      this.state[key as keyof SketcherState] = value as any;
+      (this.state as Record<string, any>)[key] = value as any;
       this.emitter.emit(key as keyof SketcherState, value);
     });
   }

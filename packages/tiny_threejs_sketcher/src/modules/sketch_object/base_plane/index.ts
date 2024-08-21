@@ -1,8 +1,6 @@
-import {
-  SKETCH_OBJECT_TYPE,
-  SketchObject,
-  SketchObjectUserData,
-} from "@src/modules/sketch_object";
+import { CONFIG_VARS } from "@src/constant/config";
+import { SKETCH_OBJECT_TYPE } from "@src/constant/enum";
+import { SketchObjectInterface } from "@src/modules/sketch_object/type";
 import {
   BufferGeometry,
   Color,
@@ -10,26 +8,23 @@ import {
   Mesh,
   MeshStandardMaterial,
   Vector3,
+  Vector3Tuple,
 } from "three";
 
 export type CreateBasePlaneParameter = {
   parallelTo: "XY" | "XZ" | "YZ";
   offset: number;
-
-  planeLength: number;
-  planeColor: number;
-  planeSelectColor: number;
-  planeOpacity: number;
 };
 
 export class BasePlane
   extends Mesh<BufferGeometry, MeshStandardMaterial>
-  implements SketchObject
+  implements SketchObjectInterface
 {
-  userData: Extract<
-    SketchObjectUserData,
-    { type: typeof SKETCH_OBJECT_TYPE.basePlane }
-  >;
+  override userData: {
+    type: typeof SKETCH_OBJECT_TYPE.base_plane;
+    normal: Vector3Tuple;
+    constant: number;
+  };
 
   color: number;
   selectColor: number;
@@ -39,24 +34,24 @@ export class BasePlane
       buildPlaneGeomtry(createPlaneParameter),
       new MeshStandardMaterial({
         vertexColors: false,
-        color: createPlaneParameter.planeColor,
+        color: CONFIG_VARS.planeColor,
         side: DoubleSide,
         transparent: true,
-        opacity: createPlaneParameter.planeOpacity,
+        opacity: CONFIG_VARS.planeOpacity,
       }),
     );
     this.userData = {
-      type: SKETCH_OBJECT_TYPE.basePlane,
+      type: SKETCH_OBJECT_TYPE.base_plane,
       normal:
         createPlaneParameter.parallelTo === "XY"
-          ? { x: 0, y: 0, z: 1 }
+          ? [0, 0, 1]
           : createPlaneParameter.parallelTo === "XZ"
-            ? { x: 0, y: 1, z: 0 }
-            : { x: 1, y: 0, z: 0 },
+            ? [0, 1, 0]
+            : [1, 0, 0],
       constant: createPlaneParameter.offset,
     };
-    this.color = createPlaneParameter.planeColor;
-    this.selectColor = createPlaneParameter.planeSelectColor;
+    this.color = CONFIG_VARS.planeColor;
+    this.selectColor = CONFIG_VARS.planeSelectColor;
   }
 
   onSelect() {
@@ -76,9 +71,8 @@ export class BasePlane
 function buildPlaneGeomtry({
   parallelTo,
   offset,
-  planeLength: planeLength,
 }: CreateBasePlaneParameter): BufferGeometry {
-  const distance = planeLength / 2;
+  const distance = CONFIG_VARS.planeLength / 2;
   if (parallelTo === "XY") {
     const minPosition = new Vector3(-distance, -distance, offset);
     const maxPosition = new Vector3(distance, distance, offset);

@@ -5,7 +5,8 @@ import {
   commandOk,
 } from "@src/modules/command_executor/command_execution_result";
 
-import { SKETCH_OBJECT_TYPE } from "@src/modules/sketch_object";
+import { checkSketchObjectType } from "@src/utils";
+import { SKETCH_OBJECT_TYPE } from "@src/constant/enum";
 
 export class CommandStartEditBasePlane implements Command {
   name = "start_edit_base_plane";
@@ -14,10 +15,7 @@ export class CommandStartEditBasePlane implements Command {
     const sketcherStore = getModule(MODULE_NAME.StateStore);
 
     const [selectedBasePlane] = sketcherStore.getState().selectedObjects;
-    if (
-      !selectedBasePlane ||
-      selectedBasePlane.userData.type !== SKETCH_OBJECT_TYPE.basePlane
-    ) {
+    if (!checkSketchObjectType(selectedBasePlane, SKETCH_OBJECT_TYPE.base_plane)) {
       return commandErr(new Error("没有选中面"));
     }
     sketcherStore.setState({ editingBasePlane: selectedBasePlane });

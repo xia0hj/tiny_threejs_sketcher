@@ -2,13 +2,12 @@ import { MODULE_NAME, ModuleGetter } from "@src/modules/module_registry";
 import { Command } from "@src/modules/command_executor";
 import { commandOk } from "@src/modules/command_executor/command_execution_result";
 import { Box3, Sphere, Vector3 } from "three";
+import { CONFIG_VARS } from "@src/constant/config";
 
 export class CommandFitCameraToScene implements Command {
   name = "fit_camera_to_scene";
 
   async execute(getModule: ModuleGetter) {
-    const options = getModule(MODULE_NAME.Configurator).getOptions();
-
     const { perspectiveCamera, orthographicCamera, orbitControls } = getModule(
       MODULE_NAME.SceneBuilder,
     );
@@ -16,7 +15,7 @@ export class CommandFitCameraToScene implements Command {
     const sketchObjectManager = getModule(MODULE_NAME.SketchObjectManager);
     const boundingSphere =
       sketchObjectManager.sketchObjectGroup.children.length === 0
-        ? new Sphere(new Vector3(0, 0, 0), options.axesHelperLineLength)
+        ? new Sphere(new Vector3(0, 0, 0), CONFIG_VARS.axesHelperLineLength)
         : new Box3()
             .setFromObject(sketchObjectManager.sketchObjectGroup)
             .getBoundingSphere(new Sphere());
