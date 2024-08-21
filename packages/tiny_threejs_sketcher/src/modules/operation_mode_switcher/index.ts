@@ -24,7 +24,7 @@ export class OperationModeSwitcher implements Module {
 
   public curOperationMode: OperationMode = new DefaultOperationMode();
 
-  #pressStartTimestamp = 0;
+  private _pressStartTimestamp = 0;
 
   constructor(getModule: ModuleGetter) {
     this.getModule = getModule;
@@ -37,7 +37,7 @@ export class OperationModeSwitcher implements Module {
       "pointerdown",
       (event) => {
         if (event.button === 0) {
-          this.#pressStartTimestamp = Date.now();
+          this._pressStartTimestamp = Date.now();
         }
         this.curOperationMode?.onPointerdown?.(event, this.getModule);
       },
@@ -45,7 +45,7 @@ export class OperationModeSwitcher implements Module {
     );
 
     canvasElement.addEventListener("pointerup", (event) => {
-      const pressDuration = Date.now() - this.#pressStartTimestamp;
+      const pressDuration = Date.now() - this._pressStartTimestamp;
       if (pressDuration < CONFIG_VARS.pressMinDuration) {
         this.curOperationMode?.onClick?.(event, this.getModule);
       } else {

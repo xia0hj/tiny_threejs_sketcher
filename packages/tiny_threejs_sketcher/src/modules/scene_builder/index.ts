@@ -66,17 +66,17 @@ export class SceneBuilder implements Module {
   }
 
   startRender() {
-    this.#animate();
+    this._animate();
   }
 
   dispose() {
-    window.cancelAnimationFrame(this.requestAnimationFrameId);
+    window.cancelAnimationFrame(this._requestAnimationFrameId);
   }
 
-  requestAnimationFrameId = 0;
-  #animate() {
-    this.requestAnimationFrameId = window.requestAnimationFrame(() => {
-      this.#animate();
+  private _requestAnimationFrameId = 0;
+  private _animate() {
+    this._requestAnimationFrameId = window.requestAnimationFrame(() => {
+      this._animate();
     });
     this.orbitControls.update();
     this.renderer.render(this.scene, this.camera);

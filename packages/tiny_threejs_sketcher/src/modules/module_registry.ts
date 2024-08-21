@@ -35,14 +35,14 @@ export type ModuleNameMap = {
   [K in ModuleNameUnion]: InstanceType<(typeof moduleNameDefinition)[K]>;
 };
 
-export const MODULE_NAME = (
-  Object.keys(moduleNameDefinition) as Array<ModuleNameUnion>
-).reduce(
-  (obj, curKey) => {
-    obj[curKey] = curKey;
-    return obj;
-  },
-  {} as Record<string, string>,
+export const MODULE_NAME = Object.freeze(
+  (Object.keys(moduleNameDefinition) as Array<ModuleNameUnion>).reduce(
+    (obj, curKey) => {
+      obj[curKey] = curKey;
+      return obj;
+    },
+    {} as Record<string, string>,
+  ),
 ) as Readonly<{ [K in ModuleNameUnion]: K }>;
 
 export type Module = {

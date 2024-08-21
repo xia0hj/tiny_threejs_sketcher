@@ -1,9 +1,7 @@
 export { TinyThreejsSketcher } from "@src/tiny_threejs_sketcher";
 
+// type
 export { type SketcherState } from "@src/modules/state_store";
-
-export { MODULE_NAME } from "@src/modules/module_registry";
-
 export { type SketchObjectTreeItem } from "@src/modules/sketch_object_manager";
 
 // commands
@@ -19,4 +17,7 @@ export {
   CommandAddLine,
 } from "@src/modules/sketch_object/line2d/commands/draw_line";
 
+// constant
 export { updateConfigVars } from "@src/constant/config";
+export { SKETCH_OBJECT_TYPE, CAMERA_TYPE } from "@src/constant/enum";
+export { MODULE_NAME } from "@src/modules/module_registry";

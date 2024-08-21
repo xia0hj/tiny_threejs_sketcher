@@ -19,7 +19,7 @@ export class CommandExecutor implements Module {
   name = MODULE_NAME.CommandExecutor;
   getModule: ModuleGetter;
 
-  #modificationHistory: UndoableCommand[] = [];
+  private _modificationHistory: UndoableCommand[] = [];
 
   constructor(getModule: ModuleGetter) {
     this.getModule = getModule;
@@ -30,7 +30,7 @@ export class CommandExecutor implements Module {
     result.match(
       () => {
         if (checkIsUndoableCommand(command)) {
-          this.#modificationHistory.push(command);
+          this._modificationHistory.push(command);
         }
       },
       (error) => {

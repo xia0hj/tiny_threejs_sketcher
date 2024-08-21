@@ -1,10 +1,7 @@
 import { SKETCH_OBJECT_TYPE } from "@src/constant/enum";
 import { Command, UndoableCommand } from "@src/modules/command_executor";
-import {
-  SketchObject,
-  SketchObjectInterface,
-} from "@src/modules/sketch_object/type";
-import { Object3D, Vector3 } from "three";
+import { SketchObject } from "@src/modules/sketch_object/type";
+import { Object3D } from "three";
 
 export type ValueOf<OBJ extends { [key: string]: any }> = OBJ[keyof OBJ];
 
