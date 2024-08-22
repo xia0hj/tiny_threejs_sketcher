@@ -6,7 +6,7 @@ import { CommandStartEditBasePlane } from "tiny_threejs_sketcher";
 
 export const btnEditBasePlane: ToolbarButton = {
   label: "编辑平面",
-  icon: <FormOutlined />,
+  icon: FormOutlined,
   DetailsView,
   async onClick() {
     const tinyThreejsSketcher = useSketcherStore.getState().tinyThreejsSketcher;

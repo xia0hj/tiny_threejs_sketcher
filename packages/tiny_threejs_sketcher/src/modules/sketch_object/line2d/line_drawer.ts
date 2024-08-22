@@ -1,4 +1,3 @@
-import { CONFIG_VARS } from "@src/constant/config";
 import { SKETCH_OBJECT_TYPE } from "@src/constant/enum";
 import { MODULE_NAME, ModuleGetter } from "@src/modules/module_registry";
 import { OperationMode } from "@src/modules/operation_mode_switcher";

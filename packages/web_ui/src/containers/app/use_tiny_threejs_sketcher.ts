@@ -25,10 +25,6 @@ export function useTinyThreejsSketcher() {
         canvasElementRef.current,
       );
 
-      updateConfigVars({
-        debug: true,
-      });
-
       tinyThreejsSketcher.addStateListener("sketchObjectTreeRoot", (treeRoot) =>
         setSketchObjectTree(treeRoot),
       );

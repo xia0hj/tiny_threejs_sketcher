@@ -4,6 +4,6 @@ import { DetailsView } from "@src/containers/toolbar_buttons/start_draw_line/Det
 
 export const btnStartDrawLine: ToolbarButton = {
   label: "绘制线段",
-  icon: <BorderOuterOutlined />,
+  icon: BorderOuterOutlined,
   DetailsView,
 } as const;

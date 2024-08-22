@@ -1,5 +1,5 @@
 import { SKETCH_OBJECT_TYPE } from "@src/constant/enum";
-import { SketchObjectInterface } from "@src/modules/sketch_object/type";
+import { SketchObjectInterface } from "@src/modules/sketch_object/interface";
 import {
   BufferAttribute,
   BufferGeometry,
@@ -27,7 +27,7 @@ export class BasePoint
       "position",
       new BufferAttribute(new Float32Array([0, 0, 0]), 3),
     );
-    const pointMaterial = new PointsMaterial({ side: DoubleSide });
+    const pointMaterial = new PointsMaterial({ side: DoubleSide, size: 0.1 });
     super(pointGeometry, pointMaterial);
     this.isConnectable = isConnectable ?? false;
   }

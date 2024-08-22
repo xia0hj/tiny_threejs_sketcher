@@ -1,6 +1,6 @@
 import { SKETCH_OBJECT_TYPE } from "@src/constant/enum";
 import { BasePoint } from "@src/modules/sketch_object/base_point";
-import { SketchObjectInterface } from "@src/modules/sketch_object/type";
+import { SketchObjectInterface } from "@src/modules/sketch_object/interface";
 import {
   BufferGeometry,
   Line,

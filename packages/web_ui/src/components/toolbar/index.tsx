@@ -1,9 +1,9 @@
 import { Button, Divider, Tooltip } from "antd";
-import { useState, type ReactElement, FunctionComponent } from "react";
+import { useState, type ReactElement, FunctionComponent, ReactNode } from "react";
 
 export type ToolbarButton = {
   label: string;
-  icon: ReactElement;
+  icon: (props:any) => ReactNode;
   DetailsView?: (props: { exit: () => void }) => ReactElement;
   onClick?: () => boolean | Promise<boolean>;
 };
@@ -31,7 +31,7 @@ export const Toolbar: FunctionComponent<{
               key={btn.label}
               type={btn.label === curActiveBtn?.label ? undefined : "text"}
               size="large"
-              icon={btn.icon}
+              icon={<btn.icon />}
               onClick={() => onClick(btn)}
             />
           </Tooltip>

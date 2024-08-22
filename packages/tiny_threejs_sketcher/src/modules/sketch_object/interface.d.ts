@@ -12,6 +12,7 @@ export interface SketchObjectInterface extends Object3D {
   onMouseLeave?: () => void;
   onSelect?: () => void;
   onDeselect?: () => void;
+  cloneAsSketchObject?: () => Object3D;
   dispose: () => void;
 }
 

@@ -6,7 +6,7 @@ export const CONFIG_VARS = {
   planeSelectColor: 0x54ff9f, // todo
   planeLength: 3,
   planeOpacity: 0.6,
-  pressMinDuration: 100,
+  pressMinDuration: 500,
 };
 
 export function updateConfigVars(config: Partial<typeof CONFIG_VARS>) {

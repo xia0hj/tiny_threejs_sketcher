@@ -16,6 +16,7 @@ export {
   CommandStartDrawLine,
   CommandAddLine,
 } from "@src/modules/sketch_object/line2d/commands/draw_line";
+export { CommandStartDrawCircle } from "@src/modules/sketch_object/circle2d/commands/draw_circle";
 
 // constant
 export { updateConfigVars } from "@src/constant/config";

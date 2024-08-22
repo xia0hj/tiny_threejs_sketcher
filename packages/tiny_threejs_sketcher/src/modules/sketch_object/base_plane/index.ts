@@ -1,6 +1,6 @@
 import { CONFIG_VARS } from "@src/constant/config";
 import { SKETCH_OBJECT_TYPE } from "@src/constant/enum";
-import { SketchObjectInterface } from "@src/modules/sketch_object/type";
+import { SketchObjectInterface } from "@src/modules/sketch_object/interface";
 import {
   BufferGeometry,
   Color,
