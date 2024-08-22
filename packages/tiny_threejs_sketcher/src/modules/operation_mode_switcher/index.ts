@@ -11,8 +11,6 @@ export type OperationMode = {
   onPointerup?: (event: PointerEvent, getModule: ModuleGetter) => void;
   onClick?: (event: PointerEvent, getModule: ModuleGetter) => void;
   onPointermove?: (event: PointerEvent, getModule: ModuleGetter) => void;
-
-  enable?: (getModule: ModuleGetter) => void;
   dispose?: () => void;
 };
 
@@ -69,7 +67,6 @@ export class OperationModeSwitcher implements Module {
 
   public setOperationMode(operationMode: OperationMode) {
     this.curOperationMode.dispose?.();
-    operationMode.enable?.(this.getModule);
     this.curOperationMode = operationMode;
   }
 

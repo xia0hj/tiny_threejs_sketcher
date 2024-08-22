@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 import { Vector2, Vector2Tuple } from "three";
 import { assert, test } from "vitest";
 import { pointInPolygon } from "geometric";

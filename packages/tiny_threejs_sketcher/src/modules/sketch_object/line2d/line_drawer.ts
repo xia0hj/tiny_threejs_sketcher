@@ -5,6 +5,7 @@ import { OperationMode } from "@src/modules/operation_mode_switcher";
 import { Line2d } from "@src/modules/sketch_object/line2d";
 import { CommandAddLine } from "@src/modules/sketch_object/line2d/commands/draw_line";
 import { checkSketchObjectType } from "@src/utils";
+import { logger } from "@src/utils/logger";
 import { Plane, Vector3 } from "three";
 
 export class LineDrawer implements OperationMode {
@@ -57,9 +58,8 @@ export class LineDrawer implements OperationMode {
             drawingLine2dStartPoint: undefined,
             drawingLine2dEndPoint: undefined,
           });
-          if (CONFIG_VARS.debug) {
-            console.log("完成绘制线段", line2d);
-          }
+
+          logger.info("完成绘制线段", line2d);
         },
         () => {},
       );
@@ -78,9 +78,6 @@ export class LineDrawer implements OperationMode {
   }
 
   onPointermove(event: PointerEvent, getModule: ModuleGetter) {
-    if (!this.plane) {
-      return;
-    }
     const curPoint = getModule(
       MODULE_NAME.SketchObjectManager,
     ).getIntersectPointOnPlane(event, this.plane);

@@ -5,7 +5,7 @@ import {
 } from "@src/modules/module_registry";
 import { CommandExecutionResult } from "@src/modules/command_executor/command_execution_result";
 import { checkIsUndoableCommand } from "@src/utils";
-import { CONFIG_VARS } from "@src/constant/config";
+import { logger } from "@src/utils/logger";
 
 export type Command = {
   name: string;
@@ -34,9 +34,7 @@ export class CommandExecutor implements Module {
         }
       },
       (error) => {
-        if (CONFIG_VARS.debug) {
-          console.error(error);
-        }
+        logger.warn(error);
       },
     );
     return result;

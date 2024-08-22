@@ -1,5 +1,5 @@
 export const CONFIG_VARS = {
-  debug: false,
+  enableLog: true,
   sceneBackgroundColor: 0xaaaaaa,
   axesHelperLineLength: 5,
   planeColor: 0x2193b0,
