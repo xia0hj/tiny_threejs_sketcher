@@ -1,13 +1,18 @@
+import { CONFIG_VARS } from "@src/constant/config";
 import { SKETCH_OBJECT_TYPE } from "@src/constant/enum";
 import { SketchObjectInterface } from "@src/modules/sketch_object/interface";
 import {
-  BufferAttribute,
   BufferGeometry,
   DoubleSide,
   Points,
   PointsMaterial,
   Vector3,
 } from "three";
+
+export type BasePointProps = {
+  /** @default false */
+  isConnectable?: boolean;
+};
 
 export class BasePoint
   extends Points<BufferGeometry, PointsMaterial>
@@ -22,19 +27,23 @@ export class BasePoint
 
   isConnectable = false;
 
-  constructor(isConnectable?: boolean) {
-    const pointGeometry = new BufferGeometry().setAttribute(
-      "position",
-      new BufferAttribute(new Float32Array([0, 0, 0]), 3),
-    );
-    const pointMaterial = new PointsMaterial({ side: DoubleSide, size: 0.1 });
+  constructor(props: BasePointProps = {}) {
+    const pointGeometry = new BufferGeometry().setFromPoints([new Vector3()]);
+    const pointMaterial = new PointsMaterial({
+      side: DoubleSide,
+      size: CONFIG_VARS.basePointSize,
+      sizeAttenuation: false,
+    });
     super(pointGeometry, pointMaterial);
-    this.isConnectable = isConnectable ?? false;
+    this.isConnectable = props.isConnectable ?? false;
   }
 
   updatePositionPassively(position: Vector3, noNotifyId: number) {
     this.position.copy(position);
-    for (const [objectId, onPositionChange] of this.connectedObjects.entries()) {
+    for (const [
+      objectId,
+      onPositionChange,
+    ] of this.connectedObjects.entries()) {
       if (objectId !== noNotifyId) {
         onPositionChange?.(position);
       }

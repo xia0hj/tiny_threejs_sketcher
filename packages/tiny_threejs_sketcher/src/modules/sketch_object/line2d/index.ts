@@ -19,8 +19,8 @@ export class Line2d
     endPosition: [] as unknown as Vector3Tuple,
   };
 
-  startPoint = new BasePoint(true);
-  endPoint = new BasePoint(true);
+  startPoint = new BasePoint({ isConnectable: true });
+  endPoint = new BasePoint({ isConnectable: true });
 
   constructor() {
     super();
