@@ -16,9 +16,13 @@ export class SketchObjectManager implements Module {
 
   constructor(getModule: ModuleGetter) {
     this.getModule = getModule;
+    
     const sceneBuilder = getModule(MODULE_NAME.SceneBuilder);
     sceneBuilder.scene.add(this.sketchObjectGroup);
     sceneBuilder.scene.add(this.previewGroup);
+
+    this.raycaster.params.Line.threshold = 0.1;
+    this.raycaster.params.Points.threshold = 0.5;
   }
 
   public add(obj: SketchObject) {

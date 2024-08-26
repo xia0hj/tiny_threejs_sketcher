@@ -2,6 +2,7 @@ import { SKETCH_OBJECT_TYPE } from "@src/constant/enum";
 import { MODULE_NAME, ModuleGetter } from "@src/modules/module_registry";
 import { OperationMode } from "@src/modules/operation_mode_switcher";
 import { Circle2d } from "@src/modules/sketch_object/circle2d";
+import { CommandAddCircle } from "@src/modules/sketch_object/circle2d/commands/draw_circle";
 import { checkSketchObjectType } from "@src/utils";
 import { logger } from "@src/utils/logger";
 import { Plane, Vector3 } from "three";
@@ -40,9 +41,10 @@ export class CircleDrawer implements OperationMode {
 
     // 已存在圆心，本次点击完成绘制
     if (this.center) {
-      // todo
       const resultCircle = this.previewCricle2d.cloneAsSketchObject();
-      sketchObjectManager.addObject2d(resultCircle);
+      getModule(MODULE_NAME.CommandExecutor).executeCommand(
+        new CommandAddCircle(resultCircle),
+      );
       this._reset();
       return;
     }

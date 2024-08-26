@@ -6,17 +6,21 @@ export { type SketchObjectTreeItem } from "@src/modules/sketch_object_manager";
 
 // commands
 export { CommandFitCameraToScene } from "@src/modules/scene_builder/commands/fit_camera_to_scene";
-export { CommandResetOperationMode } from "@src/modules/operation_mode_switcher/commands/reset_operation_mode";
+export { CommandResetDefaultOperationMode } from "@src/modules/operation_mode_switcher/commands/reset";
 export { CommandCreateBasePlane } from "@src/modules/sketch_object/base_plane/commands/create_base_plane";
 export {
   CommandStartEditBasePlane,
   CommandStopEditBasePlane,
+  CommandResetEditPlaneMode,
 } from "@src/modules/sketch_object/base_plane/commands/edit_base_plane";
 export {
   CommandStartDrawLine,
-  CommandAddLine,
+  CommandStopDrawLine,
 } from "@src/modules/sketch_object/line2d/commands/draw_line";
-export { CommandStartDrawCircle } from "@src/modules/sketch_object/circle2d/commands/draw_circle";
+export {
+  CommandStartDrawCircle,
+  CommandStopDrawCircle,
+} from "@src/modules/sketch_object/circle2d/commands/draw_circle";
 
 // constant
 export { updateConfigVars } from "@src/constant/config";

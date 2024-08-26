@@ -2,7 +2,7 @@ import { CheckOutlined } from "@ant-design/icons";
 import { ToolbarButton } from "@src/components/toolbar";
 import { useSketcherStore } from "@src/store";
 import {
-  CommandResetOperationMode,
+  CommandStopDrawCircle,
   CommandStartDrawCircle,
 } from "tiny_threejs_sketcher";
 import style from "./index.module.less";
@@ -35,7 +35,7 @@ export const DetailsView: ToolbarButton["DetailsView"] = ({ exit: onExit }) => {
     return () => {
       (async function stopDrawLine() {
         await tinyThreejsSketcher?.executeCommand(
-          new CommandResetOperationMode(),
+          new CommandStopDrawCircle(),
         );
       })();
     };

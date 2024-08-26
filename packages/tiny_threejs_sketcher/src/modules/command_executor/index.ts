@@ -28,14 +28,13 @@ export class CommandExecutor implements Module {
   async executeCommand(command: Command) {
     const result = await command.execute(this.getModule);
     result.match(
-      () => {
+      (value) => {
+        logger.debug(`命令 ${command.name} 执行成功.`, value ?? "");
         if (checkIsUndoableCommand(command)) {
           this._modificationHistory.push(command);
         }
       },
-      (error) => {
-        logger.warn(error);
-      },
+      (error) => logger.warn(`命令 ${command.name} 执行失败`, error),
     );
     return result;
   }

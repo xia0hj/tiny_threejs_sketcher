@@ -5,7 +5,7 @@ import { Card } from "antd";
 import style from "./index.module.less";
 import { useEffect } from "react";
 import {
-  CommandResetOperationMode,
+  CommandStopDrawLine,
   CommandStartDrawLine,
 } from "tiny_threejs_sketcher";
 
@@ -34,9 +34,7 @@ export const DetailsView: ToolbarButton["DetailsView"] = ({ exit: onExit }) => {
 
     return () => {
       (async function stopDrawLine() {
-        await tinyThreejsSketcher?.executeCommand(
-          new CommandResetOperationMode(),
-        );
+        await tinyThreejsSketcher?.executeCommand(new CommandStopDrawLine());
       })();
     };
   }, [tinyThreejsSketcher]);
