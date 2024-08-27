@@ -1,6 +1,7 @@
 import { SKETCH_OBJECT_TYPE } from "@src/index";
 import { BaseFace } from "@src/modules/sketch_object/base_face";
 import { SketchObjectInterface } from "@src/modules/sketch_object/interface";
+import { logger } from "@src/utils/logger";
 import {
   BufferGeometry,
   ExtrudeGeometry,
@@ -21,6 +22,7 @@ export class Solid
   };
 
   constructor(face: BaseFace, depth: number) {
+    logger.debug("创建 Solid 对象", { face, depth });
     super(
       extrudeFromPlanePoints(
         face.geometry,

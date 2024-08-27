@@ -8,8 +8,8 @@ import {
   CommandStopSelectExtrudeFace,
 } from "tiny_threejs_sketcher";
 import style from "./index.module.less";
-import { Card } from "antd";
-import { useEffect } from "react";
+import { Card, Input, InputNumber } from "antd";
+import { useEffect, useState } from "react";
 
 const PointDetails = ({ x, y, z }: { x?: number; y?: number; z?: number }) => {
   return (
@@ -26,18 +26,21 @@ export const DetailsView: ToolbarButton["DetailsView"] = ({ exit: onExit }) => {
     (state) => state.tinyThreejsSketcher,
   );
 
-  const startPoint = useSketcherStore((state) => state.drawingLine2dStartPoint);
-  const endPoint = useSketcherStore((state) => state.drawingLine2dEndPoint);
+  const [depth, setDepth] = useState(10);
 
+  const [face] = useSketcherStore((state) => state.selectedObjects);
+  
   useEffect(() => {
     (async function startDrawLine() {
-      await tinyThreejsSketcher?.executeCommand(new CommandStartSelectExtrudeFace());
+      await tinyThreejsSketcher?.executeCommand(
+        new CommandStartSelectExtrudeFace(),
+      );
     })();
 
     return () => {
       (async function stopDrawLine() {
         await tinyThreejsSketcher?.executeCommand(
-          new CommandStopSelectExtrudeFace(10),
+          new CommandStopSelectExtrudeFace(depth), // #todo can not read state in useEffect
         );
       })();
     };
@@ -46,8 +49,8 @@ export const DetailsView: ToolbarButton["DetailsView"] = ({ exit: onExit }) => {
   return (
     <div className={style.panel_container}>
       <Card title="创建草图平面" actions={[<CheckOutlined onClick={onExit} />]}>
-        <PointDetails x={startPoint?.x} y={startPoint?.y} z={startPoint?.z} />
-        <PointDetails x={endPoint?.x} y={endPoint?.y} z={endPoint?.z} />
+        <InputNumber value={depth} onChange={(val) => setDepth(val ?? 0)} />
+        <Input disabled value={face?.uuid} />
       </Card>
     </div>
   );
