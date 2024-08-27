@@ -47,7 +47,7 @@ export const MODULE_NAME = Object.freeze(
 
 export type Module = {
   name: ModuleNameUnion;
-  dispose?: () => void;
+  dispose?(): void;
 };
 
 export type ModuleGetter = <K extends ModuleNameUnion>(

@@ -9,8 +9,8 @@ import { logger } from "@src/utils/logger";
 
 export type Command = {
   name: string;
-  execute: (getModule: ModuleGetter) => Promise<CommandExecutionResult>;
-  undo?: (getModule: ModuleGetter) => Promise<CommandExecutionResult>;
+  execute(getModule: ModuleGetter): Promise<CommandExecutionResult>;
+  undo?(getModule: ModuleGetter): Promise<CommandExecutionResult>;
 };
 
 export type UndoableCommand = Command & Required<Command["undo"]>;

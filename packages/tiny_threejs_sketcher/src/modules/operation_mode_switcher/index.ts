@@ -7,11 +7,11 @@ import {
 import { DefaultOperationMode } from "@src/modules/operation_mode_switcher/operation_modes/default_operation_mode";
 
 export type OperationMode = {
-  onPointerdown?: (event: PointerEvent, getModule: ModuleGetter) => void;
-  onPointerup?: (event: PointerEvent, getModule: ModuleGetter) => void;
-  onClick?: (event: PointerEvent, getModule: ModuleGetter) => void;
-  onPointermove?: (event: PointerEvent, getModule: ModuleGetter) => void;
-  dispose?: () => void;
+  onPointerdown?(event: PointerEvent, getModule: ModuleGetter): void;
+  onPointerup?(event: PointerEvent, getModule: ModuleGetter): void;
+  onClick?(event: PointerEvent, getModule: ModuleGetter): void;
+  onPointermove?(event: PointerEvent, getModule: ModuleGetter): void;
+  dispose?(): void;
 };
 
 export class OperationModeSwitcher implements Module {
