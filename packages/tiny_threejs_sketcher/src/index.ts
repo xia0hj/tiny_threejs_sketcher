@@ -21,6 +21,10 @@ export {
   CommandStartDrawCircle,
   CommandStopDrawCircle,
 } from "@src/modules/sketch_object/circle2d/commands/draw_circle";
+export {
+  CommandStartSelectExtrudeFace,
+  CommandStopSelectExtrudeFace,
+} from "@src/modules/sketch_object/solid/commands/extrude";
 
 // constant
 export { updateConfigVars } from "@src/constant/config";

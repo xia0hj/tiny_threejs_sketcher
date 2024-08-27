@@ -4,6 +4,7 @@ import { BasePlane } from "@src/modules/sketch_object/base_plane";
 import { BasePoint } from "@src/modules/sketch_object/base_point";
 import { Circle2d } from "@src/modules/sketch_object/circle2d";
 import { Line2d } from "@src/modules/sketch_object/line2d";
+import { Solid } from "@src/modules/sketch_object/solid";
 import { ValueOf } from "@src/utils";
 import { Object3D } from "three";
 
@@ -18,4 +19,4 @@ export interface SketchObjectInterface extends Object3D {
 }
 
 export type SketchObject = SketchObjectInterface &
-  (BasePlane | BasePoint | Line2d | Circle2d | BaseFace);
+  (BasePlane | BasePoint | Line2d | Circle2d | BaseFace | Solid);

@@ -4,10 +4,12 @@ import { Toolbar, ToolbarButton } from "@src/components/toolbar";
 import { SketchObjectTree } from "@src/containers/object_tree";
 import { btnCreateBasePlane } from "@src/containers/toolbar_buttons/create_base_plane";
 import { btnEditBasePlane } from "@src/containers/toolbar_buttons/edit_base_plane";
+import { btnStartSelectExtrudeFace } from "@src/containers/toolbar_buttons/extrude";
 
 const mainToolbarButtons: ToolbarButton[] = [
   btnCreateBasePlane,
-  btnEditBasePlane
+  btnEditBasePlane,
+  btnStartSelectExtrudeFace
 ] as const;
 
 export const App = () => {

@@ -25,21 +25,21 @@ export type SketcherState = {
 
 export class StateStore implements Module {
   name = MODULE_NAME.StateStore;
-  emitter = mitt<SketcherState>();
+  private _emitter = mitt<SketcherState>();
 
-  state: SketcherState = {
+  private _state: SketcherState = {
     curCameraType: CAMERA_TYPE.perspective_camera,
     selectedObjects: [],
   };
 
   public getState(): SketcherState {
-    return this.state;
+    return this._state;
   }
 
   public setState(state: Partial<SketcherState>) {
     Object.entries(state).forEach(([key, value]) => {
-      (this.state as Record<string, any>)[key] = value as any;
-      this.emitter.emit(key as keyof SketcherState, value);
+      (this._state as Record<string, any>)[key] = value as any;
+      this._emitter.emit(key as keyof SketcherState, value);
     });
   }
 
@@ -47,11 +47,11 @@ export class StateStore implements Module {
     key: K,
     listener: (value: SketcherState[K]) => void,
   ) {
-    this.emitter.on(key, listener);
-    return () => this.emitter.off(key, listener);
+    this._emitter.on(key, listener);
+    return () => this._emitter.off(key, listener);
   }
 
   dispose() {
-    this.emitter.all.clear();
+    this._emitter.all.clear();
   }
 }

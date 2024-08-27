@@ -11,7 +11,7 @@ import { EditPlaneMode } from "@src/modules/sketch_object/base_plane/operation_m
 import { DefaultOperationMode } from "@src/modules/operation_mode_switcher/operation_modes/default_operation_mode";
 import { BasePlane } from "@src/modules/sketch_object/base_plane";
 import { BaseFace } from "@src/modules/sketch_object/base_face";
-import { CircleGeometry } from "three";
+import { CircleGeometry, Vector3 } from "three";
 import { logger } from "@src/utils/logger";
 
 export class CommandStartEditBasePlane implements Command {
@@ -71,7 +71,10 @@ function buildFaceOnPlane(plane: BasePlane) {
   plane.children.forEach((obj2d) => {
     if (checkSketchObjectType(obj2d, SKETCH_OBJECT_TYPE.circle2d)) {
       const geometry = new CircleGeometry(obj2d.userData.radius);
-      const face = new BaseFace(geometry);
+      const face = new BaseFace(
+        geometry,
+        new Vector3().fromArray(plane.userData.normal),
+      );
       face.position.copy(obj2d.position);
       resultFaces.push(face);
     }

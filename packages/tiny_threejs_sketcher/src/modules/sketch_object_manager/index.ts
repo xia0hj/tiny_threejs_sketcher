@@ -70,7 +70,7 @@ export class SketchObjectManager implements Module {
     }
   }
 
-  public getPointerIntersectList(event: PointerEvent) {
+  public getPointerIntersectArray(event: PointerEvent) {
     if (this.sketchObjectGroup.children.length === 0) {
       return;
     }

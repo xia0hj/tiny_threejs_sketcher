@@ -1,16 +1,23 @@
 import { SKETCH_OBJECT_TYPE } from "@src/index";
 import { SketchObjectInterface } from "@src/modules/sketch_object/interface";
-import { BufferGeometry, Mesh, MeshStandardMaterial } from "three";
+import {
+  BufferGeometry,
+  Mesh,
+  MeshStandardMaterial,
+  Vector3,
+  Vector3Tuple,
+} from "three";
 
 export class BaseFace
   extends Mesh<BufferGeometry, MeshStandardMaterial>
   implements SketchObjectInterface
 {
-  userData: {
+  override userData: {
     type: typeof SKETCH_OBJECT_TYPE.base_face;
+    normal: Vector3Tuple;
   };
 
-  constructor(geometry: BufferGeometry) {
+  constructor(geometry: BufferGeometry, planeNormal: Vector3) {
     super(
       geometry,
       new MeshStandardMaterial({
@@ -25,6 +32,7 @@ export class BaseFace
 
     this.userData = {
       type: SKETCH_OBJECT_TYPE.base_face,
+      normal: planeNormal.toArray(),
     };
   }
 

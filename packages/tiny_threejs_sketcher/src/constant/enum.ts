@@ -9,4 +9,5 @@ export const SKETCH_OBJECT_TYPE = Object.freeze({
   line2d: "line2d",
   circle2d: "circle2d",
   base_face: "base_face",
+  solid: "solid",
 });
