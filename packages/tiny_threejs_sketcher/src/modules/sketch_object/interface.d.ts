@@ -1,4 +1,5 @@
 import { SKETCH_OBJECT_TYPE } from "@src/constant/enum";
+import { BaseFace } from "@src/modules/sketch_object/base_face";
 import { BasePlane } from "@src/modules/sketch_object/base_plane";
 import { BasePoint } from "@src/modules/sketch_object/base_point";
 import { Circle2d } from "@src/modules/sketch_object/circle2d";
@@ -17,4 +18,4 @@ export interface SketchObjectInterface extends Object3D {
 }
 
 export type SketchObject = SketchObjectInterface &
-  (BasePlane | BasePoint | Line2d | Circle2d);
+  (BasePlane | BasePoint | Line2d | Circle2d | BaseFace);

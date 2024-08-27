@@ -9,6 +9,10 @@ import { checkSketchObjectType } from "@src/utils";
 import { SKETCH_OBJECT_TYPE } from "@src/constant/enum";
 import { EditPlaneMode } from "@src/modules/sketch_object/base_plane/operation_modes/edit_plane_mode";
 import { DefaultOperationMode } from "@src/modules/operation_mode_switcher/operation_modes/default_operation_mode";
+import { BasePlane } from "@src/modules/sketch_object/base_plane";
+import { BaseFace } from "@src/modules/sketch_object/base_face";
+import { CircleGeometry } from "three";
+import { logger } from "@src/utils/logger";
 
 export class CommandStartEditBasePlane implements Command {
   name = "start_edit_base_plane";
@@ -54,6 +58,24 @@ export class CommandStopEditBasePlane implements Command {
       new DefaultOperationMode(),
     );
 
+    const faces = buildFaceOnPlane(plane);
+    logger.info("退出平面编辑模式", { plane, faces });
+    getModule(MODULE_NAME.SketchObjectManager).add(...faces);
+
     return commandOk();
   }
+}
+
+function buildFaceOnPlane(plane: BasePlane) {
+  const resultFaces: BaseFace[] = [];
+  plane.children.forEach((obj2d) => {
+    if (checkSketchObjectType(obj2d, SKETCH_OBJECT_TYPE.circle2d)) {
+      const geometry = new CircleGeometry(obj2d.userData.radius);
+      const face = new BaseFace(geometry);
+      face.position.copy(obj2d.position);
+      resultFaces.push(face);
+    }
+  });
+
+  return resultFaces;
 }

@@ -16,7 +16,7 @@ export class SketchObjectManager implements Module {
 
   constructor(getModule: ModuleGetter) {
     this.getModule = getModule;
-    
+
     const sceneBuilder = getModule(MODULE_NAME.SceneBuilder);
     sceneBuilder.scene.add(this.sketchObjectGroup);
     sceneBuilder.scene.add(this.previewGroup);
@@ -25,24 +25,24 @@ export class SketchObjectManager implements Module {
     this.raycaster.params.Points.threshold = 0.5;
   }
 
-  public add(obj: SketchObject) {
-    this.sketchObjectGroup.add(obj);
+  public add(...object: SketchObject[]) {
+    this.sketchObjectGroup.add(...object);
     this.refreshTree();
   }
 
-  public addObject2d(obj: SketchObject) {
+  public addObject2d(...object: SketchObject[]) {
     const { editingBasePlane } = this.getModule(
       MODULE_NAME.StateStore,
     ).getState();
     if (!editingBasePlane) {
       throw new Error("没有进入2d编辑模式，无法添加2d对象");
     }
-    editingBasePlane.add(obj);
+    editingBasePlane.add(...object);
     this.refreshTree();
   }
 
-  public addPreviewObject(obj: SketchObject) {
-    this.previewGroup.add(obj);
+  public addPreviewObject(...object: SketchObject[]) {
+    this.previewGroup.add(...object);
   }
 
   public refreshTree() {

@@ -8,4 +8,5 @@ export const SKETCH_OBJECT_TYPE = Object.freeze({
   base_point: "base_point",
   line2d: "line2d",
   circle2d: "circle2d",
+  base_face: "base_face",
 });

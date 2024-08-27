@@ -18,7 +18,7 @@ export function checkIsSketchObject(obj: Object3D): obj is SketchObject {
 export function checkSketchObjectType<
   T extends ValueOf<typeof SKETCH_OBJECT_TYPE>,
 >(
-  obj: SketchObject | undefined | null,
+  obj: Object3D | undefined | null,
   type: T,
 ): obj is Extract<SketchObject, { userData: { type: T } }> {
   return obj?.userData.type === type;

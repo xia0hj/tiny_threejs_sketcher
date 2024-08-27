@@ -10,7 +10,7 @@ import {
 export function extrudeFromPlanePoints(
   points: Vector3[],
   planeNormal: Vector3,
-  planeConstant: number,
+  position: Vector3,
 ) {
   const q = new Quaternion().setFromUnitVectors(
     planeNormal,
@@ -28,16 +28,6 @@ export function extrudeFromPlanePoints(
 
   const extrudeGeometry = new ExtrudeGeometry(new Shape(shapePoints));
   extrudeGeometry.applyQuaternion(q.invert());
-  const positionAttr = extrudeGeometry.getAttribute("position");
-  for (let i = 0; i < positionAttr.count; i++) {
-    const vertex = new Vector3(
-      positionAttr.getX(i),
-      positionAttr.getY(i),
-      positionAttr.getZ(i),
-    );
-    vertex.addScaledVector(planeNormal, -planeConstant);
-    positionAttr.setXYZ(i, vertex.x, vertex.y, vertex.z);
-  }
-
+  extrudeGeometry.translate(position.x, position.y, position.z);
   return extrudeGeometry;
 }

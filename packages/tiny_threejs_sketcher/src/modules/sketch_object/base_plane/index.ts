@@ -38,6 +38,10 @@ export class BasePlane
         side: DoubleSide,
         transparent: true,
         opacity: CONFIG_VARS.planeOpacity,
+
+        polygonOffset: true,
+        polygonOffsetFactor: 1,
+        polygonOffsetUnits: 1,
       }),
     );
     this.userData = {

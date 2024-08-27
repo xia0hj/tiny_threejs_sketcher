@@ -3,11 +3,24 @@ import { SKETCH_OBJECT_TYPE } from "@src/constant/enum";
 import { SketchObjectInterface } from "@src/modules/sketch_object/interface";
 import {
   BufferGeometry,
-  DoubleSide,
+  Color,
   Points,
-  PointsMaterial,
+  ShaderLib,
+  ShaderMaterial,
   Vector3,
 } from "three";
+
+/**
+ * @link https://stackoverflow.com/questions/41509156/three-js-give-particles-round-form/54361382#54361382
+ */
+const fragmentShader = `
+uniform vec3 color;
+void main() {
+  vec2 xy = gl_PointCoord.xy - vec2(0.5);
+  float ll = length(xy);
+  gl_FragColor = vec4(color, step(ll, 0.5));
+}
+`;
 
 export type BasePointProps = {
   /** @default false */
@@ -15,7 +28,7 @@ export type BasePointProps = {
 };
 
 export class BasePoint
-  extends Points<BufferGeometry, PointsMaterial>
+  extends Points<BufferGeometry, ShaderMaterial>
   implements SketchObjectInterface
 {
   override userData = {
@@ -29,10 +42,15 @@ export class BasePoint
 
   constructor(props: BasePointProps = {}) {
     const pointGeometry = new BufferGeometry().setFromPoints([new Vector3()]);
-    const pointMaterial = new PointsMaterial({
-      side: DoubleSide,
-      size: CONFIG_VARS.basePointSize,
-      sizeAttenuation: false,
+    const pointMaterial = new ShaderMaterial({
+      transparent: true,
+      uniforms: {
+        size: { value: CONFIG_VARS.basePointSize },
+        scale: { value: 1 },
+        color: { value: new Color("white") },
+      },
+      vertexShader: ShaderLib.points.vertexShader,
+      fragmentShader,
     });
     super(pointGeometry, pointMaterial);
     this.isConnectable = props.isConnectable ?? false;
