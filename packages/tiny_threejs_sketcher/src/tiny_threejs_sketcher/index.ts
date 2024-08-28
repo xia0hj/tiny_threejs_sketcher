@@ -1,5 +1,4 @@
 import {
-  MODULE_NAME,
   Module,
   ModuleGetter,
   ModuleNameUnion,
@@ -8,7 +7,11 @@ import {
 import { Command } from "@src/modules/command_executor";
 import { SketcherState } from "@src/modules/state_store";
 import { CommandFitCameraToScene } from "@src/modules/scene_builder/commands";
+import { MODULE_NAME } from "@src/constant/enum";
 
+/**
+ * @exports
+ */
 export class TinyThreejsSketcher {
   private _moduleMap: Map<ModuleNameUnion, Module>;
   public getModule: ModuleGetter;

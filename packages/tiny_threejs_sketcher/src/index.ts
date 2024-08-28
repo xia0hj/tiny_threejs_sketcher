@@ -16,5 +16,4 @@ export { CommandEnableCircleDrawer } from "@src/modules/sketch_object/circle2d/c
 
 // constant
 export { updateConfigVars } from "@src/constant/config";
-export { SKETCH_OBJECT_TYPE, CAMERA_TYPE } from "@src/constant/enum";
-export { MODULE_NAME } from "@src/modules/module_registry";
+export { SKETCH_OBJECT_TYPE, MODULE_NAME } from "@src/constant/enum";

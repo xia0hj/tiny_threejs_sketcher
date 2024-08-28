@@ -1,3 +1,4 @@
+import { ModuleNameUnion, moduleNameDefinition } from "@src/modules/module_registry";
 import { ValueOf } from "@src/utils";
 
 export const CAMERA_TYPE = Object.freeze({
@@ -5,6 +6,9 @@ export const CAMERA_TYPE = Object.freeze({
   orthographic_camera: "orthographic_camera",
 });
 
+/**
+ * @exports
+ */
 export const SKETCH_OBJECT_TYPE = Object.freeze({
   base_plane: "base_plane",
   base_point: "base_point",
@@ -22,3 +26,17 @@ export const CANVAS_INTERACTOR_NAME = Object.freeze({
   face_selector: "face_selector",
 });
 export type CanvasInteractorNameUnion = ValueOf<typeof CANVAS_INTERACTOR_NAME>;
+
+
+/**
+ * @exports
+ */
+export const MODULE_NAME = Object.freeze(
+  (Object.keys(moduleNameDefinition) as Array<ModuleNameUnion>).reduce(
+    (obj, curKey) => {
+      obj[curKey] = curKey;
+      return obj;
+    },
+    {} as Record<string, string>,
+  ),
+) as Readonly<{ [K in ModuleNameUnion]: K }>;

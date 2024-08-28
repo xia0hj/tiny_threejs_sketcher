@@ -1,9 +1,10 @@
 import {
   CANVAS_INTERACTOR_NAME,
   CanvasInteractorNameUnion,
+  MODULE_NAME,
   SKETCH_OBJECT_TYPE,
 } from "@src/constant/enum";
-import { MODULE_NAME, ModuleGetter } from "@src/modules/module_registry";
+import { ModuleGetter } from "@src/modules/module_registry";
 import { CanvasInteractor } from "@src/modules/canvas_interactor_switcher";
 import { Circle2d } from "@src/modules/sketch_object/circle2d";
 import { CommandAddCircle } from "@src/modules/sketch_object/circle2d/commands";

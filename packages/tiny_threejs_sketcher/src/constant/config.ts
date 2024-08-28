@@ -10,6 +10,9 @@ export const CONFIG_VARS = {
   basePointSize: 10
 };
 
+/**
+ * @exports
+ */
 export function updateConfigVars(config: Partial<typeof CONFIG_VARS>) {
   Object.assign(CONFIG_VARS, config);
 }

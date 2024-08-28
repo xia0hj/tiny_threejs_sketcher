@@ -1,8 +1,5 @@
-import {
-  MODULE_NAME,
-  Module,
-  ModuleGetter,
-} from "@src/modules/module_registry";
+import { MODULE_NAME } from "@src/constant/enum";
+import { Module, ModuleGetter } from "@src/modules/module_registry";
 import { checkIsUndoableCommand } from "@src/utils";
 import { logger } from "@src/utils/logger";
 import { Result } from "neverthrow";
@@ -26,7 +23,7 @@ export class CommandExecutor implements Module {
   }
 
   public executeCommand<C extends Command>(command: C) {
-    const result = command.execute(this.getModule) as ReturnType<C['execute']>;
+    const result = command.execute(this.getModule) as ReturnType<C["execute"]>;
     result.match(
       (value) => {
         logger.debug(`命令 ${command.name} 执行成功.`, value ?? "");

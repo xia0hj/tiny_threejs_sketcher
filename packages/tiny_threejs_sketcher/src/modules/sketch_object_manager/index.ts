@@ -1,5 +1,5 @@
+import { MODULE_NAME } from "@src/constant/enum";
 import {
-  MODULE_NAME,
   Module,
   ModuleGetter,
 } from "@src/modules/module_registry";
@@ -107,6 +107,9 @@ export class SketchObjectManager implements Module {
   }
 }
 
+/**
+ * @exports
+ */
 export type SketchObjectTreeItem = {
   id: number;
   obj: SketchObject;

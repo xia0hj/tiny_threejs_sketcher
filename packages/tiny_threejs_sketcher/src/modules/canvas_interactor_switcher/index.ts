@@ -1,12 +1,8 @@
 import { CONFIG_VARS } from "@src/constant/config";
-import {
-  MODULE_NAME,
-  Module,
-  ModuleGetter,
-} from "@src/modules/module_registry";
+import { Module, ModuleGetter } from "@src/modules/module_registry";
 import { DefaultViewer } from "@src/modules/canvas_interactor_switcher/default_viewer";
 import { Result } from "neverthrow";
-import { CanvasInteractorNameUnion } from "@src/constant/enum";
+import { CanvasInteractorNameUnion, MODULE_NAME } from "@src/constant/enum";
 
 export type CanvasInteractor = {
   readonly name: CanvasInteractorNameUnion;

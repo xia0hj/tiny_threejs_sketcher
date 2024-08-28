@@ -7,7 +7,7 @@ import { CommandExecutor } from "@src/modules/command_executor";
 import { ValueOf } from "@src/utils";
 
 // register modules here, then call useModule() in initAllModules
-const moduleNameDefinition = Object.freeze({
+export const moduleNameDefinition = Object.freeze({
   SceneBuilder,
   StateStore,
   CommandExecutor,
@@ -35,15 +35,6 @@ export type ModuleNameMap = {
   [K in ModuleNameUnion]: InstanceType<(typeof moduleNameDefinition)[K]>;
 };
 
-export const MODULE_NAME = Object.freeze(
-  (Object.keys(moduleNameDefinition) as Array<ModuleNameUnion>).reduce(
-    (obj, curKey) => {
-      obj[curKey] = curKey;
-      return obj;
-    },
-    {} as Record<string, string>,
-  ),
-) as Readonly<{ [K in ModuleNameUnion]: K }>;
 
 export type Module = {
   name: ModuleNameUnion;

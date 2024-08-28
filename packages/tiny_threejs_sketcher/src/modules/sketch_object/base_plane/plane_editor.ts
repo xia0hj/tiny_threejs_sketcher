@@ -1,10 +1,11 @@
 import {
   CANVAS_INTERACTOR_NAME,
   CanvasInteractorNameUnion,
+  MODULE_NAME,
   SKETCH_OBJECT_TYPE,
 } from "@src/constant/enum";
 import { CanvasInteractor } from "@src/modules/canvas_interactor_switcher";
-import { MODULE_NAME, ModuleGetter } from "@src/modules/module_registry";
+import { ModuleGetter } from "@src/modules/module_registry";
 import { BaseFace } from "@src/modules/sketch_object/base_face";
 import { BasePlane } from "@src/modules/sketch_object/base_plane";
 import { checkSketchObjectType } from "@src/utils";
