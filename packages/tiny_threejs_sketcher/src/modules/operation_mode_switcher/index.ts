@@ -4,9 +4,9 @@ import {
   Module,
   ModuleGetter,
 } from "@src/modules/module_registry";
-import { DefaultOperationMode } from "@src/modules/operation_mode_switcher/operation_modes/default_operation_mode";
+import { DefaultCanvasInteractor } from "@src/modules/operation_mode_switcher/default_operation_mode";
 
-export type OperationMode = {
+export type CanvasInteractor = {
   onPointerdown?(event: PointerEvent, getModule: ModuleGetter): void;
   onPointerup?(event: PointerEvent, getModule: ModuleGetter): void;
   onClick?(event: PointerEvent, getModule: ModuleGetter): void;
@@ -14,13 +14,13 @@ export type OperationMode = {
   dispose?(): void;
 };
 
-export class OperationModeSwitcher implements Module {
-  public name = MODULE_NAME.OperationModeSwitcher;
+export class CanvasInteractorSwitcher implements Module {
+  public name = MODULE_NAME.CanvasInteractorSwitcher;
   private getModule: ModuleGetter;
 
   private abortController = new AbortController();
 
-  public curOperationMode: OperationMode = new DefaultOperationMode();
+  public curOperationMode: CanvasInteractor = new DefaultCanvasInteractor();
 
   private _pressStartTimestamp = 0;
 
@@ -65,7 +65,7 @@ export class OperationModeSwitcher implements Module {
     });
   }
 
-  public setOperationMode(operationMode: OperationMode) {
+  public setOperationMode(operationMode: CanvasInteractor) {
     this.curOperationMode.dispose?.();
     this.curOperationMode = operationMode;
   }

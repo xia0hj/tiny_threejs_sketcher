@@ -1,13 +1,13 @@
 import { SKETCH_OBJECT_TYPE } from "@src/constant/enum";
 import { MODULE_NAME, ModuleGetter } from "@src/modules/module_registry";
-import { OperationMode } from "@src/modules/operation_mode_switcher";
+import { CanvasInteractor } from "@src/modules/operation_mode_switcher";
 import { Line2d } from "@src/modules/sketch_object/line2d";
 import { CommandAddLine } from "@src/modules/sketch_object/line2d/commands/draw_line";
 import { checkSketchObjectType } from "@src/utils";
 import { logger } from "@src/utils/logger";
 import { Plane, Vector3 } from "three";
 
-export class LineDrawer implements OperationMode {
+export class LineDrawer implements CanvasInteractor {
   previewLine2d = new Line2d();
 
   startPoint: Vector3 | null | undefined;

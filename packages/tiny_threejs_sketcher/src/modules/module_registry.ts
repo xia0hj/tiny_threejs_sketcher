@@ -1,5 +1,5 @@
 import { StateStore } from "@src/modules/state_store";
-import { OperationModeSwitcher } from "@src/modules/operation_mode_switcher";
+import { CanvasInteractorSwitcher } from "@src/modules/operation_mode_switcher";
 import { SceneBuilder } from "@src/modules/scene_builder";
 import { SketchObjectManager } from "@src/modules/sketch_object_manager";
 
@@ -12,7 +12,7 @@ const moduleNameDefinition = Object.freeze({
   StateStore,
   CommandExecutor,
   SketchObjectManager,
-  OperationModeSwitcher,
+  CanvasInteractorSwitcher,
 });
 export function initAllModules(canvasElement: HTMLCanvasElement) {
   const moduleMap = new Map();
@@ -24,7 +24,7 @@ export function initAllModules(canvasElement: HTMLCanvasElement) {
   useModule(new StateStore());
   useModule(new CommandExecutor(getModule));
   useModule(new SketchObjectManager(getModule));
-  useModule(new OperationModeSwitcher(getModule));
+  useModule(new CanvasInteractorSwitcher(getModule));
 
   return { moduleMap, getModule };
 }

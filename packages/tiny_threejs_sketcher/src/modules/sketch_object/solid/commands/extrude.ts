@@ -2,8 +2,8 @@ import { SKETCH_OBJECT_TYPE } from "@src/index";
 import { Command } from "@src/modules/command_executor";
 import { commandOk } from "@src/modules/command_executor/command_execution_result";
 import { MODULE_NAME, ModuleGetter } from "@src/modules/module_registry";
-import { OperationMode } from "@src/modules/operation_mode_switcher";
-import { DefaultOperationMode } from "@src/modules/operation_mode_switcher/operation_modes/default_operation_mode";
+import { CanvasInteractor } from "@src/modules/operation_mode_switcher";
+import { DefaultCanvasInteractor } from "@src/modules/operation_mode_switcher/default_operation_mode";
 import { BaseFace } from "@src/modules/sketch_object/base_face";
 import { Solid } from "@src/modules/sketch_object/solid";
 import { checkSketchObjectType } from "@src/utils";
@@ -17,7 +17,7 @@ export class CommandStartSelectExtrudeFace implements Command {
     const stateStore = getModule(MODULE_NAME.StateStore);
     stateStore.getState().selectedObjects.forEach((obj) => obj.onDeselect?.());
     stateStore.setState({ selectedObjects: [] });
-    getModule(MODULE_NAME.OperationModeSwitcher).setOperationMode(
+    getModule(MODULE_NAME.CanvasInteractorSwitcher).setOperationMode(
       new SelectFaceOperationMode(getModule),
     );
     return commandOk();
@@ -34,8 +34,8 @@ export class CommandStopSelectExtrudeFace implements Command {
   }
 
   async execute(getModule: ModuleGetter) {
-    getModule(MODULE_NAME.OperationModeSwitcher).setOperationMode(
-      new DefaultOperationMode(),
+    getModule(MODULE_NAME.CanvasInteractorSwitcher).setOperationMode(
+      new DefaultCanvasInteractor(),
     );
     const stateStore = getModule(MODULE_NAME.StateStore);
     const [face] = stateStore.getState().selectedObjects;
@@ -51,7 +51,7 @@ export class CommandStopSelectExtrudeFace implements Command {
   }
 }
 
-class SelectFaceOperationMode implements OperationMode {
+class SelectFaceOperationMode implements CanvasInteractor {
   constructor(getModule: ModuleGetter) {
     const stateStore = getModule(MODULE_NAME.StateStore);
     stateStore.setState({ selectedObjects: [] });

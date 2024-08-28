@@ -1,8 +1,8 @@
 import { MODULE_NAME, ModuleGetter } from "@src/modules/module_registry";
-import { OperationMode } from "@src/modules/operation_mode_switcher";
+import { CanvasInteractor } from "@src/modules/operation_mode_switcher";
 import { logger } from "@src/utils/logger";
 
-export class DefaultOperationMode implements OperationMode {
+export class DefaultCanvasInteractor implements CanvasInteractor {
   onClick(event: PointerEvent, getModule: ModuleGetter) {
     const sketchObjectManager = getModule(MODULE_NAME.SketchObjectManager);
     const stateStore = getModule(MODULE_NAME.StateStore);

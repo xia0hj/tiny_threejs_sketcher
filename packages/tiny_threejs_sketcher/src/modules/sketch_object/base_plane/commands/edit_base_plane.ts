@@ -8,7 +8,7 @@ import {
 import { checkSketchObjectType } from "@src/utils";
 import { SKETCH_OBJECT_TYPE } from "@src/constant/enum";
 import { EditPlaneMode } from "@src/modules/sketch_object/base_plane/operation_modes/edit_plane_mode";
-import { DefaultOperationMode } from "@src/modules/operation_mode_switcher/operation_modes/default_operation_mode";
+import { DefaultCanvasInteractor } from "@src/modules/operation_mode_switcher/default_operation_mode";
 import { BasePlane } from "@src/modules/sketch_object/base_plane";
 import { BaseFace } from "@src/modules/sketch_object/base_face";
 import { CircleGeometry, Vector3 } from "three";
@@ -35,7 +35,7 @@ export class CommandResetEditPlaneMode implements Command {
   name = "reset_edit_plane_mode";
 
   async execute(getModule: ModuleGetter) {
-    const operationModeSwitcher = getModule(MODULE_NAME.OperationModeSwitcher);
+    const operationModeSwitcher = getModule(MODULE_NAME.CanvasInteractorSwitcher);
     operationModeSwitcher.setOperationMode(new EditPlaneMode());
     return commandOk();
   }
@@ -54,8 +54,8 @@ export class CommandStopEditBasePlane implements Command {
     sketcherStore.setState({ editingBasePlane: undefined });
     plane.onDeselect();
 
-    getModule(MODULE_NAME.OperationModeSwitcher).setOperationMode(
-      new DefaultOperationMode(),
+    getModule(MODULE_NAME.CanvasInteractorSwitcher).setOperationMode(
+      new DefaultCanvasInteractor(),
     );
 
     const faces = buildFaceOnPlane(plane);

@@ -20,7 +20,7 @@ export class CommandStartDrawLine implements Command {
       return commandErr(new Error("无法在非平面上绘制2d线段"));
     }
 
-    getModule(MODULE_NAME.OperationModeSwitcher).setOperationMode(
+    getModule(MODULE_NAME.CanvasInteractorSwitcher).setOperationMode(
       new LineDrawer(getModule),
     );
 

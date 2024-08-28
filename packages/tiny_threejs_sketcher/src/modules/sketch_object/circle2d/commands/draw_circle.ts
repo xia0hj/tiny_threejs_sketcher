@@ -20,7 +20,7 @@ export class CommandStartDrawCircle implements Command {
       logger.warn("非2d编辑模式无法绘制圆");
       return commandErr(new Error("非2d编辑模式无法绘制圆"));
     }
-    getModule(MODULE_NAME.OperationModeSwitcher).setOperationMode(
+    getModule(MODULE_NAME.CanvasInteractorSwitcher).setOperationMode(
       new CircleDrawer(getModule),
     );
     return commandOk();

@@ -25,7 +25,7 @@ export class TinyThreejsSketcher {
     this.getModule(MODULE_NAME.CommandExecutor).executeCommand(
       new CommandFitCameraToScene(),
     );
-    this.getModule(MODULE_NAME.OperationModeSwitcher).startListenCanvas();
+    this.getModule(MODULE_NAME.CanvasInteractorSwitcher).startListenCanvas();
     this.getModule(MODULE_NAME.SketchObjectManager).refreshTree();
   }
 

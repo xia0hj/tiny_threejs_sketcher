@@ -1,13 +1,13 @@
 import { SKETCH_OBJECT_TYPE } from "@src/constant/enum";
 import { MODULE_NAME, ModuleGetter } from "@src/modules/module_registry";
-import { OperationMode } from "@src/modules/operation_mode_switcher";
+import { CanvasInteractor } from "@src/modules/operation_mode_switcher";
 import { Circle2d } from "@src/modules/sketch_object/circle2d";
 import { CommandAddCircle } from "@src/modules/sketch_object/circle2d/commands/draw_circle";
 import { checkSketchObjectType } from "@src/utils";
 import { logger } from "@src/utils/logger";
 import { Plane, Vector3 } from "three";
 
-export class CircleDrawer implements OperationMode {
+export class CircleDrawer implements CanvasInteractor {
   center: Vector3 | null | undefined;
   plane: Plane;
   previewCricle2d: Circle2d;
