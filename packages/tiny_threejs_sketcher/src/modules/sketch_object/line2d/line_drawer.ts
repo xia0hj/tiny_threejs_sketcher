@@ -1,20 +1,30 @@
-import { SKETCH_OBJECT_TYPE } from "@src/constant/enum";
+import {
+  CANVAS_INTERACTOR_NAME,
+  CanvasInteractorNameUnion,
+  SKETCH_OBJECT_TYPE,
+} from "@src/constant/enum";
 import { MODULE_NAME, ModuleGetter } from "@src/modules/module_registry";
-import { CanvasInteractor } from "@src/modules/operation_mode_switcher";
+import { CanvasInteractor } from "@src/modules/canvas_interactor_switcher";
 import { Line2d } from "@src/modules/sketch_object/line2d";
-import { CommandAddLine } from "@src/modules/sketch_object/line2d/commands/draw_line";
+import { CommandAddLine } from "@src/modules/sketch_object/line2d/commands";
 import { checkSketchObjectType } from "@src/utils";
 import { logger } from "@src/utils/logger";
 import { Plane, Vector3 } from "three";
+import { err, ok } from "neverthrow";
 
 export class LineDrawer implements CanvasInteractor {
+  name = CANVAS_INTERACTOR_NAME.line_drawer;
   previewLine2d = new Line2d();
 
   startPoint: Vector3 | null | undefined;
 
-  plane: Plane;
+  plane!: Plane;
 
-  constructor(getModule: ModuleGetter) {
+  enter(getModule: ModuleGetter, prevInteractor: CanvasInteractorNameUnion) {
+    if (prevInteractor !== CANVAS_INTERACTOR_NAME.plane_editor) {
+      return err(new Error(`${this.name} 启动失败，只能在平面编辑模式中启动`));
+    }
+
     const stateStore = getModule(MODULE_NAME.StateStore);
     const { editingBasePlane } = stateStore.getState();
     if (
@@ -35,9 +45,16 @@ export class LineDrawer implements CanvasInteractor {
     getModule(MODULE_NAME.SketchObjectManager).addPreviewObject(
       this.previewLine2d,
     );
+    return ok(undefined);
   }
 
-  async onClick(event: PointerEvent, getModule: ModuleGetter) {
+  exit() {
+    this.previewLine2d.removeFromParent();
+    this.previewLine2d.dispose();
+    return ok(undefined);
+  }
+
+  onClick(event: PointerEvent, getModule: ModuleGetter) {
     // 起始点已存在，本次点击完成绘制
     if (this.startPoint) {
       const line2d = new Line2d();
@@ -46,9 +63,9 @@ export class LineDrawer implements CanvasInteractor {
         new Vector3().fromArray(this.previewLine2d.userData.endPosition),
       );
 
-      const result = await getModule(
-        MODULE_NAME.CommandExecutor,
-      ).executeCommand(new CommandAddLine(line2d));
+      const result = getModule(MODULE_NAME.CommandExecutor).executeCommand(
+        new CommandAddLine(line2d),
+      );
       result.match(
         () => {
           this.startPoint = undefined;
@@ -57,7 +74,6 @@ export class LineDrawer implements CanvasInteractor {
             drawingLine2dStartPoint: undefined,
             drawingLine2dEndPoint: undefined,
           });
-
           logger.info("完成绘制线段", line2d);
         },
         () => {},
@@ -95,10 +111,5 @@ export class LineDrawer implements CanvasInteractor {
         drawingLine2dStartPoint: curPoint,
       });
     }
-  }
-
-  dispose() {
-    this.previewLine2d.removeFromParent();
-    this.previewLine2d.dispose();
   }
 }

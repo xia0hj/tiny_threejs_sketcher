@@ -67,6 +67,7 @@ export class BasePlane
   }
 
   dispose(): void {
+    this.removeFromParent();
     this.geometry.dispose();
     this.material.dispose();
   }

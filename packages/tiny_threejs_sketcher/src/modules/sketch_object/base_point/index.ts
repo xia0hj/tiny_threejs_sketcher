@@ -11,7 +11,7 @@ import {
 } from "three";
 
 /**
- * @link https://stackoverflow.com/questions/41509156/three-js-give-particles-round-form/54361382#54361382
+ * @see {@link https://stackoverflow.com/questions/41509156/three-js-give-particles-round-form/54361382#54361382}
  */
 const fragmentShader = `
 uniform vec3 color;

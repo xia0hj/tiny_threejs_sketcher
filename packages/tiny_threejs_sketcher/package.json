@@ -24,6 +24,7 @@
   "dependencies": {
     "geometric": "^2.5.4",
     "mitt": "^3.0.1",
+    "neverthrow": "^7.0.1",
     "three": "^0.160.0"
   }
 }

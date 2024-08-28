@@ -6,9 +6,8 @@ import {
   initAllModules,
 } from "@src/modules/module_registry";
 import { Command } from "@src/modules/command_executor";
-import { CommandFitCameraToScene } from "@src/modules/scene_builder/commands/fit_camera_to_scene";
 import { SketcherState } from "@src/modules/state_store";
-import { CommandExecutionResult } from "@src/modules/command_executor/command_execution_result";
+import { CommandFitCameraToScene } from "@src/modules/scene_builder/commands";
 
 export class TinyThreejsSketcher {
   private _moduleMap: Map<ModuleNameUnion, Module>;
@@ -29,7 +28,7 @@ export class TinyThreejsSketcher {
     this.getModule(MODULE_NAME.SketchObjectManager).refreshTree();
   }
 
-  public executeCommand(command: Command): Promise<CommandExecutionResult> {
+  public executeCommand(command: Command) {
     return this.getModule(MODULE_NAME.CommandExecutor).executeCommand(command);
   }
 

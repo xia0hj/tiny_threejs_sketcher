@@ -3,21 +3,21 @@ import {
   Module,
   ModuleGetter,
 } from "@src/modules/module_registry";
-import { CommandExecutionResult } from "@src/modules/command_executor/command_execution_result";
 import { checkIsUndoableCommand } from "@src/utils";
 import { logger } from "@src/utils/logger";
+import { Result } from "neverthrow";
 
 export type Command = {
   name: string;
-  execute(getModule: ModuleGetter): Promise<CommandExecutionResult>;
-  undo?(getModule: ModuleGetter): Promise<CommandExecutionResult>;
+  execute(getModule: ModuleGetter): Result<unknown, Error>;
+  undo?(getModule: ModuleGetter): Result<unknown, Error>;
 };
 
 export type UndoableCommand = Command & Required<Command["undo"]>;
 
 export class CommandExecutor implements Module {
-  name = MODULE_NAME.CommandExecutor;
-  getModule: ModuleGetter;
+  public name = MODULE_NAME.CommandExecutor;
+  private getModule: ModuleGetter;
 
   private _modificationHistory: UndoableCommand[] = [];
 
@@ -25,8 +25,8 @@ export class CommandExecutor implements Module {
     this.getModule = getModule;
   }
 
-  async executeCommand(command: Command) {
-    const result = await command.execute(this.getModule);
+  public executeCommand<C extends Command>(command: C) {
+    const result = command.execute(this.getModule) as ReturnType<C['execute']>;
     result.match(
       (value) => {
         logger.debug(`命令 ${command.name} 执行成功.`, value ?? "");

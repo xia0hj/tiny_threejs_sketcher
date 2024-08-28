@@ -30,4 +30,12 @@ export const logger = {
       ),
     );
   },
+  get error() {
+    return enableOrNot(
+      console.error.bind(
+        console,
+        `\x1b[48;2;255;251;230m[${new Date().toLocaleString()}] [ERROR] `,
+      ),
+    );
+  },
 };

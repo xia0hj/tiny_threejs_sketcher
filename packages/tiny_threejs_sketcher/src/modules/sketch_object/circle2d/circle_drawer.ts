@@ -1,27 +1,35 @@
-import { SKETCH_OBJECT_TYPE } from "@src/constant/enum";
+import {
+  CANVAS_INTERACTOR_NAME,
+  CanvasInteractorNameUnion,
+  SKETCH_OBJECT_TYPE,
+} from "@src/constant/enum";
 import { MODULE_NAME, ModuleGetter } from "@src/modules/module_registry";
-import { CanvasInteractor } from "@src/modules/operation_mode_switcher";
+import { CanvasInteractor } from "@src/modules/canvas_interactor_switcher";
 import { Circle2d } from "@src/modules/sketch_object/circle2d";
-import { CommandAddCircle } from "@src/modules/sketch_object/circle2d/commands/draw_circle";
+import { CommandAddCircle } from "@src/modules/sketch_object/circle2d/commands";
 import { checkSketchObjectType } from "@src/utils";
 import { logger } from "@src/utils/logger";
 import { Plane, Vector3 } from "three";
+import { err, ok } from "neverthrow";
 
 export class CircleDrawer implements CanvasInteractor {
-  center: Vector3 | null | undefined;
-  plane: Plane;
-  previewCricle2d: Circle2d;
-  getModule: ModuleGetter;
+  name = CANVAS_INTERACTOR_NAME.circle_drawer;
 
-  constructor(getModule: ModuleGetter) {
-    this.getModule = getModule;
+  center: Vector3 | null | undefined;
+  plane!: Plane;
+  previewCricle2d!: Circle2d;
+
+  enter(getModule: ModuleGetter, prevInteractor: CanvasInteractorNameUnion) {
+    if (prevInteractor !== CANVAS_INTERACTOR_NAME.plane_editor) {
+      return err(new Error(`只有先进入平面编辑模式才能绘制圆`));
+    }
+
     const stateStore = getModule(MODULE_NAME.StateStore);
     const { editingBasePlane } = stateStore.getState();
-
     if (
       !checkSketchObjectType(editingBasePlane, SKETCH_OBJECT_TYPE.base_plane)
     ) {
-      throw new Error("无法在非平面上绘制2d线段");
+      return err(new Error("无法在非平面上绘制2d线段"));
     }
     this.plane = new Plane(
       new Vector3().fromArray(editingBasePlane.userData.normal),
@@ -33,7 +41,8 @@ export class CircleDrawer implements CanvasInteractor {
       this.previewCricle2d,
     );
 
-    this._reset();
+    this._reset(getModule);
+    return ok(undefined);
   }
 
   onClick(event: PointerEvent, getModule: ModuleGetter) {
@@ -45,7 +54,7 @@ export class CircleDrawer implements CanvasInteractor {
       getModule(MODULE_NAME.CommandExecutor).executeCommand(
         new CommandAddCircle(resultCircle),
       );
-      this._reset();
+      this._reset(getModule);
       return;
     }
 
@@ -84,17 +93,18 @@ export class CircleDrawer implements CanvasInteractor {
     }
   }
 
-  private _reset() {
+  private _reset(getModule: ModuleGetter) {
     this.center = undefined;
     this.previewCricle2d.updateRadius(1);
-    this.getModule(MODULE_NAME.StateStore).setState({
+    getModule(MODULE_NAME.StateStore).setState({
       drawingCircle2dCenter: undefined,
       drawingCircle2dRadius: undefined,
     });
   }
 
-  dispose() {
+  exit() {
     this.previewCricle2d.removeFromParent();
     this.previewCricle2d.dispose();
+    return ok(undefined);
   }
 }

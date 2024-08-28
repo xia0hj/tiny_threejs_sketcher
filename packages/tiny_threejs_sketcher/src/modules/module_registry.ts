@@ -1,5 +1,5 @@
 import { StateStore } from "@src/modules/state_store";
-import { CanvasInteractorSwitcher } from "@src/modules/operation_mode_switcher";
+import { CanvasInteractorSwitcher } from "@src/modules/canvas_interactor_switcher";
 import { SceneBuilder } from "@src/modules/scene_builder";
 import { SketchObjectManager } from "@src/modules/sketch_object_manager";
 
