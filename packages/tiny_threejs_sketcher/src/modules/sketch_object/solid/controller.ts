@@ -1,7 +1,4 @@
-import {
-  CONTROLLER_NAME,
-  SKETCH_OBJECT_TYPE,
-} from "@src/constant/enum";
+import { CONTROLLER_NAME, SKETCH_OBJECT_TYPE } from "@src/constant/enum";
 import { Controller } from "@src/modules/controller_switcher";
 import { MODULE_NAME, ModuleGetter } from "@src/modules/module_registry";
 import { BaseFace } from "@src/modules/sketch_object/base_face";

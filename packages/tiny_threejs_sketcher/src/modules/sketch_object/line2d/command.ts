@@ -1,6 +1,6 @@
 import { SKETCH_OBJECT_TYPE } from "@src/constant/enum";
 import { Command } from "@src/modules/command_executor";
-import {  MODULE_NAME, ModuleGetter } from "@src/modules/module_registry";
+import { MODULE_NAME, ModuleGetter } from "@src/modules/module_registry";
 import { Line2d } from "@src/modules/sketch_object/line2d";
 import { LineDrawer } from "@src/modules/sketch_object/line2d/controller";
 import { checkSketchObjectType } from "@src/utils";
@@ -12,7 +12,7 @@ import { Result, err, ok } from "neverthrow";
 export class CommandEnableLineDrawer implements Command {
   name = "enable_line_drawer";
 
-  execute(getModule: ModuleGetter){
+  execute(getModule: ModuleGetter) {
     return getModule(MODULE_NAME.ControllerSwitcher).pushController(
       new LineDrawer(),
     );

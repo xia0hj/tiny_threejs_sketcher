@@ -11,7 +11,9 @@ interface FieldType {
 
 export const DetailsView: ToolbarButton["DetailsView"] = ({ exit: onExit }) => {
   const [formInstance] = Form.useForm();
-  const tinyThreejsSketcher = useSketcherStore((state) => state.tinyThreejsSketcher);
+  const tinyThreejsSketcher = useSketcherStore(
+    (state) => state.tinyThreejsSketcher,
+  );
   const onSubmit = async (values: FieldType) => {
     console.log(values);
     const result = tinyThreejsSketcher.executeCommand(

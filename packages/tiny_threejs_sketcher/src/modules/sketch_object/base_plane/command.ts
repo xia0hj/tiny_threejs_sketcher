@@ -1,4 +1,3 @@
-
 import { Command } from "@src/modules/command_executor";
 import { MODULE_NAME, ModuleGetter } from "@src/modules/module_registry";
 import {

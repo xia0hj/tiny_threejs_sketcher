@@ -1,7 +1,4 @@
-import {
-  CONTROLLER_NAME,
-  SKETCH_OBJECT_TYPE,
-} from "@src/constant/enum";
+import { CONTROLLER_NAME, SKETCH_OBJECT_TYPE } from "@src/constant/enum";
 import { Controller } from "@src/modules/controller_switcher";
 import { MODULE_NAME, ModuleGetter } from "@src/modules/module_registry";
 import { BaseFace } from "@src/modules/sketch_object/base_face";
@@ -13,7 +10,7 @@ import { CircleGeometry, Vector3 } from "three";
 
 export class PlaneEditor implements Controller {
   name = CONTROLLER_NAME.plane_editor;
-  prev = CONTROLLER_NAME.default_viewer
+  prev = CONTROLLER_NAME.default_viewer;
   plane!: BasePlane;
 
   enter(getModule: ModuleGetter) {

@@ -9,7 +9,7 @@ export class DefaultViewer implements Controller {
   prev = CONTROLLER_NAME.default_viewer;
 
   enter() {
-    return ok(undefined);
+    return err(new Error("DefaultViewer 始终在栈底，不应该手动入栈"));
   }
 
   exit(): Result<unknown, Error> {

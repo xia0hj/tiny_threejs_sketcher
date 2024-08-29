@@ -48,7 +48,6 @@ export const MODULE_NAME = Object.freeze(
   ),
 ) as Readonly<{ [K in ModuleNameUnion]: K }>;
 
-
 export type Module = {
   name: ModuleNameUnion;
   dispose?(): void;

@@ -96,6 +96,9 @@ export class ControllerSwitcher implements Module {
     >;
     if (enterResult.isOk()) {
       this._stack.push(controller);
+      this.getModule(MODULE_NAME.StateStore).setState({
+        controller: this.getCurController().name,
+      });
     }
     return enterResult;
   }
@@ -105,6 +108,9 @@ export class ControllerSwitcher implements Module {
     const exitResult = controller.exit(this.getModule);
     if (exitResult.isOk()) {
       this._stack.pop();
+      this.getModule(MODULE_NAME.StateStore).setState({
+        controller: this.getCurController().name,
+      });
     }
     return exitResult;
   }

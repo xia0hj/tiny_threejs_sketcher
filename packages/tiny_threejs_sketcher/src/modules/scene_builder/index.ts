@@ -1,6 +1,10 @@
 import { CONFIG_VARS } from "@src/constant/config";
 
-import { MODULE_NAME, Module, ModuleGetter } from "@src/modules/module_registry";
+import {
+  MODULE_NAME,
+  Module,
+  ModuleGetter,
+} from "@src/modules/module_registry";
 import {
   AmbientLight,
   AxesHelper,

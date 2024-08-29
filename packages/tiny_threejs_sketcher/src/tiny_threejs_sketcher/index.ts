@@ -9,7 +9,6 @@ import { Command } from "@src/modules/command_executor";
 import { SketcherState } from "@src/modules/state_store";
 import { CommandFitCameraToScene } from "@src/modules/scene_builder/command";
 
-
 /**
  * @exports
  */

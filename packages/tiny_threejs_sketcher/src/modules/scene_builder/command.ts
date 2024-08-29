@@ -4,7 +4,6 @@ import { Box3, Sphere, Vector3 } from "three";
 import { CONFIG_VARS } from "@src/constant/config";
 import { ok } from "neverthrow";
 
-
 /**
  * @exports
  */

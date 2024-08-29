@@ -30,6 +30,7 @@ export class Line2d
     this.endPoint.connectObject(this.id, (endPosition) =>
       this.updatePosition(this.startPoint.position, endPosition),
     );
+    this.add(this.startPoint, this.endPoint);
   }
 
   updatePosition(startPosition: Vector3, endPosition: Vector3) {

@@ -1,4 +1,7 @@
-import { ModuleNameUnion, moduleNameDefinition } from "@src/modules/module_registry";
+import {
+  ModuleNameUnion,
+  moduleNameDefinition,
+} from "@src/modules/module_registry";
 import { ValueOf } from "@src/utils";
 
 export const CAMERA_TYPE = Object.freeze({

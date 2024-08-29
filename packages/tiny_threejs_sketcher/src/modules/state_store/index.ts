@@ -1,4 +1,8 @@
-import { CAMERA_TYPE } from "@src/constant/enum";
+import {
+  CAMERA_TYPE,
+  CONTROLLER_NAME,
+  ControllerNameUnion,
+} from "@src/constant/enum";
 import { MODULE_NAME, Module } from "@src/modules/module_registry";
 import { BasePlane } from "@src/modules/sketch_object/base_plane";
 import { SketchObject } from "@src/modules/sketch_object/interface";
@@ -12,6 +16,8 @@ import { Vector3 } from "three";
  */
 export type SketcherState = {
   curCameraType: ValueOf<typeof CAMERA_TYPE>;
+  controller: ControllerNameUnion;
+
   sketchObjectTreeRoot?: SketchObjectTreeItem;
   selectedObjects: SketchObject[];
 
@@ -33,6 +39,7 @@ export class StateStore implements Module {
   private _state: SketcherState = {
     curCameraType: CAMERA_TYPE.perspective_camera,
     selectedObjects: [],
+    controller: CONTROLLER_NAME.default_viewer,
   };
 
   public getState(): SketcherState {

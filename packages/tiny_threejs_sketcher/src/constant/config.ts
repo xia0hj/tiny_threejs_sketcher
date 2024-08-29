@@ -7,7 +7,7 @@ export const CONFIG_VARS = {
   planeLength: 3,
   planeOpacity: 0.6,
   pressMinDuration: 500,
-  basePointSize: 10
+  basePointSize: 10,
 };
 
 /**

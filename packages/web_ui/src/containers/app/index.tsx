@@ -9,7 +9,7 @@ import { btnStartSelectExtrudeFace } from "@src/containers/toolbar_buttons/extru
 const mainToolbarButtons: ToolbarButton[] = [
   btnCreateBasePlane,
   btnEditBasePlane,
-  btnStartSelectExtrudeFace
+  btnStartSelectExtrudeFace,
 ] as const;
 
 export const App = () => {

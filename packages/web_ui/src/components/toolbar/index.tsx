@@ -1,9 +1,14 @@
 import { Button, Divider, Tooltip } from "antd";
-import { useState, type ReactElement, FunctionComponent, ReactNode } from "react";
+import {
+  useState,
+  type ReactElement,
+  FunctionComponent,
+  ReactNode,
+} from "react";
 
 export type ToolbarButton = {
   label: string;
-  icon: (props:any) => ReactNode;
+  icon: (props: any) => ReactNode;
   DetailsView?: (props: { exit: () => void }) => ReactElement;
   onClick?: () => boolean | Promise<boolean>;
 };
