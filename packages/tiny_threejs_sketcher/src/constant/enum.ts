@@ -18,14 +18,14 @@ export const SKETCH_OBJECT_TYPE = Object.freeze({
   solid: "solid",
 });
 
-export const CANVAS_INTERACTOR_NAME = Object.freeze({
+export const CONTROLLER_NAME = Object.freeze({
   default_viewer: "default_viewer",
   plane_editor: "plane_editor",
   circle_drawer: "circle_drawer",
   line_drawer: "line_drawer",
   face_selector: "face_selector",
 });
-export type CanvasInteractorNameUnion = ValueOf<typeof CANVAS_INTERACTOR_NAME>;
+export type ControllerNameUnion = ValueOf<typeof CONTROLLER_NAME>;
 
 
 /**

@@ -5,7 +5,7 @@ import {
   BasePlane,
   CreateBasePlaneParameter,
 } from "@src/modules/sketch_object/base_plane";
-import { PlaneEditor } from "@src/modules/sketch_object/base_plane/plane_editor";
+import { PlaneEditor } from "@src/modules/sketch_object/base_plane/controller";
 import { ok } from "neverthrow";
 
 /**
@@ -14,7 +14,7 @@ import { ok } from "neverthrow";
 export class CommandEnablePlaneEditor implements Command {
   name = "enable_plane_editor";
   execute(getModule: ModuleGetter) {
-    return getModule(MODULE_NAME.CanvasInteractorSwitcher).pushInteractor(
+    return getModule(MODULE_NAME.ControllerSwitcher).pushController(
       new PlaneEditor(),
     );
   }

@@ -8,6 +8,6 @@ import { ModuleGetter } from "@src/modules/module_registry";
 export class CommandExitCurInteractor implements Command {
   name = "exit_cur_interactor";
   execute(getModule: ModuleGetter) {
-    return getModule(MODULE_NAME.CanvasInteractorSwitcher).popInteractor();
+    return getModule(MODULE_NAME.ControllerSwitcher).popController();
   }
 }

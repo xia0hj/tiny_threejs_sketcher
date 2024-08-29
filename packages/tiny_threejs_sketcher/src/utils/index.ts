@@ -1,4 +1,4 @@
-import { CanvasInteractorNameUnion, SKETCH_OBJECT_TYPE } from "@src/constant/enum";
+import { ControllerNameUnion, SKETCH_OBJECT_TYPE } from "@src/constant/enum";
 import { Command, UndoableCommand } from "@src/modules/command_executor";
 import { SketchObject } from "@src/modules/sketch_object/interface";
 import { Object3D } from "three";

@@ -2,14 +2,14 @@ import { SKETCH_OBJECT_TYPE } from "@src/index";
 import { Command } from "@src/modules/command_executor";
 import { commandOk } from "@src/modules/command_executor/command_execution_result";
 import { ModuleGetter } from "@src/modules/module_registry";
-import { CanvasInteractor } from "@src/modules/canvas_interactor_switcher";
-import { DefaultViewer } from "@src/modules/canvas_interactor_switcher/default_viewer";
+import { Controller } from "@src/modules/controller_switcher";
+import { DefaultViewer } from "@src/modules/controller_switcher/controller";
 import { BaseFace } from "@src/modules/sketch_object/base_face";
 import { Solid } from "@src/modules/sketch_object/solid";
 import { checkSketchObjectType } from "@src/utils";
 import { logger } from "@src/utils/logger";
 import { Intersection } from "three";
-import { CANVAS_INTERACTOR_NAME, MODULE_NAME } from "@src/constant/enum";
+import { CONTROLLER_NAME, MODULE_NAME } from "@src/constant/enum";
 
 export class CommandStartSelectExtrudeFace implements Command {
   name = "start_select_extrude_face";
@@ -18,7 +18,7 @@ export class CommandStartSelectExtrudeFace implements Command {
     const stateStore = getModule(MODULE_NAME.StateStore);
     stateStore.getState().selectedObjects.forEach((obj) => obj.onDeselect?.());
     stateStore.setState({ selectedObjects: [] });
-    getModule(MODULE_NAME.CanvasInteractorSwitcher).setOperationMode(
+    getModule(MODULE_NAME.ControllerSwitcher).setOperationMode(
       new FaceSelector(getModule),
     );
     return commandOk();
@@ -35,7 +35,7 @@ export class CommandStopSelectExtrudeFace implements Command {
   }
 
   async execute(getModule: ModuleGetter) {
-    getModule(MODULE_NAME.CanvasInteractorSwitcher).setOperationMode(
+    getModule(MODULE_NAME.ControllerSwitcher).setOperationMode(
       new DefaultViewer(),
     );
     const stateStore = getModule(MODULE_NAME.StateStore);
@@ -52,8 +52,8 @@ export class CommandStopSelectExtrudeFace implements Command {
   }
 }
 
-class FaceSelector implements CanvasInteractor {
-  name = CANVAS_INTERACTOR_NAME.face_selector;
+class FaceSelector implements Controller {
+  name = CONTROLLER_NAME.face_selector;
   constructor(getModule: ModuleGetter) {
     const stateStore = getModule(MODULE_NAME.StateStore);
     stateStore.setState({ selectedObjects: [] });

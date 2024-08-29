@@ -1,16 +1,14 @@
 import { CONFIG_VARS } from "@src/constant/config";
 import { Module, ModuleGetter } from "@src/modules/module_registry";
-import { DefaultViewer } from "@src/modules/canvas_interactor_switcher/default_viewer";
-import { Result } from "neverthrow";
-import { CanvasInteractorNameUnion, MODULE_NAME } from "@src/constant/enum";
+import { DefaultViewer } from "@src/modules/controller_switcher/controller";
+import { Result, err } from "neverthrow";
+import { ControllerNameUnion, MODULE_NAME } from "@src/constant/enum";
 
-export type CanvasInteractor = {
-  readonly name: CanvasInteractorNameUnion;
+export type Controller = {
+  readonly name: ControllerNameUnion;
+  readonly prev: ControllerNameUnion | undefined;
 
-  enter(
-    getModule: ModuleGetter,
-    prevInteractor: CanvasInteractorNameUnion,
-  ): Result<unknown, Error>;
+  enter(getModule: ModuleGetter): Result<unknown, Error>;
   exit(getModule: ModuleGetter): Result<unknown, Error>;
 
   onPointerdown?(event: PointerEvent, getModule: ModuleGetter): void;
@@ -19,17 +17,17 @@ export type CanvasInteractor = {
   onPointermove?(event: PointerEvent, getModule: ModuleGetter): void;
 };
 
-export class CanvasInteractorSwitcher implements Module {
-  public name = MODULE_NAME.CanvasInteractorSwitcher;
+export class ControllerSwitcher implements Module {
+  public name = MODULE_NAME.ControllerSwitcher;
 
   private getModule: ModuleGetter;
   private _abortController = new AbortController();
   private _pressStartTimestamp = 0;
-  private _stack: CanvasInteractor[] = [];
+  private _stack: Controller[] = [];
 
   constructor(getModule: ModuleGetter) {
     this.getModule = getModule;
-    this.pushInteractor(new DefaultViewer());
+    this.pushController(new DefaultViewer());
   }
 
   public startListenCanvas() {
@@ -41,7 +39,7 @@ export class CanvasInteractorSwitcher implements Module {
         if (event.button === 0) {
           this._pressStartTimestamp = Date.now();
         }
-        this.getCurInteractor().onPointerdown?.(event, this.getModule);
+        this.getCurController().onPointerdown?.(event, this.getModule);
       },
       { signal: this._abortController.signal },
     );
@@ -49,9 +47,9 @@ export class CanvasInteractorSwitcher implements Module {
     canvasElement.addEventListener("pointerup", (event) => {
       const pressDuration = Date.now() - this._pressStartTimestamp;
       if (pressDuration < CONFIG_VARS.pressMinDuration) {
-        this.getCurInteractor().onClick?.(event, this.getModule);
+        this.getCurController().onClick?.(event, this.getModule);
       } else {
-        this.getCurInteractor().onPointerup?.(event, this.getModule);
+        this.getCurController().onPointerup?.(event, this.getModule);
       }
     });
 
@@ -63,33 +61,44 @@ export class CanvasInteractorSwitcher implements Module {
       }
       throttleLock = true;
       requestAnimationFrame(() => {
-        this.getCurInteractor().onPointermove?.(event, this.getModule);
+        this.getCurController().onPointermove?.(event, this.getModule);
         throttleLock = false;
       });
     });
   }
 
-  public pushInteractor<CI extends CanvasInteractor>(canvasInteractor: CI) {
-    const enterResult = canvasInteractor.enter(
-      this.getModule,
-      this.getCurInteractor().name,
-    ) as ReturnType<CI["enter"]>;
+  public pushController<C extends Controller>(controller: C) {
+    if (
+      controller.prev != undefined &&
+      controller.prev !== this.getCurController().name
+    ) {
+      return err(
+        new Error(
+          `${controller.name} 入栈失败，所需栈顶为 ${
+            controller.prev
+          }，当前栈顶为 ${this.getCurController().name}`,
+        ),
+      );
+    }
+    const enterResult = controller.enter(this.getModule) as ReturnType<
+      C["enter"]
+    >;
     if (enterResult.isOk()) {
-      this._stack.push(canvasInteractor);
+      this._stack.push(controller);
     }
     return enterResult;
   }
 
-  public popInteractor() {
-    const interactor = this.getCurInteractor();
-    const exitResult = interactor.exit(this.getModule);
+  public popController() {
+    const controller = this.getCurController();
+    const exitResult = controller.exit(this.getModule);
     if (exitResult.isOk()) {
       this._stack.pop();
     }
     return exitResult;
   }
 
-  public getCurInteractor() {
+  public getCurController() {
     return this._stack.at(-1)!;
   }
 

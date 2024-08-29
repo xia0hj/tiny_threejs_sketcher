@@ -1,10 +1,10 @@
 import {
-  CANVAS_INTERACTOR_NAME,
-  CanvasInteractorNameUnion,
+  CONTROLLER_NAME,
+  ControllerNameUnion,
   MODULE_NAME,
   SKETCH_OBJECT_TYPE,
 } from "@src/constant/enum";
-import { CanvasInteractor } from "@src/modules/canvas_interactor_switcher";
+import { Controller } from "@src/modules/controller_switcher";
 import { ModuleGetter } from "@src/modules/module_registry";
 import { BaseFace } from "@src/modules/sketch_object/base_face";
 import { BasePlane } from "@src/modules/sketch_object/base_plane";
@@ -13,15 +13,12 @@ import { logger } from "@src/utils/logger";
 import { Result, err, ok } from "neverthrow";
 import { CircleGeometry, Vector3 } from "three";
 
-export class PlaneEditor implements CanvasInteractor {
-  name = CANVAS_INTERACTOR_NAME.plane_editor;
+export class PlaneEditor implements Controller {
+  name = CONTROLLER_NAME.plane_editor;
+  prev = CONTROLLER_NAME.default_viewer
   plane!: BasePlane;
 
-  enter(getModule: ModuleGetter, prevInteractor: CanvasInteractorNameUnion) {
-    if (prevInteractor !== CANVAS_INTERACTOR_NAME.default_viewer) {
-      return err(new Error(`${this.name} 入栈失败，前置状态不正确`));
-    }
-
+  enter(getModule: ModuleGetter) {
     const sketcherStore = getModule(MODULE_NAME.StateStore);
     const [selectedBasePlane] = sketcherStore.getState().selectedObjects;
     if (

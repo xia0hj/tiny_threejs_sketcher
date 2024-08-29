@@ -31,7 +31,7 @@ export class CommandExecutor implements Module {
           this._modificationHistory.push(command);
         }
       },
-      (error) => logger.warn(`命令 ${command.name} 执行失败`, error),
+      (error) => logger.error(`命令 ${command.name} 执行失败`, error),
     );
     return result;
   }

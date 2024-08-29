@@ -2,7 +2,7 @@ import { MODULE_NAME, SKETCH_OBJECT_TYPE } from "@src/constant/enum";
 import { Command } from "@src/modules/command_executor";
 import { ModuleGetter } from "@src/modules/module_registry";
 import { Circle2d } from "@src/modules/sketch_object/circle2d";
-import { CircleDrawer } from "@src/modules/sketch_object/circle2d/circle_drawer";
+import { CircleDrawer } from "@src/modules/sketch_object/circle2d/controller";
 import { checkSketchObjectType } from "@src/utils";
 import { err, ok } from "neverthrow";
 
@@ -13,7 +13,7 @@ export class CommandEnableCircleDrawer implements Command {
   name = "enable_circle_drawer";
 
   execute(getModule: ModuleGetter) {
-    return getModule(MODULE_NAME.CanvasInteractorSwitcher).pushInteractor(
+    return getModule(MODULE_NAME.ControllerSwitcher).pushController(
       new CircleDrawer(),
     );
   }

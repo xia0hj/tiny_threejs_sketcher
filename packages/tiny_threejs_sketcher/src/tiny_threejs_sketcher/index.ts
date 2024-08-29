@@ -6,7 +6,7 @@ import {
 } from "@src/modules/module_registry";
 import { Command } from "@src/modules/command_executor";
 import { SketcherState } from "@src/modules/state_store";
-import { CommandFitCameraToScene } from "@src/modules/scene_builder/commands";
+import { CommandFitCameraToScene } from "@src/modules/scene_builder/command";
 import { MODULE_NAME } from "@src/constant/enum";
 
 /**
@@ -27,7 +27,7 @@ export class TinyThreejsSketcher {
     this.getModule(MODULE_NAME.CommandExecutor).executeCommand(
       new CommandFitCameraToScene(),
     );
-    this.getModule(MODULE_NAME.CanvasInteractorSwitcher).startListenCanvas();
+    this.getModule(MODULE_NAME.ControllerSwitcher).startListenCanvas();
     this.getModule(MODULE_NAME.SketchObjectManager).refreshTree();
   }
 
@@ -40,6 +40,10 @@ export class TinyThreejsSketcher {
     listener: (value: SketcherState[K]) => void,
   ): () => void {
     return this.getModule(MODULE_NAME.StateStore).listenState(key, listener);
+  }
+
+  public setState(state: Partial<SketcherState>) {
+    this.getModule(MODULE_NAME.StateStore).setState(state);
   }
 
   public dispose(): void {

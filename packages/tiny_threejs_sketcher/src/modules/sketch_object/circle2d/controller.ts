@@ -1,30 +1,27 @@
 import {
-  CANVAS_INTERACTOR_NAME,
-  CanvasInteractorNameUnion,
+  CONTROLLER_NAME,
+  ControllerNameUnion,
   MODULE_NAME,
   SKETCH_OBJECT_TYPE,
 } from "@src/constant/enum";
 import { ModuleGetter } from "@src/modules/module_registry";
-import { CanvasInteractor } from "@src/modules/canvas_interactor_switcher";
+import { Controller } from "@src/modules/controller_switcher";
 import { Circle2d } from "@src/modules/sketch_object/circle2d";
-import { CommandAddCircle } from "@src/modules/sketch_object/circle2d/commands";
+import { CommandAddCircle } from "@src/modules/sketch_object/circle2d/command";
 import { checkSketchObjectType } from "@src/utils";
 import { logger } from "@src/utils/logger";
 import { Plane, Vector3 } from "three";
 import { err, ok } from "neverthrow";
 
-export class CircleDrawer implements CanvasInteractor {
-  name = CANVAS_INTERACTOR_NAME.circle_drawer;
+export class CircleDrawer implements Controller {
+  name = CONTROLLER_NAME.circle_drawer;
+  prev = CONTROLLER_NAME.plane_editor;
 
   center: Vector3 | null | undefined;
   plane!: Plane;
   previewCricle2d!: Circle2d;
 
-  enter(getModule: ModuleGetter, prevInteractor: CanvasInteractorNameUnion) {
-    if (prevInteractor !== CANVAS_INTERACTOR_NAME.plane_editor) {
-      return err(new Error(`只有先进入平面编辑模式才能绘制圆`));
-    }
-
+  enter(getModule: ModuleGetter) {
     const stateStore = getModule(MODULE_NAME.StateStore);
     const { editingBasePlane } = stateStore.getState();
     if (

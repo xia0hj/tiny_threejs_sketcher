@@ -1,11 +1,12 @@
 import { ModuleGetter } from "@src/modules/module_registry";
-import { CanvasInteractor } from "@src/modules/canvas_interactor_switcher";
+import { Controller } from "@src/modules/controller_switcher";
 import { logger } from "@src/utils/logger";
-import { CANVAS_INTERACTOR_NAME, MODULE_NAME } from "@src/constant/enum";
+import { CONTROLLER_NAME, MODULE_NAME } from "@src/constant/enum";
 import { Result, err, ok } from "neverthrow";
 
-export class DefaultViewer implements CanvasInteractor {
-  name = CANVAS_INTERACTOR_NAME.default_viewer;
+export class DefaultViewer implements Controller {
+  name = CONTROLLER_NAME.default_viewer;
+  prev = undefined;
 
   enter() {
     return ok(undefined);

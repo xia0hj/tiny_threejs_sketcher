@@ -1,31 +1,28 @@
 import {
-  CANVAS_INTERACTOR_NAME,
-  CanvasInteractorNameUnion,
+  CONTROLLER_NAME,
+  ControllerNameUnion,
   MODULE_NAME,
   SKETCH_OBJECT_TYPE,
 } from "@src/constant/enum";
 import { ModuleGetter } from "@src/modules/module_registry";
-import { CanvasInteractor } from "@src/modules/canvas_interactor_switcher";
+import { Controller } from "@src/modules/controller_switcher";
 import { Line2d } from "@src/modules/sketch_object/line2d";
-import { CommandAddLine } from "@src/modules/sketch_object/line2d/commands";
+import { CommandAddLine } from "@src/modules/sketch_object/line2d/command";
 import { checkSketchObjectType } from "@src/utils";
 import { logger } from "@src/utils/logger";
 import { Plane, Vector3 } from "three";
 import { err, ok } from "neverthrow";
 
-export class LineDrawer implements CanvasInteractor {
-  name = CANVAS_INTERACTOR_NAME.line_drawer;
+export class LineDrawer implements Controller {
+  name = CONTROLLER_NAME.line_drawer;
+  prev = CONTROLLER_NAME.plane_editor;
   previewLine2d = new Line2d();
 
   startPoint: Vector3 | null | undefined;
 
   plane!: Plane;
 
-  enter(getModule: ModuleGetter, prevInteractor: CanvasInteractorNameUnion) {
-    if (prevInteractor !== CANVAS_INTERACTOR_NAME.plane_editor) {
-      return err(new Error(`${this.name} 启动失败，只能在平面编辑模式中启动`));
-    }
-
+  enter(getModule: ModuleGetter) {
     const stateStore = getModule(MODULE_NAME.StateStore);
     const { editingBasePlane } = stateStore.getState();
     if (
