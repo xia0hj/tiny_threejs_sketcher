@@ -1,6 +1,6 @@
-import { MODULE_NAME } from "@src/constant/enum";
+
 import { Command } from "@src/modules/command_executor";
-import { ModuleGetter } from "@src/modules/module_registry";
+import { MODULE_NAME, ModuleGetter } from "@src/modules/module_registry";
 import {
   BasePlane,
   CreateBasePlaneParameter,

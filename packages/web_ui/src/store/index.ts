@@ -4,7 +4,7 @@ import { type SketcherState } from "tiny_threejs_sketcher";
 import { WithSetter } from "@src/utils";
 
 export type StoreState = WithSetter<{
-  tinyThreejsSketcher?: TinyThreejsSketcher;
+  tinyThreejsSketcher: TinyThreejsSketcher;
   sketchObjectTree?: SketcherState["sketchObjectTreeRoot"];
   selectedObjects: SketcherState["selectedObjects"];
 
@@ -13,7 +13,7 @@ export type StoreState = WithSetter<{
 }>;
 
 export const useSketcherStore = create<StoreState>((set) => ({
-  tinyThreejsSketcher: undefined,
+  tinyThreejsSketcher: undefined as any,
   setTinyThreejsSketcher: (tinyThreejsSketcher) =>
     set({ tinyThreejsSketcher: tinyThreejsSketcher }),
 

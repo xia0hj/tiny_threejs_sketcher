@@ -26,17 +26,3 @@ export const CONTROLLER_NAME = Object.freeze({
   face_selector: "face_selector",
 });
 export type ControllerNameUnion = ValueOf<typeof CONTROLLER_NAME>;
-
-
-/**
- * @exports
- */
-export const MODULE_NAME = Object.freeze(
-  (Object.keys(moduleNameDefinition) as Array<ModuleNameUnion>).reduce(
-    (obj, curKey) => {
-      obj[curKey] = curKey;
-      return obj;
-    },
-    {} as Record<string, string>,
-  ),
-) as Readonly<{ [K in ModuleNameUnion]: K }>;

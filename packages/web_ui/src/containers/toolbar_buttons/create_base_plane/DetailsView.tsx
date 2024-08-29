@@ -11,16 +11,16 @@ interface FieldType {
 
 export const DetailsView: ToolbarButton["DetailsView"] = ({ exit: onExit }) => {
   const [formInstance] = Form.useForm();
-  const threeCadEditor = useSketcherStore((state) => state.tinyThreejsSketcher);
+  const tinyThreejsSketcher = useSketcherStore((state) => state.tinyThreejsSketcher);
   const onSubmit = async (values: FieldType) => {
     console.log(values);
-    const result = await threeCadEditor?.executeCommand(
+    const result = tinyThreejsSketcher.executeCommand(
       new CommandCreateBasePlane({
         offset: values.offset,
         parallelTo: values.parallelTo,
       }),
     );
-    if (result?.isOk()) {
+    if (result.isOk()) {
       onExit();
     }
   };

@@ -1,5 +1,6 @@
-import { MODULE_NAME } from "@src/constant/enum";
+
 import {
+  MODULE_NAME,
   Module,
   ModuleGetter,
 } from "@src/modules/module_registry";

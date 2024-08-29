@@ -5,8 +5,8 @@ import { Card } from "antd";
 import style from "./index.module.less";
 import { useEffect } from "react";
 import {
-  CommandStopDrawLine,
-  CommandStartDrawLine,
+  CommandEnableLineDrawer,
+  CommandExitCurController,
 } from "tiny_threejs_sketcher";
 
 const PointDetails = ({ x, y, z }: { x?: number; y?: number; z?: number }) => {
@@ -28,14 +28,10 @@ export const DetailsView: ToolbarButton["DetailsView"] = ({ exit: onExit }) => {
   const endPoint = useSketcherStore((state) => state.drawingLine2dEndPoint);
 
   useEffect(() => {
-    (async function startDrawLine() {
-      await tinyThreejsSketcher?.executeCommand(new CommandStartDrawLine());
-    })();
+    tinyThreejsSketcher.executeCommand(new CommandEnableLineDrawer());
 
     return () => {
-      (async function stopDrawLine() {
-        await tinyThreejsSketcher?.executeCommand(new CommandStopDrawLine());
-      })();
+      tinyThreejsSketcher.executeCommand(new CommandExitCurController());
     };
   }, [tinyThreejsSketcher]);
 

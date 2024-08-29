@@ -1,4 +1,5 @@
 import {
+  MODULE_NAME,
   Module,
   ModuleGetter,
   ModuleNameUnion,
@@ -7,7 +8,7 @@ import {
 import { Command } from "@src/modules/command_executor";
 import { SketcherState } from "@src/modules/state_store";
 import { CommandFitCameraToScene } from "@src/modules/scene_builder/command";
-import { MODULE_NAME } from "@src/constant/enum";
+
 
 /**
  * @exports

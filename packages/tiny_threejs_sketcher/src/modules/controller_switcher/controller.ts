@@ -1,12 +1,12 @@
-import { ModuleGetter } from "@src/modules/module_registry";
+import { MODULE_NAME, ModuleGetter } from "@src/modules/module_registry";
 import { Controller } from "@src/modules/controller_switcher";
 import { logger } from "@src/utils/logger";
-import { CONTROLLER_NAME, MODULE_NAME } from "@src/constant/enum";
+import { CONTROLLER_NAME } from "@src/constant/enum";
 import { Result, err, ok } from "neverthrow";
 
 export class DefaultViewer implements Controller {
   name = CONTROLLER_NAME.default_viewer;
-  prev = undefined;
+  prev = CONTROLLER_NAME.default_viewer;
 
   enter() {
     return ok(undefined);

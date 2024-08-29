@@ -1,11 +1,9 @@
 import {
   CONTROLLER_NAME,
-  ControllerNameUnion,
-  MODULE_NAME,
   SKETCH_OBJECT_TYPE,
 } from "@src/constant/enum";
 import { Controller } from "@src/modules/controller_switcher";
-import { ModuleGetter } from "@src/modules/module_registry";
+import { MODULE_NAME, ModuleGetter } from "@src/modules/module_registry";
 import { BaseFace } from "@src/modules/sketch_object/base_face";
 import { BasePlane } from "@src/modules/sketch_object/base_plane";
 import { checkSketchObjectType } from "@src/utils";

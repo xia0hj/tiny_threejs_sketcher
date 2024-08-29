@@ -1,12 +1,16 @@
 import { CONFIG_VARS } from "@src/constant/config";
-import { Module, ModuleGetter } from "@src/modules/module_registry";
+import {
+  MODULE_NAME,
+  Module,
+  ModuleGetter,
+} from "@src/modules/module_registry";
 import { DefaultViewer } from "@src/modules/controller_switcher/controller";
 import { Result, err } from "neverthrow";
-import { ControllerNameUnion, MODULE_NAME } from "@src/constant/enum";
+import { ControllerNameUnion } from "@src/constant/enum";
 
 export type Controller = {
   readonly name: ControllerNameUnion;
-  readonly prev: ControllerNameUnion | undefined;
+  readonly prev: ControllerNameUnion;
 
   enter(getModule: ModuleGetter): Result<unknown, Error>;
   exit(getModule: ModuleGetter): Result<unknown, Error>;
@@ -23,11 +27,10 @@ export class ControllerSwitcher implements Module {
   private getModule: ModuleGetter;
   private _abortController = new AbortController();
   private _pressStartTimestamp = 0;
-  private _stack: Controller[] = [];
+  private _stack: Controller[] = [new DefaultViewer()];
 
   constructor(getModule: ModuleGetter) {
     this.getModule = getModule;
-    this.pushController(new DefaultViewer());
   }
 
   public startListenCanvas() {
@@ -44,27 +47,35 @@ export class ControllerSwitcher implements Module {
       { signal: this._abortController.signal },
     );
 
-    canvasElement.addEventListener("pointerup", (event) => {
-      const pressDuration = Date.now() - this._pressStartTimestamp;
-      if (pressDuration < CONFIG_VARS.pressMinDuration) {
-        this.getCurController().onClick?.(event, this.getModule);
-      } else {
-        this.getCurController().onPointerup?.(event, this.getModule);
-      }
-    });
+    canvasElement.addEventListener(
+      "pointerup",
+      (event) => {
+        const pressDuration = Date.now() - this._pressStartTimestamp;
+        if (pressDuration < CONFIG_VARS.pressMinDuration) {
+          this.getCurController().onClick?.(event, this.getModule);
+        } else {
+          this.getCurController().onPointerup?.(event, this.getModule);
+        }
+      },
+      { signal: this._abortController.signal },
+    );
 
     /** 用 requestAnimationFrame 实现 pointermove 事件的节流 */
     let throttleLock = false;
-    canvasElement.addEventListener("pointermove", (event) => {
-      if (throttleLock) {
-        return;
-      }
-      throttleLock = true;
-      requestAnimationFrame(() => {
-        this.getCurController().onPointermove?.(event, this.getModule);
-        throttleLock = false;
-      });
-    });
+    canvasElement.addEventListener(
+      "pointermove",
+      (event) => {
+        if (throttleLock) {
+          return;
+        }
+        throttleLock = true;
+        requestAnimationFrame(() => {
+          this.getCurController().onPointermove?.(event, this.getModule);
+          throttleLock = false;
+        });
+      },
+      { signal: this._abortController.signal },
+    );
   }
 
   public pushController<C extends Controller>(controller: C) {
@@ -99,7 +110,7 @@ export class ControllerSwitcher implements Module {
   }
 
   public getCurController() {
-    return this._stack.at(-1)!;
+    return this._stack[this._stack.length - 1];
   }
 
   public dispose() {

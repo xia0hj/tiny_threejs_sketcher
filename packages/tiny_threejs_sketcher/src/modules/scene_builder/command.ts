@@ -1,9 +1,9 @@
-import { ModuleGetter } from "@src/modules/module_registry";
+import { MODULE_NAME, ModuleGetter } from "@src/modules/module_registry";
 import { Command } from "@src/modules/command_executor";
 import { Box3, Sphere, Vector3 } from "three";
 import { CONFIG_VARS } from "@src/constant/config";
 import { ok } from "neverthrow";
-import { MODULE_NAME } from "@src/constant/enum";
+
 
 /**
  * @exports

@@ -1,5 +1,5 @@
-import { CAMERA_TYPE, MODULE_NAME } from "@src/constant/enum";
-import { Module } from "@src/modules/module_registry";
+import { CAMERA_TYPE } from "@src/constant/enum";
+import { MODULE_NAME, Module } from "@src/modules/module_registry";
 import { BasePlane } from "@src/modules/sketch_object/base_plane";
 import { SketchObject } from "@src/modules/sketch_object/interface";
 import { SketchObjectTreeItem } from "@src/modules/sketch_object_manager";

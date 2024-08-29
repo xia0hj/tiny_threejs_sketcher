@@ -1,5 +1,4 @@
-import { MODULE_NAME } from "@src/constant/enum";
-import { Module, ModuleGetter } from "@src/modules/module_registry";
+import { MODULE_NAME, Module, ModuleGetter } from "@src/modules/module_registry";
 import { checkIsUndoableCommand } from "@src/utils";
 import { logger } from "@src/utils/logger";
 import { Result } from "neverthrow";

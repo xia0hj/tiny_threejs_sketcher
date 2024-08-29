@@ -1,6 +1,6 @@
-import { MODULE_NAME, SKETCH_OBJECT_TYPE } from "@src/constant/enum";
+import {  SKETCH_OBJECT_TYPE } from "@src/constant/enum";
 import { Command } from "@src/modules/command_executor";
-import { ModuleGetter } from "@src/modules/module_registry";
+import { MODULE_NAME, ModuleGetter } from "@src/modules/module_registry";
 import { Circle2d } from "@src/modules/sketch_object/circle2d";
 import { CircleDrawer } from "@src/modules/sketch_object/circle2d/controller";
 import { checkSketchObjectType } from "@src/utils";

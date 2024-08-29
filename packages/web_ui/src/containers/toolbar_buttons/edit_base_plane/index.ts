@@ -2,7 +2,7 @@ import { FormOutlined } from "@ant-design/icons";
 import { ToolbarButton } from "@src/components/toolbar";
 import { DetailsView } from "@src/containers/toolbar_buttons/edit_base_plane/DetailsView";
 import { useSketcherStore } from "@src/store";
-import { CommandStartEditBasePlane } from "tiny_threejs_sketcher";
+import { CommandEnablePlaneEditor } from "tiny_threejs_sketcher";
 
 export const btnEditBasePlane: ToolbarButton = {
   label: "编辑平面",
@@ -10,9 +10,9 @@ export const btnEditBasePlane: ToolbarButton = {
   DetailsView,
   async onClick() {
     const tinyThreejsSketcher = useSketcherStore.getState().tinyThreejsSketcher;
-    const result = await tinyThreejsSketcher?.executeCommand(
-      new CommandStartEditBasePlane(),
+    const result = tinyThreejsSketcher.executeCommand(
+      new CommandEnablePlaneEditor(),
     );
-    return result?.isOk() ?? false;
+    return result.isOk() ?? false;
   },
 } as const;

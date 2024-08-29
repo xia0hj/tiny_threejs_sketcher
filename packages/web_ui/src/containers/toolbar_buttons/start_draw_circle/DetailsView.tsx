@@ -2,8 +2,8 @@ import { CheckOutlined } from "@ant-design/icons";
 import { ToolbarButton } from "@src/components/toolbar";
 import { useSketcherStore } from "@src/store";
 import {
-  CommandStopDrawCircle,
-  CommandStartDrawCircle,
+  CommandEnableCircleDrawer,
+  CommandExitCurController,
 } from "tiny_threejs_sketcher";
 import style from "./index.module.less";
 import { Card } from "antd";
@@ -28,16 +28,10 @@ export const DetailsView: ToolbarButton["DetailsView"] = ({ exit: onExit }) => {
   const endPoint = useSketcherStore((state) => state.drawingLine2dEndPoint);
 
   useEffect(() => {
-    (async function startDrawLine() {
-      await tinyThreejsSketcher?.executeCommand(new CommandStartDrawCircle());
-    })();
+    tinyThreejsSketcher.executeCommand(new CommandEnableCircleDrawer());
 
     return () => {
-      (async function stopDrawLine() {
-        await tinyThreejsSketcher?.executeCommand(
-          new CommandStopDrawCircle(),
-        );
-      })();
+      tinyThreejsSketcher.executeCommand(new CommandExitCurController());
     };
   }, [tinyThreejsSketcher]);
 

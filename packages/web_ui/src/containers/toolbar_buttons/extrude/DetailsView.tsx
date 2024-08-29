@@ -1,44 +1,50 @@
-import { CheckOutlined } from "@ant-design/icons";
+import { CheckOutlined, CloseOutlined } from "@ant-design/icons";
 import { ToolbarButton } from "@src/components/toolbar";
 import { useSketcherStore } from "@src/store";
 import {
-  CommandStartSelectExtrudeFace,
-  CommandStopSelectExtrudeFace,
+  CommandEnableFaceSelector,
+  CommandExtrudeSelectedFace,
+  CommandExitCurController,
 } from "tiny_threejs_sketcher";
 import style from "./index.module.less";
 import { Card, Input, InputNumber } from "antd";
-import { useEffect, useState } from "react";
-
+import { useEffect, useRef } from "react";
 
 export const DetailsView: ToolbarButton["DetailsView"] = ({ exit: onExit }) => {
   const tinyThreejsSketcher = useSketcherStore(
     (state) => state.tinyThreejsSketcher,
   );
 
-  const [depth, setDepth] = useState(10);
-
+  const depthRef = useRef(10);
   const [face] = useSketcherStore((state) => state.selectedObjects);
-  
-  useEffect(() => {
-    (async function startDrawLine() {
-      await tinyThreejsSketcher?.executeCommand(
-        new CommandStartSelectExtrudeFace(),
+  const handleClick = () => {
+    if (face) {
+      tinyThreejsSketcher.executeCommand(
+        new CommandExtrudeSelectedFace(depthRef.current),
       );
-    })();
+    }
+  };
 
+  useEffect(() => {
+    tinyThreejsSketcher.executeCommand(new CommandEnableFaceSelector());
     return () => {
-      (async function stopDrawLine() {
-        await tinyThreejsSketcher?.executeCommand(
-          new CommandStopSelectExtrudeFace(depth), // #todo can not read state in useEffect
-        );
-      })();
+      tinyThreejsSketcher.executeCommand(new CommandExitCurController());
     };
   }, [tinyThreejsSketcher]);
 
   return (
     <div className={style.panel_container}>
-      <Card title="创建草图平面" actions={[<CheckOutlined onClick={onExit} />]}>
-        <InputNumber value={depth} onChange={(val) => setDepth(val ?? 0)} />
+      <Card
+        title="创建草图平面"
+        actions={[
+          <CheckOutlined onClick={handleClick} />,
+          <CloseOutlined onClick={() => onExit()} />,
+        ]}
+      >
+        <InputNumber
+          value={depthRef.current}
+          onChange={(val) => (depthRef.current = val ?? 0)}
+        />
         <Input disabled value={face?.uuid} />
       </Card>
     </div>

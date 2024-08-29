@@ -1,12 +1,11 @@
-import { MODULE_NAME } from "@src/constant/enum";
 import { Command } from "@src/modules/command_executor";
-import { ModuleGetter } from "@src/modules/module_registry";
+import { MODULE_NAME, ModuleGetter } from "@src/modules/module_registry";
 
 /**
  * @exports
  */
-export class CommandExitCurInteractor implements Command {
-  name = "exit_cur_interactor";
+export class CommandExitCurController implements Command {
+  name = "exit_cur_controller";
   execute(getModule: ModuleGetter) {
     return getModule(MODULE_NAME.ControllerSwitcher).popController();
   }

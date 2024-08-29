@@ -1,10 +1,9 @@
 import {
   CONTROLLER_NAME,
-  ControllerNameUnion,
-  MODULE_NAME,
+
   SKETCH_OBJECT_TYPE,
 } from "@src/constant/enum";
-import { ModuleGetter } from "@src/modules/module_registry";
+import { MODULE_NAME, ModuleGetter } from "@src/modules/module_registry";
 import { Controller } from "@src/modules/controller_switcher";
 import { Circle2d } from "@src/modules/sketch_object/circle2d";
 import { CommandAddCircle } from "@src/modules/sketch_object/circle2d/command";
