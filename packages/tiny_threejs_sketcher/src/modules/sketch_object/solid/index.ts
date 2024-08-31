@@ -1,6 +1,6 @@
 import { SKETCH_OBJECT_TYPE } from "@src/index";
 import { BaseFace } from "@src/modules/sketch_object/base_face";
-import { SketchObjectInterface } from "@src/modules/sketch_object/interface";
+import { SketchObject } from "@src/modules/sketch_object/interface";
 import { logger } from "@src/utils/logger";
 import {
   BufferGeometry,
@@ -15,7 +15,7 @@ import {
 
 export class Solid
   extends Mesh<ExtrudeGeometry, MeshStandardMaterial>
-  implements SketchObjectInterface
+  implements SketchObject
 {
   userData: {
     type: typeof SKETCH_OBJECT_TYPE.solid;

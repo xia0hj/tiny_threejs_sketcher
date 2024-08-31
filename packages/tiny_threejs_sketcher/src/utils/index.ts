@@ -1,7 +1,9 @@
-import { ControllerNameUnion, SKETCH_OBJECT_TYPE } from "@src/constant/enum";
+import { SKETCH_OBJECT_TYPE } from "@src/constant/enum";
 import { Command, UndoableCommand } from "@src/modules/command_executor";
-import { SketchObject } from "@src/modules/sketch_object/interface";
-import { Object3D } from "three";
+import {
+  SketchObjecTypetUnion,
+  SketchObject,
+} from "@src/modules/sketch_object/interface";
 
 export type ValueOf<OBJ extends { [key: string]: any }> = OBJ[keyof OBJ];
 
@@ -9,19 +11,19 @@ export type Mutable<Type> = {
   -readonly [Key in keyof Type]: Type[Key];
 };
 
-export function checkIsSketchObject(obj: Object3D): obj is SketchObject {
+export function checkIsSketchObject(obj: any): obj is SketchObject {
   return Object.values(SKETCH_OBJECT_TYPE).some(
-    (type) => type === obj.userData.type,
+    (type) => type === obj?.userData?.type,
   );
 }
 
 export function checkSketchObjectType<
   T extends ValueOf<typeof SKETCH_OBJECT_TYPE>,
 >(
-  obj: Object3D | undefined | null,
+  obj: any,
   type: T,
-): obj is Extract<SketchObject, { userData: { type: T } }> {
-  return obj?.userData.type === type;
+): obj is Extract<SketchObjecTypetUnion, { userData: { type: T } }> {
+  return obj?.userData?.type === type;
 }
 
 export function checkIsUndoableCommand(

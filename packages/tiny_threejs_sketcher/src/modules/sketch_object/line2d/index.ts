@@ -1,6 +1,6 @@
 import { SKETCH_OBJECT_TYPE } from "@src/constant/enum";
 import { BasePoint } from "@src/modules/sketch_object/base_point";
-import { SketchObjectInterface } from "@src/modules/sketch_object/interface";
+import { SketchObject } from "@src/modules/sketch_object/interface";
 import {
   BufferGeometry,
   Line,
@@ -11,7 +11,7 @@ import {
 
 export class Line2d
   extends Line<BufferGeometry, LineBasicMaterial>
-  implements SketchObjectInterface
+  implements SketchObject
 {
   override userData = {
     type: SKETCH_OBJECT_TYPE.line2d,

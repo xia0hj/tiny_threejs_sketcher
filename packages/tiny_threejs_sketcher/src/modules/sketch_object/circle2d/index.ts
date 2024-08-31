@@ -1,4 +1,4 @@
-import { SketchObjectInterface } from "@src/modules/sketch_object/interface";
+import { SketchObject } from "@src/modules/sketch_object/interface";
 import { BasePoint } from "@src/modules/sketch_object/base_point";
 import {
   BufferGeometry,
@@ -13,7 +13,7 @@ import { SKETCH_OBJECT_TYPE } from "@src/constant/enum";
 
 export class Circle2d
   extends Line<BufferGeometry, LineBasicMaterial>
-  implements SketchObjectInterface
+  implements SketchObject
 {
   override userData: {
     type: typeof SKETCH_OBJECT_TYPE.circle2d;

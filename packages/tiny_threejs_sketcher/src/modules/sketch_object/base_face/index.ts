@@ -1,5 +1,5 @@
 import { SKETCH_OBJECT_TYPE } from "@src/index";
-import { SketchObjectInterface } from "@src/modules/sketch_object/interface";
+import { SketchObject } from "@src/modules/sketch_object/interface";
 import {
   BufferGeometry,
   Mesh,
@@ -10,7 +10,7 @@ import {
 
 export class BaseFace
   extends Mesh<BufferGeometry, MeshStandardMaterial>
-  implements SketchObjectInterface
+  implements SketchObject
 {
   override userData: {
     type: typeof SKETCH_OBJECT_TYPE.base_face;

@@ -1,6 +1,6 @@
 import { CONFIG_VARS } from "@src/constant/config";
 import { SKETCH_OBJECT_TYPE } from "@src/constant/enum";
-import { SketchObjectInterface } from "@src/modules/sketch_object/interface";
+import { SketchObject } from "@src/modules/sketch_object/interface";
 import {
   BufferGeometry,
   Color,
@@ -18,7 +18,7 @@ export type CreateBasePlaneParameter = {
 
 export class BasePlane
   extends Mesh<BufferGeometry, MeshStandardMaterial>
-  implements SketchObjectInterface
+  implements SketchObject
 {
   override userData: {
     type: typeof SKETCH_OBJECT_TYPE.base_plane;

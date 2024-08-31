@@ -8,7 +8,7 @@ import { Solid } from "@src/modules/sketch_object/solid";
 import { ValueOf } from "@src/utils";
 import { Object3D } from "three";
 
-export interface SketchObjectInterface extends Object3D {
+export interface SketchObject extends Object3D {
   userData: { type: ValueOf<typeof SKETCH_OBJECT_TYPE> };
   onPointerEnter?(): void;
   onPointerLeave?(): void;
@@ -18,5 +18,10 @@ export interface SketchObjectInterface extends Object3D {
   dispose(): void;
 }
 
-export type SketchObject = SketchObjectInterface &
-  (BasePlane | BasePoint | Line2d | Circle2d | BaseFace | Solid);
+export type SketchObjecTypetUnion =
+  | BasePlane
+  | BasePoint
+  | Line2d
+  | Circle2d
+  | BaseFace
+  | Solid;

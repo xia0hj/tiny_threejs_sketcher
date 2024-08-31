@@ -1,6 +1,6 @@
 import { CONFIG_VARS } from "@src/constant/config";
 import { SKETCH_OBJECT_TYPE } from "@src/constant/enum";
-import { SketchObjectInterface } from "@src/modules/sketch_object/interface";
+import { SketchObject } from "@src/modules/sketch_object/interface";
 import {
   BufferGeometry,
   Color,
@@ -23,7 +23,7 @@ void main() {
 `;
 
 export type BasePointProps = {
-  /** @default false */
+  /** @default true */
   isConnectable?: boolean;
 };
 
@@ -32,16 +32,15 @@ const hoverColor = new Color("red");
 
 export class BasePoint
   extends Points<BufferGeometry, ShaderMaterial>
-  implements SketchObjectInterface
+  implements SketchObject
 {
   override userData = {
     type: SKETCH_OBJECT_TYPE.base_point,
+    isConnectable: true,
   };
 
   connectedObjects: Map<number, ((position: Vector3) => void) | undefined> =
     new Map();
-
-  isConnectable = false;
 
   constructor(props: BasePointProps = {}) {
     const pointGeometry = new BufferGeometry().setFromPoints([new Vector3()]);
@@ -56,7 +55,7 @@ export class BasePoint
       fragmentShader,
     });
     super(pointGeometry, pointMaterial);
-    this.isConnectable = props.isConnectable ?? false;
+    this.userData.isConnectable = props.isConnectable ?? true;
   }
 
   onPointerEnter(): void {
@@ -78,7 +77,7 @@ export class BasePoint
     }
   }
 
-  updatePosition(position: Vector3) {
+  updatePositionAndNotify(position: Vector3) {
     this.position.copy(position);
     for (const onPositionChange of this.connectedObjects.values()) {
       onPositionChange?.(position);
@@ -89,7 +88,7 @@ export class BasePoint
     objectId: number,
     onPositionChange?: (position: Vector3) => void,
   ) {
-    if (this.isConnectable && this.connectedObjects.size === 1) {
+    if (!this.userData.isConnectable && this.connectedObjects.size === 1) {
       throw new Error("this point can not connect other object");
     }
     this.connectedObjects.set(objectId, onPositionChange);
