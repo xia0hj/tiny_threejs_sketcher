@@ -27,6 +27,9 @@ export type BasePointProps = {
   isConnectable?: boolean;
 };
 
+const normalCorlor = new Color("white");
+const hoverColor = new Color("red");
+
 export class BasePoint
   extends Points<BufferGeometry, ShaderMaterial>
   implements SketchObjectInterface
@@ -47,13 +50,20 @@ export class BasePoint
       uniforms: {
         size: { value: CONFIG_VARS.basePointSize },
         scale: { value: 1 },
-        color: { value: new Color("white") },
+        color: { value: normalCorlor },
       },
       vertexShader: ShaderLib.points.vertexShader,
       fragmentShader,
     });
     super(pointGeometry, pointMaterial);
     this.isConnectable = props.isConnectable ?? false;
+  }
+
+  onPointerEnter(): void {
+    this.material.uniforms.color.value = hoverColor;
+  }
+  onPointerLeave(): void {
+    this.material.uniforms.color.value = normalCorlor;
   }
 
   updatePositionPassively(position: Vector3, noNotifyId: number) {

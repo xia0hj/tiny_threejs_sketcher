@@ -2,7 +2,7 @@ import { MODULE_NAME, ModuleGetter } from "@src/modules/module_registry";
 import { Controller } from "@src/modules/controller_switcher";
 import { logger } from "@src/utils/logger";
 import { CONTROLLER_NAME } from "@src/constant/enum";
-import { Result, err, ok } from "neverthrow";
+import { Result, err } from "neverthrow";
 
 export class DefaultViewer implements Controller {
   name = CONTROLLER_NAME.default_viewer;
@@ -33,5 +33,19 @@ export class DefaultViewer implements Controller {
     stateStore.setState({
       selectedObjects: [firstIntersect.object],
     });
+  }
+
+  onPointermove(event: PointerEvent, getModule: ModuleGetter): void {
+    const sketchObjectManager = getModule(MODULE_NAME.SketchObjectManager);
+    const stateStore = getModule(MODULE_NAME.StateStore);
+
+    const [curIntersect] = sketchObjectManager.getPointerIntersectArray(event);
+    const prevIntersectObj = stateStore.getState().hoverObject;
+
+    if (curIntersect?.object.id !== prevIntersectObj?.id) {
+      prevIntersectObj?.onPointerLeave?.();
+      curIntersect?.object?.onPointerEnter?.();
+      stateStore.setState({ hoverObject: curIntersect?.object });
+    }
   }
 }

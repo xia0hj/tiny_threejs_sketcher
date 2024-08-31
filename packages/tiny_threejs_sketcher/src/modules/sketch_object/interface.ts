@@ -10,8 +10,8 @@ import { Object3D } from "three";
 
 export interface SketchObjectInterface extends Object3D {
   userData: { type: ValueOf<typeof SKETCH_OBJECT_TYPE> };
-  onMouseEnter?(): void;
-  onMouseLeave?(): void;
+  onPointerEnter?(): void;
+  onPointerLeave?(): void;
   onSelect?(): void;
   onDeselect?(): void;
   cloneAsSketchObject?(): void;

@@ -18,6 +18,9 @@ export type SketcherState = {
   curCameraType: ValueOf<typeof CAMERA_TYPE>;
   controller: ControllerNameUnion;
 
+
+  hoverObject?: SketchObject;
+
   sketchObjectTreeRoot?: SketchObjectTreeItem;
   selectedObjects: SketchObject[];
 

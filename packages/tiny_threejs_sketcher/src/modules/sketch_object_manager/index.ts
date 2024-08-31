@@ -72,7 +72,7 @@ export class SketchObjectManager implements Module {
 
   public getPointerIntersectArray(event: PointerEvent) {
     if (this.sketchObjectGroup.children.length === 0) {
-      return;
+      return [];
     }
     const { camera, canvasElement } = this.getModule(MODULE_NAME.SceneBuilder);
     this.raycaster.setFromCamera(
