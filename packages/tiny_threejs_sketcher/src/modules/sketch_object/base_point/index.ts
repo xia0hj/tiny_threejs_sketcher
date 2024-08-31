@@ -1,6 +1,7 @@
 import { CONFIG_VARS } from "@src/constant/config";
-import { SKETCH_OBJECT_TYPE } from "@src/constant/enum";
+import { LAYERS, SKETCH_OBJECT_TYPE } from "@src/constant/enum";
 import { SketchObject } from "@src/modules/sketch_object/interface";
+import { ValueOf } from "@src/utils";
 import {
   BufferGeometry,
   Color,
@@ -56,6 +57,7 @@ export class BasePoint
     });
     super(pointGeometry, pointMaterial);
     this.userData.isConnectable = props.isConnectable ?? true;
+    this.layers.enable(LAYERS.basePoint);
   }
 
   onPointerEnter(): void {
@@ -63,18 +65,6 @@ export class BasePoint
   }
   onPointerLeave(): void {
     this.material.uniforms.color.value = normalCorlor;
-  }
-
-  updatePositionPassively(position: Vector3, noNotifyId: number) {
-    this.position.copy(position);
-    for (const [
-      objectId,
-      onPositionChange,
-    ] of this.connectedObjects.entries()) {
-      if (objectId !== noNotifyId) {
-        onPositionChange?.(position);
-      }
-    }
   }
 
   updatePositionAndNotify(position: Vector3) {
@@ -99,6 +89,7 @@ export class BasePoint
   }
 
   dispose() {
+    this.removeFromParent();
     this.geometry.dispose();
     this.material.dispose();
     this.connectedObjects.clear();

@@ -14,7 +14,7 @@ export interface SketchObject extends Object3D {
   onPointerLeave?(): void;
   onSelect?(): void;
   onDeselect?(): void;
-  cloneAsSketchObject?(): void;
+  cloneAsSketchObject?(): Object3D;
   dispose(): void;
 }
 

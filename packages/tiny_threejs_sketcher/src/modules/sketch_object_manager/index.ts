@@ -1,8 +1,10 @@
+import { LAYERS } from "@src/constant/enum";
 import {
   MODULE_NAME,
   Module,
   ModuleGetter,
 } from "@src/modules/module_registry";
+import { BasePoint } from "@src/modules/sketch_object/base_point";
 import { SketchObject } from "@src/modules/sketch_object/interface";
 import { checkIsSketchObject } from "@src/utils";
 import { Group, Object3D, Plane, Raycaster, Vector2, Vector3 } from "three";
@@ -41,7 +43,7 @@ export class SketchObjectManager implements Module {
     this.refreshTree();
   }
 
-  public addPreviewObject(...object: SketchObject[]) {
+  public addPreviewObject(...object: Object3D[]) {
     this.previewGroup.add(...object);
   }
 
@@ -70,7 +72,7 @@ export class SketchObjectManager implements Module {
     }
   }
 
-  public getPointerIntersectArray(event: PointerEvent) {
+  public getPointerIntersectArray<T extends SketchObject>(event: PointerEvent) {
     if (this.sketchObjectGroup.children.length === 0) {
       return [];
     }
@@ -82,9 +84,7 @@ export class SketchObjectManager implements Module {
       ),
       camera,
     );
-    return this.raycaster.intersectObjects<SketchObject>(
-      this.sketchObjectGroup.children,
-    );
+    return this.raycaster.intersectObjects<T>(this.sketchObjectGroup.children);
   }
 
   public getIntersectPointOnPlane(event: PointerEvent, plane: Plane) {
@@ -97,6 +97,39 @@ export class SketchObjectManager implements Module {
       camera,
     );
     return this.raycaster.ray.intersectPlane(plane, new Vector3());
+  }
+
+  /**
+   * 查找相交的 BasePoint，不存在则返回 Vector3 位置
+   * 若按住 ctrl 则不查找 BasePoint
+   */
+  public catchBasePoint(
+    event: PointerEvent,
+    plane: Plane,
+  ): { catchedPoint?: BasePoint; position?: Vector3 } {
+    let catchedPoint: BasePoint | undefined;
+    let position: Vector3 | undefined;
+    if (!event.ctrlKey) {
+      this.raycaster.layers.set(LAYERS.basePoint);
+      const intersectPoint =
+        this.getPointerIntersectArray<BasePoint>(event).at(0);
+      this.raycaster.layers.set(LAYERS.default);
+
+      catchedPoint = intersectPoint?.object;
+    }
+
+    if (catchedPoint) {
+      position = new Vector3().copy(catchedPoint.position);
+    }
+
+    if (!position) {
+      const intersectPosition = this.getIntersectPointOnPlane(event, plane);
+      if (intersectPosition) {
+        position = intersectPosition.clone();
+      }
+    }
+
+    return { catchedPoint, position };
   }
 
   dispose() {

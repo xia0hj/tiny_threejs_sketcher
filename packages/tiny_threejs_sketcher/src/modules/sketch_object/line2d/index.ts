@@ -1,6 +1,8 @@
-import { SKETCH_OBJECT_TYPE } from "@src/constant/enum";
+import { CONTROLLER_NAME, SKETCH_OBJECT_TYPE } from "@src/constant/enum";
+import { Controller } from "@src/modules/controller_switcher";
 import { BasePoint } from "@src/modules/sketch_object/base_point";
 import { SketchObject } from "@src/modules/sketch_object/interface";
+import { checkSketchObjectType } from "@src/utils";
 import {
   BufferGeometry,
   Line,
@@ -13,37 +15,96 @@ export class Line2d
   extends Line<BufferGeometry, LineBasicMaterial>
   implements SketchObject
 {
-  override userData = {
-    type: SKETCH_OBJECT_TYPE.line2d,
-    startPosition: [] as unknown as Vector3Tuple,
-    endPosition: [] as unknown as Vector3Tuple,
+  override userData: {
+    type: typeof SKETCH_OBJECT_TYPE.line2d;
+    startPosition: Vector3Tuple;
+    endPosition: Vector3Tuple;
   };
 
-  startPoint = new BasePoint({ isConnectable: true });
-  endPoint = new BasePoint({ isConnectable: true });
+  startPoint: BasePoint;
+  endPoint: BasePoint;
 
-  constructor() {
+  constructor(startPoint: BasePoint, endPoint: BasePoint) {
     super();
-    this.startPoint.connectObject(this.id, (startPosition) =>
-      this.updatePosition(startPosition, this.endPoint.position),
-    );
-    this.endPoint.connectObject(this.id, (endPosition) =>
-      this.updatePosition(this.startPoint.position, endPosition),
-    );
-    this.add(this.startPoint, this.endPoint);
+
+    this.startPoint = startPoint;
+    this.endPoint = endPoint;
+    this.userData = {
+      type: SKETCH_OBJECT_TYPE.line2d,
+      startPosition: this.startPoint.position.toArray(),
+      endPosition: this.endPoint.position.toArray(),
+    };
+
+    this.startPoint.connectObject(this.id, (v3) => {
+      this.userData.startPosition = v3.toArray();
+      this.updateGeometry();
+    });
+    this.endPoint.connectObject(this.id, (v3) => {
+      this.userData.endPosition = v3.toArray();
+      this.updateGeometry();
+    });
+    this.updateGeometry();
   }
 
-  updatePosition(startPosition: Vector3, endPosition: Vector3) {
-    this.geometry.setFromPoints([startPosition, endPosition]);
-    this.startPoint.updatePositionPassively(startPosition, this.id);
-    this.endPoint.updatePositionPassively(endPosition, this.id);
-    this.userData.startPosition = startPosition.toArray();
-    this.userData.endPosition = endPosition.toArray();
+  updateGeometry() {
+    this.geometry.setFromPoints([
+      new Vector3().fromArray(this.userData.startPosition),
+      new Vector3().fromArray(this.userData.endPosition),
+    ]);
+  }
+
+  mergeStartPoint(point: BasePoint) {
+    this.startPoint.disconnectObject(this.id);
+    this.startPoint = point;
+    this.startPoint.connectObject(this.id, (v3) => {
+      this.userData.startPosition = v3.toArray();
+      this.updateGeometry();
+    });
+  }
+  mergeEndPoint(point: BasePoint) {
+    this.endPoint.disconnectObject(this.id);
+    this.endPoint = point;
+    this.endPoint.connectObject(this.id, (v3) => {
+      this.userData.endPosition = v3.toArray();
+      this.updateGeometry();
+    });
   }
 
   dispose() {
     this.startPoint.disconnectObject(this.id);
     this.endPoint.disconnectObject(this.id);
+    this.geometry.dispose();
+    this.material.dispose();
+  }
+}
+
+/**
+ * 不显示端点的简单线段，在绘制线段未完成时使用，绘制中的端点显示由 LineDrawer 实现
+ */
+export class RawLine extends Line<BufferGeometry, LineBasicMaterial> {
+  startPosition = new Vector3();
+  endPosition = new Vector3();
+
+  constructor() {
+    super();
+  }
+
+  updateStartPosition(startPosition: Vector3) {
+    this.startPosition.copy(startPosition);
+    this.updateGeometry();
+  }
+
+  updateEndPosition(endPosition: Vector3) {
+    this.endPosition.copy(endPosition);
+    this.updateGeometry();
+  }
+
+  private updateGeometry() {
+    this.geometry.setFromPoints([this.startPosition, this.endPosition]);
+  }
+
+  dispose() {
+    this.removeFromParent();
     this.geometry.dispose();
     this.material.dispose();
   }

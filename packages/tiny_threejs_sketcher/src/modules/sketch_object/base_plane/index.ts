@@ -7,6 +7,7 @@ import {
   DoubleSide,
   Mesh,
   MeshStandardMaterial,
+  Plane,
   Vector3,
   Vector3Tuple,
 } from "three";
@@ -28,6 +29,7 @@ export class BasePlane
 
   color: number;
   selectColor: number;
+  plane: Plane;
 
   constructor(createPlaneParameter: CreateBasePlaneParameter) {
     super(
@@ -54,6 +56,10 @@ export class BasePlane
             : [1, 0, 0],
       constant: createPlaneParameter.offset,
     };
+    this.plane = new Plane(
+      new Vector3().fromArray(this.userData.normal),
+      this.userData.constant,
+    );
     this.color = CONFIG_VARS.planeColor;
     this.selectColor = CONFIG_VARS.planeSelectColor;
   }

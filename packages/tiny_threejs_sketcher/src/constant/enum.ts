@@ -29,3 +29,8 @@ export const CONTROLLER_NAME = Object.freeze({
   face_selector: "face_selector",
 });
 export type ControllerNameUnion = ValueOf<typeof CONTROLLER_NAME>;
+
+export const LAYERS = Object.freeze({
+  default: 0,
+  basePoint: 1,
+});

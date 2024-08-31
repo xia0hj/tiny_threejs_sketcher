@@ -18,7 +18,6 @@ export type SketcherState = {
   curCameraType: ValueOf<typeof CAMERA_TYPE>;
   controller: ControllerNameUnion;
 
-
   hoverObject?: SketchObject;
 
   sketchObjectTreeRoot?: SketchObjectTreeItem;
@@ -27,8 +26,10 @@ export type SketcherState = {
   /** 用于区分是否处于 2d 草图模式 */
   editingBasePlane?: BasePlane;
 
-  // 记录正在绘制的线段信息，通知完成绘制
+  /** 当前绘制线段的起点，注意需要克隆 Vector3 */
   drawingLine2dStartPoint?: Vector3;
+
+  /** 当前绘制线段的终点，注意需要克隆 Vector3 */
   drawingLine2dEndPoint?: Vector3;
 
   drawingCircle2dCenter?: Vector3;
