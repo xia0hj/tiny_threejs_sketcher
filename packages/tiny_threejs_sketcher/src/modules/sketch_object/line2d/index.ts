@@ -1,8 +1,6 @@
-import { CONTROLLER_NAME, SKETCH_OBJECT_TYPE } from "@src/constant/enum";
-import { Controller } from "@src/modules/controller_switcher";
+import { SKETCH_OBJECT_TYPE } from "@src/constant/enum";
 import { BasePoint } from "@src/modules/sketch_object/base_point";
 import { SketchObject } from "@src/modules/sketch_object/interface";
-import { checkSketchObjectType } from "@src/utils";
 import {
   BufferGeometry,
   Line,
