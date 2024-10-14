@@ -4,6 +4,7 @@ import {
   SketchObjecTypetUnion,
   SketchObject,
 } from "@src/modules/sketch_object/interface";
+import { BufferGeometry, Vector2, Vector3 } from "three";
 
 export type ValueOf<OBJ extends { [key: string]: any }> = OBJ[keyof OBJ];
 
@@ -30,4 +31,13 @@ export function checkIsUndoableCommand(
   command: Command,
 ): command is UndoableCommand {
   return command.undo != null;
+}
+
+export function getVector2FromGeometry(geometry: BufferGeometry) {
+  const points: Vector2[] = [];
+  const positionAttr = geometry.getAttribute("position");
+  for (let i = 0; i < positionAttr.count; i++) {
+    points.push(new Vector2(positionAttr.getX(i), positionAttr.getY(i)));
+  }
+  return points;
 }

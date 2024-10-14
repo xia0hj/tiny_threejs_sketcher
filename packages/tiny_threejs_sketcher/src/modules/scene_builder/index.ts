@@ -40,7 +40,10 @@ export class SceneBuilder implements Module {
     this.scene.add(new AmbientLight());
 
     // renderer
-    const renderer = new WebGLRenderer({ canvas: this.canvasElement });
+    const renderer = new WebGLRenderer({
+      canvas: this.canvasElement,
+      precision: "lowp",
+    });
     renderer.setSize(canvasWidth, canvasHeight);
     renderer.setClearColor(CONFIG_VARS.sceneBackgroundColor);
     this.renderer = renderer;

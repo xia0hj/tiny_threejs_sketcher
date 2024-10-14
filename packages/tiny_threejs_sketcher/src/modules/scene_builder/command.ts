@@ -8,7 +8,11 @@ import { ok } from "neverthrow";
  * @exports
  */
 export class CommandFitCameraToScene implements Command {
+
+  
+  
   name = "fit_camera_to_scene";
+
 
   execute(getModule: ModuleGetter) {
     const { perspectiveCamera, orthographicCamera, orbitControls } = getModule(
