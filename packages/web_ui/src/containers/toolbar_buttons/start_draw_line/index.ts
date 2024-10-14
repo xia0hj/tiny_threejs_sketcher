@@ -1,9 +1,9 @@
-import { BorderOuterOutlined } from "@ant-design/icons";
-import { ToolbarButton } from "@src/components/toolbar";
-import { DetailsView } from "@src/containers/toolbar_buttons/start_draw_line/DetailsView";
+import { BorderOuterOutlined } from "@ant-design/icons"
+import { ToolbarButton } from "@src/components/toolbar"
+import { DetailsView } from "@src/containers/toolbar_buttons/start_draw_line/DetailsView"
 
 export const btnStartDrawLine: ToolbarButton = {
-  label: "绘制线段",
-  icon: BorderOuterOutlined,
-  DetailsView,
-} as const;
+    label: "绘制线段",
+    icon: BorderOuterOutlined,
+    DetailsView,
+} as const
