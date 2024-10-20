@@ -1,31 +1,32 @@
-import { CheckOutlined, CloseOutlined } from "@ant-design/icons"
-import { ToolbarButton } from "@src/components/toolbar"
-import { Card, Form, InputNumber, Select } from "antd"
-import style from "./index.module.less"
-import { useSketcherStore } from "@src/store"
-import { CommandCreateBasePlane } from "tiny_threejs_sketcher"
+import { CheckOutlined, CloseOutlined } from "@ant-design/icons";
+import { ToolbarButton } from "@src/components/toolbar";
+import { useSketcherStore } from "@src/store";
+import { Card, Form, InputNumber, Select } from "antd";
+import { CommandCreateBasePlane } from "tiny_threejs_sketcher";
+
+import style from "./index.module.less";
 interface FieldType {
-    parallelTo: "XY" | "XZ" | "YZ"
-    offset: number
+    parallelTo: "XY" | "XZ" | "YZ";
+    offset: number;
 }
 
 export const DetailsView: ToolbarButton["DetailsView"] = ({ exit: onExit }) => {
-    const [formInstance] = Form.useForm()
+    const [formInstance] = Form.useForm();
     const tinyThreejsSketcher = useSketcherStore(
         state => state.tinyThreejsSketcher,
-    )
+    );
     const onSubmit = async (values: FieldType) => {
-        console.log(values)
+        console.log(values);
         const result = tinyThreejsSketcher.executeCommand(
             new CommandCreateBasePlane({
                 offset: values.offset,
                 parallelTo: values.parallelTo,
             }),
-        )
+        );
         if (result.isOk()) {
-            onExit()
+            onExit();
         }
-    }
+    };
 
     return (
         <div className={style.form_container}>
@@ -67,5 +68,5 @@ export const DetailsView: ToolbarButton["DetailsView"] = ({ exit: onExit }) => {
                 </Form>
             </Card>
         </div>
-    )
-}
+    );
+};

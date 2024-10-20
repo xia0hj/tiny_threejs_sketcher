@@ -1,6 +1,6 @@
-import { PluginOption, defineConfig } from "vite"
-import react from "@vitejs/plugin-react-swc"
-import viteTsconfigPaths from "vite-tsconfig-paths"
+import react from "@vitejs/plugin-react-swc";
+import { defineConfig, PluginOption } from "vite";
+import viteTsconfigPaths from "vite-tsconfig-paths";
 
 /**
  * @link https://github.com/vitejs/vite/issues/9743
@@ -8,12 +8,12 @@ import viteTsconfigPaths from "vite-tsconfig-paths"
 const forceFullReload: PluginOption = {
     name: "force_full_reload",
     handleHotUpdate(ctx) {
-        ctx.server.ws.send({ type: "full-reload" })
-        return []
+        ctx.server.ws.send({ type: "full-reload" });
+        return [];
     },
-}
+};
 
 // https://vitejs.dev/config/
 export default defineConfig({
     plugins: [react(), viteTsconfigPaths(), forceFullReload],
-})
+});

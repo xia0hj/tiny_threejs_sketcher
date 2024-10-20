@@ -1,30 +1,30 @@
-import { SKETCH_OBJECT_TYPE } from "@src/constant/enum"
-import { Command } from "@src/modules/command_executor"
-import { MODULE_NAME, ModuleGetter } from "@src/modules/module_registry"
-import { Line2d } from "@src/modules/sketch_object/line2d"
-import { LineDrawer } from "@src/modules/sketch_object/line2d/controller"
-import { checkSketchObjectType } from "@src/utils"
-import { Result, err, ok } from "neverthrow"
+import { SKETCH_OBJECT_TYPE } from "@src/constant/enum";
+import { Command } from "@src/modules/command_executor";
+import { MODULE_NAME, ModuleGetter } from "@src/modules/module_registry";
+import { Line2d } from "@src/modules/sketch_object/line2d";
+import { LineDrawer } from "@src/modules/sketch_object/line2d/controller";
+import { checkSketchObjectType } from "@src/utils";
+import { err, ok, Result } from "neverthrow";
 
 /**
  * @exports
  */
 export class CommandEnableLineDrawer implements Command {
-    name = "enable_line_drawer"
+    name = "enable_line_drawer";
 
     execute(getModule: ModuleGetter) {
         return getModule(MODULE_NAME.ControllerSwitcher).pushController(
             new LineDrawer(),
-        )
+        );
     }
 }
 
 export class CommandAddLine implements Command {
-    name = "add_line"
-    line2d: Line2d
+    name = "add_line";
+    line2d: Line2d;
 
     constructor(line2d: Line2d) {
-        this.line2d = line2d
+        this.line2d = line2d;
     }
 
     execute(getModule: ModuleGetter): Result<unknown, Error> {
@@ -33,15 +33,15 @@ export class CommandAddLine implements Command {
                 new Error(
                     `命令 ${this.name} 无法添加非 ${SKETCH_OBJECT_TYPE.line2d} 对象`,
                 ),
-            )
+            );
         }
-        getModule(MODULE_NAME.SketchObjectManager).addObject2d(this.line2d)
-        return ok(this.line2d)
+        getModule(MODULE_NAME.SketchObjectManager).addObject2d(this.line2d);
+        return ok(this.line2d);
     }
 
     undo() {
-        this.line2d.removeFromParent()
-        this.line2d.dispose()
-        return ok(undefined)
+        this.line2d.removeFromParent();
+        this.line2d.dispose();
+        return ok(undefined);
     }
 }

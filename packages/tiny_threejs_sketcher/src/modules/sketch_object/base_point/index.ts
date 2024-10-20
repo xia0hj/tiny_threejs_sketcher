@@ -1,6 +1,6 @@
-import { CONFIG_VARS } from "@src/constant/config"
-import { LAYERS, SKETCH_OBJECT_TYPE } from "@src/constant/enum"
-import { SketchObject } from "@src/modules/sketch_object/interface"
+import { CONFIG_VARS } from "@src/constant/config";
+import { LAYERS, SKETCH_OBJECT_TYPE } from "@src/constant/enum";
+import { SketchObject } from "@src/modules/sketch_object/interface";
 import {
     BufferGeometry,
     Color,
@@ -8,7 +8,7 @@ import {
     ShaderLib,
     ShaderMaterial,
     Vector3,
-} from "three"
+} from "three";
 
 /**
  * @see {@link https://stackoverflow.com/questions/41509156/three-js-give-particles-round-form/54361382#54361382}
@@ -20,15 +20,15 @@ void main() {
   float ll = length(xy);
   gl_FragColor = vec4(color, step(ll, 0.5));
 }
-`
+`;
 
 export type BasePointProps = {
     /** @default true */
-    isConnectable?: boolean
-}
+    isConnectable?: boolean;
+};
 
-const normalCorlor = new Color("white")
-const hoverColor = new Color("red")
+const normalCorlor = new Color("white");
+const hoverColor = new Color("red");
 
 export class BasePoint
     extends Points<BufferGeometry, ShaderMaterial>
@@ -36,13 +36,13 @@ export class BasePoint
     override userData = {
         type: SKETCH_OBJECT_TYPE.base_point,
         isConnectable: true,
-    }
+    };
 
     connectedObjects: Map<number, ((position: Vector3) => void) | undefined>
-        = new Map()
+        = new Map();
 
     constructor(props: BasePointProps = {}) {
-        const pointGeometry = new BufferGeometry().setFromPoints([new Vector3()])
+        const pointGeometry = new BufferGeometry().setFromPoints([new Vector3()]);
         const pointMaterial = new ShaderMaterial({
             transparent: true,
             uniforms: {
@@ -52,24 +52,24 @@ export class BasePoint
             },
             vertexShader: ShaderLib.points.vertexShader,
             fragmentShader,
-        })
-        super(pointGeometry, pointMaterial)
-        this.userData.isConnectable = props.isConnectable ?? true
-        this.layers.enable(LAYERS.basePoint)
+        });
+        super(pointGeometry, pointMaterial);
+        this.userData.isConnectable = props.isConnectable ?? true;
+        this.layers.enable(LAYERS.basePoint);
     }
 
     onPointerEnter(): void {
-        this.material.uniforms.color.value = hoverColor
+        this.material.uniforms.color.value = hoverColor;
     }
 
     onPointerLeave(): void {
-        this.material.uniforms.color.value = normalCorlor
+        this.material.uniforms.color.value = normalCorlor;
     }
 
     updatePositionAndNotify(position: Vector3) {
-        this.position.copy(position)
+        this.position.copy(position);
         for (const onPositionChange of this.connectedObjects.values()) {
-            onPositionChange?.(position)
+            onPositionChange?.(position);
         }
     }
 
@@ -78,19 +78,19 @@ export class BasePoint
         onPositionChange?: (position: Vector3) => void,
     ) {
         if (!this.userData.isConnectable && this.connectedObjects.size === 1) {
-            throw new Error("this point can not connect other object")
+            throw new Error("this point can not connect other object");
         }
-        this.connectedObjects.set(objectId, onPositionChange)
+        this.connectedObjects.set(objectId, onPositionChange);
     }
 
     disconnectObject(objId: number) {
-        this.connectedObjects.delete(objId)
+        this.connectedObjects.delete(objId);
     }
 
     dispose() {
-        this.removeFromParent()
-        this.geometry.dispose()
-        this.material.dispose()
-        this.connectedObjects.clear()
+        this.removeFromParent();
+        this.geometry.dispose();
+        this.material.dispose();
+        this.connectedObjects.clear();
     }
 }

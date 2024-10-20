@@ -8,11 +8,11 @@ export const CONFIG_VARS = {
     planeOpacity: 0.6,
     pressMinDuration: 500,
     basePointSize: 10,
-}
+};
 
 /**
  * @exports
  */
 export function updateConfigVars(config: Partial<typeof CONFIG_VARS>) {
-    Object.assign(CONFIG_VARS, config)
+    Object.assign(CONFIG_VARS, config);
 }
