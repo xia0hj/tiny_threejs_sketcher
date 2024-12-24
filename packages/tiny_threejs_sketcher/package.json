@@ -1,7 +1,7 @@
 {
   "name": "tiny_threejs_sketcher",
-  "version": "1.0.0",
   "type": "module",
+  "version": "1.0.0",
   "module": "./dist/index.js",
   "types": "./dist/index.d.ts",
   "scripts": {
@@ -13,6 +13,12 @@
     "prod_esbuild": "esbuild src/index.ts --format=esm --bundle --packages=external --outfile=dist/index.js --tree-shaking=true --analyze",
     "prod_dts": "dts-bundle-generator src/index.ts --out-file=dist/index.d.ts"
   },
+  "dependencies": {
+    "geometric": "^2.5.5",
+    "mitt": "^3.0.1",
+    "neverthrow": "^8.0.0",
+    "three": "^0.169.0"
+  },
   "devDependencies": {
     "@types/geometric": "^2.5.3",
     "@types/three": "^0.169.0",
@@ -20,11 +26,5 @@
     "esbuild": "^0.24.0",
     "ts-patch": "^3.2.1",
     "typescript-transform-paths": "^3.5.1"
-  },
-  "dependencies": {
-    "geometric": "^2.5.5",
-    "mitt": "^3.0.1",
-    "neverthrow": "^8.0.0",
-    "three": "^0.169.0"
   }
 }

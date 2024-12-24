@@ -1,32 +1,32 @@
-import { Button, Divider, Tooltip } from "antd";
 import {
     FunctionComponent,
     type ReactElement,
     ReactNode,
     useState,
-} from "react";
+} from "react"
+import { Button, Divider, Tooltip } from "antd"
 
-export type ToolbarButton = {
-    label: string;
-    icon: (props: any) => ReactNode;
-    DetailsView?: (props: { exit: () => void }) => ReactElement;
-    onClick?: () => boolean | Promise<boolean>;
-};
+export interface ToolbarButton {
+    label: string
+    icon: (props: any) => ReactNode
+    DetailsView?: (props: { exit: () => void }) => ReactElement
+    onClick?: () => boolean | Promise<boolean>
+}
 
 export const Toolbar: FunctionComponent<{
-    toolbarButtons: ToolbarButton[];
+    toolbarButtons: ToolbarButton[]
 }> = ({ toolbarButtons }) => {
-    const [curActiveBtn, setCurActiveBtn] = useState<ToolbarButton>();
-    const onExit = () => setCurActiveBtn(undefined);
+    const [curActiveBtn, setCurActiveBtn] = useState<ToolbarButton>()
+    const onExit = () => setCurActiveBtn(undefined)
     const onClick = async (btn: ToolbarButton) => {
-        const isSuccess = await btn.onClick?.();
+        const isSuccess = await btn.onClick?.()
         if (btn.onClick && !isSuccess) {
-            return;
+            return
         }
-        setCurActiveBtn(btn);
-    };
+        setCurActiveBtn(btn)
+    }
 
-    if (curActiveBtn == undefined || curActiveBtn.DetailsView == undefined) {
+    if (curActiveBtn == null || curActiveBtn.DetailsView == null) {
         return (
             <div>
                 <Divider orientation="left">111</Divider>
@@ -42,9 +42,9 @@ export const Toolbar: FunctionComponent<{
                     </Tooltip>
                 ))}
             </div>
-        );
+        )
     }
     else {
-        return <curActiveBtn.DetailsView exit={onExit} />;
+        return <curActiveBtn.DetailsView exit={onExit} />
     }
-};
+}

@@ -1,13 +1,19 @@
 // @ts-check
 
-import { eslintConfigXiaohj, typedConfig } from "eslint-config-xiaohj";
+import antfu from "@antfu/eslint-config"
 
-export default [
-    ...eslintConfigXiaohj({
-        typescript: true,
-        react: true,
-    }),
-    ...typedConfig({
-        ignores: ["**/dist/**/*"],
-    }),
-];
+export default antfu({
+    react: true,
+    yaml: false,
+    ignores: ["**/dist"],
+    stylistic: {
+        indent: 4,
+        semi: false,
+        quotes: "double",
+    },
+    rules: {
+        "eqeqeq": ["error", "allow-null"],
+        "jsonc/indent": ["error", 2],
+        "react/no-missing-key": "warn",
+    },
+})
