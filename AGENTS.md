@@ -68,6 +68,8 @@
 
 * 前后端统一使用 TypeScript
 * 尽量共享类型定义（建议抽 shared package）
+* ts 类型优先用 type 而不是 interface
+* 代码多用函数而不是类, 尤其是适合写单元测试的纯函数
 
 ---
 
