@@ -72,6 +72,13 @@
 * 代码多用函数而不是类, 尤其是适合写单元测试的纯函数
 * git commit message 格式, 第一行是:`[随机emoji] [简短总结]`, 接着一个空白换行, 从第三行开始分点概括改动内容, 不超过 5 点
 
+### 项目 pnpm monorepo 结构
+
+* web_ui: 前端 UI 层
+* tiny_threejs_sketcher: 封装 three.js 控制所有画布相关逻辑, 该库不应依赖 UI 层
+* constraint_solver: CAD 约束求解器, 由 tiny_threejs_sketcher 调用, 但该库也支持单独使用, 因此不应依赖 tiny_threejs_sketcher
+* backend_app: 后端
+
 ---
 
 ## 4. 核心概念模型（Core Domain Model）
